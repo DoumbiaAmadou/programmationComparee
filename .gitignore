@@ -1,0 +1,13 @@
+# Java etc
+*.class
+*.jar
+# Python
+*.pyc
+__pycache__
+# OCaml
+*.cm*
+# OSX
+.DS_Store
+# Vim/Emacs/etc
+*~
+.*.sw*
