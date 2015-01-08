@@ -1,0 +1,14 @@
+Le langage utilisé est Scala : il avait tout ce qu'il fallait. 
+L'idée est de prendre toutes les permutations d'un mot donné, et de regarder 
+dans le dictionnaire lesquels sont présents (via l'opérateur d'intersection).  
+
+Le vrai code fait 3 lignes mais pourrait n'en faire qu'une : j'ai séparé le 
+dictionnaire et son emplacement. 
+
+Je ne connais pas la complexité de l'intersection. Si on suppose que ça prend 
+un temps I, la complexité est O(n*I) où n est le nombre d'arguments.  
+
+Pour l'instant le programme n'est pas général mais il peut être modifié pour 
+calculer les permutations de listes de n'importe quel type. La fonction de 
+formattage devra prendre un élément neutre du bon type. 
+
