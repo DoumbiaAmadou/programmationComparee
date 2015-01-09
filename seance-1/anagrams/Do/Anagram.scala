@@ -40,7 +40,7 @@ object Main {
   }
   
   def main(args: Array[String]): Unit = {  
-	val file = Source.fromFile("/home/syouon/Documents/Master/Master2/words")
+	val file = Source.fromFile("../words")
 	val dico = file.getLines.toList
     	
 	for (word <- args) {
