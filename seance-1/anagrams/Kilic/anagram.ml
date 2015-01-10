@@ -1,5 +1,5 @@
-(* [hash_from_words table w o ] remplit la de hachage [table] avec le nombre 
-   d'occurrences de chaque lettre du mot [w]. *)
+(* [hash_from_words table w o ] remplit la table de hachage [table] avec le 
+   nombre d'occurrences de chaque lettre du mot [w]. *)
 let hash_from_words table w (o : int -> int -> int) =
   let add_characters table c =
     try
@@ -47,6 +47,7 @@ let anagrams l words =
 let () =
   if Array.length Sys.argv > 1 then
     let l = List.tl (Array.to_list Sys.argv) in
+    let l = List.map String.lowercase l in 
     let words_list = make_words_list "words" in
     anagrams l words_list
   else
