@@ -1,0 +1,1 @@
+Instructions de compilation : ocamlopt.opt -o anagram anagram.ml 
