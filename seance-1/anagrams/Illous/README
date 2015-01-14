@@ -1,0 +1,5 @@
+Le langage utilisé pour réaliser ce programme est Scala.
+Le programme fait 46 lignes.
+La complexité de la fonction qui détermine si un mot est un anagramme d'un autre est de O(n * log n) où n est la taille du plus grand des deux mots. En effet l'ajout d'un élément dans un TreeMap s'effectue en log n et on répète n fois cette opération.
+La complexité totale du programme dépend de la taille du fichier word
+Le programme n'est pas générique.

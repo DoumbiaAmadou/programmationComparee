@@ -1,0 +1,12 @@
+Le langage utilisé est le scala.
+
+Le code fait 26 lignes
+Pour chaque mot passé en paramètre, on va parcourir le dictionnaire entièrement.
+Je ne connais pas la complexité du tri des lettres d'un mot.
+En posant : 
+   -n comme le nombre de mots pour lesquels on veut rechercher les anagrammes
+   -m comme le nombre de mots dans le dictionnaire
+
+Mon programme a pour complexité O(n*m)
+
+Ce code depend fortement du format du dictionnaire qui est d'un mot par ligne.
