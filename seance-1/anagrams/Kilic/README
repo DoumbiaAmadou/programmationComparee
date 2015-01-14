@@ -1,1 +1,7 @@
-Instructions de compilation : ocamlopt.opt -o anagram anagram.ml 
+Instructions de compilation : ocamlopt.opt -o anagram anagram.ml
+Langage utilisé : OCaml
+Nombre de lignes : 54
+Complexité : L'algorithme permettant de savoir si deux mots sont des anagrammes a une complexité linéaire. Ainsi,
+le programme affichant les anagrammes des mots donnés en ligne de commande a une complexité de O(n * m) ou n est
+la taille de la liste donnée en paramètre et m la taille de la liste words.
+Généralité : on peut facilement remplacer la fonction permettant de savoir si deux mots sont des anagrammes.
