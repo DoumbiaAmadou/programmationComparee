@@ -42,25 +42,38 @@ let rec print_ana l =
   | h::t -> print h; print_ana t	    
     
  
-let exec l =
-  let rec aux l lt =
+let rec exec l bd =
   match l with
-    | []-> 0  
-    | h::t -> print h;Printf.printf ": "; print_ana (anagrame h lt);Printf.printf "\n"; aux t lt
-  in aux l l
+    | []-> ()  
+    | h::t -> print h;Printf.printf ": "; print_ana (anagrame h bd);Printf.printf "\n"; exec t bd
 ;;
 
-let rec read_lines f i = 
-try(Printf.printf "%d\n" i;
-  (input_line f)::read_lines f (i+1)
+let rec read_lines f = 
+try(
+  let l = (input_line f)
+  in l::read_lines f 
 )with
 | End_of_file -> []
 ;;
  
-(*let fichier = open_in Sys.argv.(1);;
-let l = read_lines fichier 0;;
-Printf.printf "Fichier lu !";;  
-  exec l;;*)
-exec ["marion";"manoir";"minora";"test";"ironique";"onirique"];;
+(* Met les arguments de la ligne de commande dans une liste *)
+let get_arg =
+  let rec aux i = 
+    match i with
+    | 2 -> []
+    | n -> Sys.argv.(i-1)::aux (i-1)
+  in aux (Array.length Sys.argv)
 
+let () =
+  let arg = Array.length Sys.argv in
+  
+  if arg==1 then  Printf.printf "Il faut mettre en parametre une base de données de mots séparés par des espaces"
+  else
+    let fichier = open_in Sys.argv.(1) in
+    let database = read_lines fichier in
+    if arg == 2 then  exec ["marion";"manoir";"test";"ironique";"onirique"] database
+    else     
+    let param = get_arg in  
+    exec param database
+	   
 
