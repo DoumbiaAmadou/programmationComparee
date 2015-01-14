@@ -9,7 +9,6 @@ L'idée est de prendre le mot à analyser et de générer une chaine de
  caractère dont les lettres sont rangé dans l'ordre alphabétique.
 Cette chaine étant une clé pour le mot.
 Deux mots ayant la même clé généré sont des anagrammes.
-Les accents et les espaces tiret ne sont pas pris en compte.
 
 complexité du programme:
 ========================
@@ -22,5 +21,14 @@ Le reste du programme consiste à ranger les anagrames dans l'ordre alphabétiqu
 Je n'ai pas trouvé d'informations sur le SortedMap. En supposant qu'il à la performance d'un trie rapide on obtient du O(n.log(n))
 La dernière étape consiste en l'affichage du résultat qui vaut O(n).
 
-La performance générale du programme est donc O(n*m)+O(n.log(n))+O(n).
+La complexité générale du programme est donc O(n*m)+O(n.log(n))+O(n).
 Soit O(3n.m.log(n)).
+
+degré de généralité:
+====================
+Tout les fichiers ayant un mot par ligne peuvent être pris par le
+programme.
+Les accents (français) et les espaces ne sont pas pris en compte.
+On a ainsi beaucoup plus de mots.
+La version du code actuelle ne prend le fichier source, mais
+ce n'est que quelques rajout à faire pour qu'il puisse le faire.
