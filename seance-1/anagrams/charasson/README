@@ -1,2 +1,25 @@
-Copyright Charasson corp
-Il est interdit de copier mon code sous peine d'être très sévèrement puni
+langage utilisé:
+================
+Le langage utilisé est le Scala.
+Il contient des fonctions de trie, des conteneurs adaptés au problème.
+
+principe du code:
+=================
+L'idée est de prendre le mot à analyser et de générer une chaine de
+ caractère dont les lettres sont rangé dans l'ordre alphabétique.
+Cette chaine étant une clé pour le mot.
+Deux mots ayant la même clé généré sont des anagrammes.
+
+complexité du programme:
+========================
+Pour la partie recherche d'Anagramme la complexité est linéaire.
+Le nombre de mot vaut "n" taille et traitement des mots vaut "m".
+Les insersions dans le MultiMap sont en O(n*m).
+
+Pour le reste du programme:
+Le reste du programme consiste à ranger les anagrames dans l'ordre alphabétique.
+Je n'ai pas trouvé d'informations sur le SortedMap. En supposant qu'il à la performance d'un trie rapide on obtient du O(n.log(n))
+La dernière étape consiste en l'affichage du résultat qui vaut O(n).
+
+La performance générale du programme est donc O(n*m)+O(n.log(n))+O(n).
+Soit O(3n.m.log(n)).
