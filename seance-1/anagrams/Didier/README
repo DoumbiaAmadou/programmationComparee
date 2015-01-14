@@ -1,0 +1,7 @@
+On utilise le langage OCaml pour la fluidité d'ecriture.
+
+Le programme fait 35 lignes, les compositions d'appels de fonction tiennent rarement en une ligne.
+
+Puisque le programme ne cherche les anagrammes du mot courant que dans les suivant (les précédents étant déjà trouvé), le calcul global peut être considéré comme linéaire. Cependant le tri des caractères d'un mot se fait à chaque fois qu'on compare deux mots, le calcul est donc fait !n ce qui est optimisable. Les mots pouvant être considéré comme court et la limite du nombre d'arguments rendent cette amélioration négligeable.
+
+Le programme peut à priori trouver des "anagrammes" pour tout type de données prit en charge par la fonction compare (modulo l'implémentation de la lecture de ces données évidement).
