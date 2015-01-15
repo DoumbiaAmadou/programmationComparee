@@ -9,15 +9,15 @@ def sorted_string(string):
 	str_list = list(string)
 	return "".join(sorted(str_list))
 
-def anagrams(word, words):
-	return words[sorted_string(word)]
+def anagrams(word, anagrams_dict):
+	return anagrams_dict[sorted_string(word)]
 
-with open('../words', 'r') as f:
-	words = defaultdict(list)
-	for l in f:
-		l = l.strip()
-		words[sorted_string(l)].append(l)
+with open('../words', 'r') as words:
+	anagrams_dict = defaultdict(list)
+	for word in words:
+		word = word.strip()
+		anagrams_dict[sorted_string(word)].append(word)
 			
 
 for arg in argv[1:]:
-	print(arg+":"," ".join(anagrams(arg, words)))
+	print(arg+":"," ".join(anagrams(arg, anagrams_dict)))
