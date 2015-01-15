@@ -2,7 +2,7 @@ import scala.io.Source.fromFile
 import java.io.FileNotFoundException
 import scala.io.BufferedSource
 
-object Anagram {
+object anagram {
 
 	def getOccurence(lettre : Char, mot : String) : Int = {
 		var cpt : Int = 0
@@ -26,7 +26,7 @@ object Anagram {
 
 	def getAnagram(mot : String) : Unit = {
 		try{
-			var file : BufferedSource = fromFile("words")
+			var file : BufferedSource = fromFile("../words")
 			val iterator : Iterator[String] =  file.getLines
 			var motCourant : String = ""
 			  
@@ -43,7 +43,6 @@ object Anagram {
 
 	def main(args : Array[String]) : Unit = {
 	    for(mot <- args) getAnagram(mot)
-		println("fin")
 	}
 
-}
+} 	

@@ -6,8 +6,15 @@
 __pycache__
 # OCaml
 *.cm*
+# C
+*.o
+a.out
 # OSX
 .DS_Store
+# Windows
+*.exe
 # Vim/Emacs/etc
 *~
 .*.sw*
+# Tmp
+*.log
