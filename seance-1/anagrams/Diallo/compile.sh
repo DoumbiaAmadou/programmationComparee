@@ -1,3 +1,3 @@
-fsc anagram.scala
-echo "scala anagram" > anagram
-chmod +x anagram
+#!/bin/bash
+scalac anagram.scala
+

@@ -1,3 +1,2 @@
 #!/bin/bash
-
-ocamlc anagram.ml  -o main.exe
+ocamlc anagram.ml  -o anagram
