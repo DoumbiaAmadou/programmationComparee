@@ -10,8 +10,6 @@ def get_anagram(w, dic):
     h = len(w)
     l = dic[h]
     n_l = []
-    if w in l:
-        l.remove(w)
     s = sort_elt(w)
     for e in l:
         sort_e = sort_elt(e)
