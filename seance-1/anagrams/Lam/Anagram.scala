@@ -48,7 +48,7 @@ object Anagram {
 		val FILE = Source.fromFile("../words")
 		val tmp = FILE.getLines.toList
 
-		for(word <- tmp) {
+		for(word <- args) {
 //		  println(word + ": ici")
 		  anagram(word, tmp)
 		}
