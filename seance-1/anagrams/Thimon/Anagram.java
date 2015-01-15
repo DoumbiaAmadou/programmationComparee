@@ -6,7 +6,7 @@ public class Anagram {
 		for (int i = 0; i < words.length; i++) {
 			System.out.print(words[i] + " : ");
 			for (Map.Entry<String, String> elementDico : dico.entrySet())
-				if (elementDico.getValue().equals(Anagram.sortWord(words[i])) && !elementDico.getKey().equals(words[i]))
+			    if (elementDico.getValue().equals(Anagram.sortWord(words[i])))
 					System.out.print(elementDico.getKey() + " ");
 			System.out.println();
 		}

@@ -38,13 +38,18 @@ let add d w = let k = gen_key w in
 
 let find d w = let k = gen_key w in DictMot.find k d
 
-let m' = let fn = Sys.argv.(1) in
+let m' = let fn = "../words" in
          let s = content_of_file fn in
          let mots = cut "\n" s in
          List.fold_left add DictMot.empty mots
 
-let () = let display_one_line key words = 
-             let concat_words = (String.concat " " words) in
-             let disp_each w = Printf.printf "%s : %s\n" w concat_words in
-             List.iter disp_each words in
-         DictMot.iter display_one_line m'
+let liste_args = let liste_args = Array.sub 
+                    (Sys.argv) 1 (Array.length Sys.argv - 1) in
+                 Array.to_list liste_args
+
+let () = let liste w = try find m' w 
+                       with Not_found -> [w] in
+         let liste_s w = String.concat " " (liste w) in
+         List.iter 
+            (fun w -> Printf.printf "%s: %s\n" w (liste_s w)) 
+            (liste_args)

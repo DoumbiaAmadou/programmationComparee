@@ -21,7 +21,7 @@ object Main {
   def anagram(w: String, a: String): Boolean = {
     val lowerW = w.toLowerCase()
     val lowerA = a.toLowerCase()
-    if (lowerW.equals(lowerA) || w.length() != a.length()) false
+    if (w.length() != a.length()) false
     else {
       val wOccur = occurrences(lowerW)
       val aOccur = occurrences(lowerA)
