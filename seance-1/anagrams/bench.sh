@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 function msg () {
-  normal='\033[0m'           
-  echo -e "${1}$2${normal}"             
+  normal='\033[0m'
+  echo -e "${1}$2${normal}"
 }
 
 function warn () {
