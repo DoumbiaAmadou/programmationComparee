@@ -32,11 +32,11 @@ object Anagram {
 	def anagram(word : String, dictionary : List[String]) {
 	  dictionary match {
 	  case List() => {
-		  printf("")
+		  println(word + ": ")
 	  }
 	  case h::t => {
 		  if(isAnagram(word, h)) {
-			  println(word + " : " + h)
+			  println(word + ": " + h)
 		  }
 		  anagram(word, t)
 	  }
