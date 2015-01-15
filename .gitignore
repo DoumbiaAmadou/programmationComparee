@@ -6,6 +6,9 @@
 __pycache__
 # OCaml
 *.cm*
+# C
+*.o
+a.out
 # OSX
 .DS_Store
 # Windows
@@ -15,3 +18,4 @@ __pycache__
 .*.sw*
 # Tmp
 *.log
+anagram
