@@ -1,4 +1,5 @@
 #!/bin/bash
-javac Anagram.java -o anagram
+javac Anagram.java
+cp Anagram.java anagram
 rm Anagram.class
 rm *~
