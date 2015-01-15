@@ -2,13 +2,13 @@
 
 . bench-utils.sh
 
-# __sort_line() {
-#   tr ' ' '\n' < $1 | sort | tr '\n' ' '
-# }
+__sort_line() {
+  cut -d: -f2 $1 | xargs | tr ' ' '\n' | sort | tr '\n' ' ' | xargs
+}
 
 __test_word() {
   local word=$1
-  local expected=$2
+  local expected="$2"
   local out=.out-$RANDOM
   local output=
 
@@ -25,14 +25,16 @@ __test_word() {
       rm -f $out
       return 1
     else
-      #output=$(__sort_line $out)
-      #if [ "$output" != "$expected" ]; then
-      #  warn "KO"
-      #  rm -f $out
-      #  return 1
-      #else
-        inform "OK"
-      #fi
+      output=$(__sort_line $out)
+      if [ "$output" != "$expected" ]; then
+        warn "KO"
+        echo " Expected:          '$expected'"
+        echo " Normalized Output: '$output'"
+        rm -f $out
+        return 1
+      else
+       inform "OK"
+      fi
     fi
   fi
 
@@ -47,9 +49,9 @@ __time_dir() {
     (chmod u+rx ./compile.sh && ./compile.sh) &> compile.log
     if [ ! -e anagram ]; then warn "KO"; cd ..; continue; else inform "OK"; fi
 
-    __test_word "coussin" && \
-    __test_word "yolo" && \
-    __test_word "a"
+    __test_word "coussin" "cosinus cousins coussin cuisons cuisson sucions" && \
+    __test_word "yolo" "" && \
+    __test_word "a" "a"
 
     cd ..
 }
