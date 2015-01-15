@@ -1,2 +1,2 @@
 #! /bin/bash
-cp anag.py anagram
+cp anagrams.py anagram
