@@ -1,2 +1,2 @@
 #!/bin/sh
-fsc ./src/anagram.scala
+fsc ./src/anagrams.scala
