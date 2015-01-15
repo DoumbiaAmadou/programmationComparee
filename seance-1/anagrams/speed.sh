@@ -24,7 +24,9 @@ for i in `find . -maxdepth 1 -mindepth 1 -type d`; do
   else inform "OK"
        echo -e "\033[0;34mLauching anagram of ${i}\033[0m"
        t="Time in seconds : %e s"
-       /usr/bin/time -f "${t}" ./anagram ironique écran aube soigneur cuvé argent Tanger
+       get_time="head -0"
+       cmd="./anagram ironique écran aube soigneur cuvé argent Tanger Chicane"
+       /usr/bin/time -f "${t}" ${cmd} | head -0 
   fi
   cd .. 
 done
