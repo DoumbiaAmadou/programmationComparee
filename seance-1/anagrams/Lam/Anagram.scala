@@ -32,11 +32,11 @@ object Anagram {
 	def anagram(word : String, dictionary : List[String]) {
 	  dictionary match {
 	  case List() => {
-		  printf("")
+		  println(word + ": ")
 	  }
 	  case h::t => {
 		  if(isAnagram(word, h)) {
-			  println(word + " : " + h)
+			  println(word + ": " + h)
 		  }
 		  anagram(word, t)
 	  }
@@ -48,7 +48,7 @@ object Anagram {
 		val FILE = Source.fromFile("../words")
 		val tmp = FILE.getLines.toList
 
-		for(word <- tmp) {
+		for(word <- args) {
 //		  println(word + ": ici")
 		  anagram(word, tmp)
 		}

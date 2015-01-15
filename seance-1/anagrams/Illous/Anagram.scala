@@ -37,7 +37,7 @@ object Anagram {
       case _ => {
         val dico = Source.fromFile("../words").getLines.toList;
         for(w <- args) {
-        	print(w + " : ");
+        	print(w + ": ");
         	anagram(dico,w);
         	println();
         }

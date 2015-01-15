@@ -2,9 +2,15 @@
 
 . bench-utils.sh
 
+# __sort_line() {
+#   tr ' ' '\n' < $1 | sort | tr '\n' ' '
+# }
+
 __test_word() {
   local word=$1
+  local expected=$2
   local out=.out-$RANDOM
+  local output=
 
   echo -n "- execution with '$word': "
   ./anagram "$word" > $out 2>/dev/null
@@ -19,20 +25,23 @@ __test_word() {
       rm -f $out
       return 1
     else
-      inform "OK"
-      echo -n "  ==> "
-      cat $out
+      #output=$(__sort_line $out)
+      #if [ "$output" != "$expected" ]; then
+      #  warn "KO"
+      #  rm -f $out
+      #  return 1
+      #else
+        inform "OK"
+      #fi
     fi
   fi
 
   rm -f $out
 }
 
-__time() {
-
-  for i in `find . -maxdepth 1 -mindepth 1 -type d`; do
-    cd $i
-    echo "Checking $i "
+__time_dir() {
+    cd $1
+    echo "Checking $1 "
 
     echo -n "- compilation: "
     (chmod u+rx ./compile.sh && ./compile.sh) &> compile.log
@@ -43,8 +52,20 @@ __time() {
     __test_word "a"
 
     cd ..
-  done
+}
 
+__time() {
+  local dirs=
+
+  if [ "$#" -gt 0 ]; then
+    dirs=$@
+  else
+    dirs=`find . -maxdepth 1 -mindepth 1 -type d`
+  fi
+
+  for d in $dirs; do
+    __time_dir $d
+  done
 }
 
 __time $*
