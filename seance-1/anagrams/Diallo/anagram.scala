@@ -43,7 +43,6 @@ object anagram {
 
 	def main(args : Array[String]) : Unit = {
 	    for(mot <- args) getAnagram(mot)
-		println("fin")
 	}
 
-}
+} 	
