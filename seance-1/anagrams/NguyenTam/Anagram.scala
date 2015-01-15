@@ -15,7 +15,7 @@ object Anagrames {
   }
 
   def main(args: Array[String]): Unit = {
-    val dictionary : ListBuffer[String]= Source.fromFile("src/words").getLines().toList.to[ListBuffer]
+    val dictionary : ListBuffer[String]= Source.fromFile("../words").getLines().toList.to[ListBuffer]
     for(arg <- args) {
       println(arg + " : "+ trouveAnagram(arg, dictionary))
     }
