@@ -1,4 +1,5 @@
 #!/bin/sh
 fsc Anagram.scala
-echo "scala Anagram" > anagram
+echo "#!/bin/sh" > anagram
+echo "scala Anagram \$*" > anagram
 chmod +x anagram
