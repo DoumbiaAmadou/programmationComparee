@@ -1,0 +1,19 @@
+** Mon programme a été écrit en java car ce langage permet d'utiliser les hashMap.
+Le programme fonctionne de la manière suivante:
+Il stocke dans une hashMap tous les mots du dictionnaire en tant que clé et leur 
+associe comme valeur le mot trié.
+Ensuite, pour tous les mots i donnés en argument du programme, on recherche leurs anagrammes
+dans le dictionnaire. Ainsi, on compare chaque i trié avec les clés de la hashMap et
+si les deux sont égaux alors on a trouvé un anagramme.
+
+** Mon programme fait 38 lignes
+
+** Pour créer la hashMap on lit les n mots du dictionaire et on les trie (le trie étant une
+fonction java je ne sais pas quelle est sa complexité)
+Ensuite pour chaque mot m donné en argument du programme on va le comparer avec chaque mot du 
+dictionnaire.
+Complexite = n + (m*n)
+
+** Mon programme peut fonctionner sur tout dictionnaire du même format que celui utilisé ici
+c'est-à-dire avec un mot par ligne. On peut mettre en argument du programme une liste assez grande
+de mots.

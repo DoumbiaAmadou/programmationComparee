@@ -1,0 +1,11 @@
+Le langage utilisé est JAVA.
+C'est un langage orienté objet, créé initialement par SUN, puis racheté par Oracle.
+C'est l'un des langages les plus connus et les plus utilisés en développement.
+
+Mon programme fait une vingtaine de ligne
+
+En prenant n = la taille de la liste des arguments et m = la taille du dictionnaire
+La complexité est n*m
+
+Le programme prend en charge tous les dictionnaires ou on a un seul mot par ligne.
+
