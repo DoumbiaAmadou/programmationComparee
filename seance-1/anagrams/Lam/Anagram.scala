@@ -20,7 +20,7 @@ object Anagram {
 		val w1 = word1.toLowerCase()
 		val w2 = word2.toLowerCase()
 			
-		if(w1.length() != w2.length() || w1.equals(w2)) {
+		if(w1.length() != w2.length()) {
 			return false
 		} else {
 			val occ1 = computeOcc(w1)
