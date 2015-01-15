@@ -5,11 +5,11 @@ from sys import argv
 
 # helpers
 
-word_hash = lambda w: "".join(sorted(w))
+def word_hash(w):
+    return "".join(sorted(w))
 
 def get_anagrams(w, bag):
-    h = word_hash(w)
-    return bag[h]
+    return bag[word_hash(w)]
 
 # words pre-processing
 
@@ -17,7 +17,7 @@ with open("../words", "r") as f:
     words = defaultdict(list)
     for l in f:
         l = l.strip()
-        words[word_hash(l)].append(l.strip())
+        words[word_hash(l)].append(l)
 
 # args processing
 
