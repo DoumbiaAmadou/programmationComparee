@@ -47,13 +47,9 @@ let liste_args = let liste_args = Array.sub
                     (Sys.argv) 1 (Array.length Sys.argv - 1) in
                  Array.to_list liste_args
 
-let () = let liste w = find m' w in 
+let () = let liste w = try find m' w 
+                       with Not_found -> [w] in
          let liste_s w = String.concat " " (liste w) in
-         List.iter (fun w -> Printf.printf "%s: %s\n" w (liste_s w)) (liste_args)
-
-(*
-         let concat_words arg = String.concat " " in
-         let printwl word liste = Printf.printf "%s: %s\n" 
-                                word (concat_words liste) in
-         List.iter printwl liste_args
-         *)
+         List.iter 
+            (fun w -> Printf.printf "%s: %s\n" w (liste_s w)) 
+            (liste_args)
