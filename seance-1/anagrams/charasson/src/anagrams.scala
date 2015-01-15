@@ -3,10 +3,11 @@ import scala.collection.mutable._
 import collection.mutable
 import scala.collection.SortedMap
 
-object Anagram {
+object anagram {
   val WORDS_FILE = "../../words"
-  def main(args: Array[String]) {    
-    val word_list = Source.fromFile(WORDS_FILE).getLines().toList
+  def main(args: Array[String]) {
+    //val word_list = Source.fromFile(WORDS_FILE).getLines().toList //ancienne version
+    val word_list = args
     val mm = new mutable.HashMap[String, mutable.Set[String]] with mutable.MultiMap[String, String]
     for(w<-word_list){
       var wo = w

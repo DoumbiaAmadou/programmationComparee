@@ -1,3 +1,2 @@
 #!/bin/bash
-scalac Anagram.scala
-# scala Anagram
+scalac anagram.scala

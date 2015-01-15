@@ -8,6 +8,10 @@ __pycache__
 *.cm*
 # OSX
 .DS_Store
+# Windows
+*.exe
 # Vim/Emacs/etc
 *~
 .*.sw*
+# Tmp
+*.log

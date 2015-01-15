@@ -1,2 +1,2 @@
 #!/bin/bash
-ocamlopt anagramme.ml -o anagramme
+ocamlopt anagram.ml -o anagram
