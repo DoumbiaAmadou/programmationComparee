@@ -60,21 +60,7 @@ let file2list filename =
     done; SS.empty
   with e -> close_in in_file; !words
 ;;
-(**
-let help () =
-  print_endline "How to use me :";
-  print_endline "Run command :";
-  print_endline "\t./anagram -d directory_path [-l words_to_search+ | -f file_containing_words_to_search_path]";
-  print_endline "Example:";
-  print_endline "\t./anagram -d dic.txt -l toto iitt";
-  print_endline "\t./anagram -d dic.txt -f to_search.txt"
-;;
-
-let invalid_option opt =
-  print_endline ("\"" ^ opt ^ "\" is an invalid option");
-  help()
-;;
- *)
+  
 let file_dic        = ref "";;
 let cnt             = ref 1;;
 
@@ -85,35 +71,10 @@ let rec print_list (l: string list) =
 ;;
 
 let array_to_set (a: string array) = Array.fold_right SS.add a SS.empty;;
-;;
   
 let main () =
   let number_args = Array.length Sys.argv
   in
-  (**
-  if (number_args < 5) then
-    if number_args == 1 then help () else invalid_option Sys.argv.(1)
-  else
-    match Sys.argv.(!cnt) with
-    | "-d" ->
-       begin
-         file_dic := Sys.argv.(!cnt + 1);
-         cnt := !cnt + 2;
-         match Sys.argv.(!cnt) with
-         | "-f" ->
-            find_anagrams_from_list
-              (file2list Sys.argv.(!cnt + 1))
-              (create_dic (file2list !file_dic))
-         | "-l" ->
-            begin
-              find_anagrams_from_list
-                (array_to_set (Array.sub Sys.argv (!cnt + 1) (number_args -4)))
-                (create_dic (file2list !file_dic))
-            end
-         | s    -> invalid_option s
-       end
-    | _    -> help ()
-   *)
   file_dic := "../words";
   find_anagrams_from_list
     (array_to_set (Array.sub Sys.argv (1) (number_args -1)))
