@@ -2,7 +2,7 @@
 
 function normalize ()
 {
-    cut -d: -f2 <<< "$1" | xargs -n1 | sort -u | xargs
+    cut -d: -f2 <<< "$1" | tr ' ' '\n' | xargs | sort -u | tr '\n' ' ' | xargs
 }
 
 test_dir=tests
