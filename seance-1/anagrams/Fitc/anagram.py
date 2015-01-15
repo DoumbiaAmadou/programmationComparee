@@ -15,8 +15,8 @@ def anagrams(word, anagrams_dict):
 with open('../words', 'r') as words:
 	anagrams_dict = defaultdict(list)
 	for word in words:
-		word = word.strip()
-		anagrams_dict[sorted_string(word)].append(word)
+		stripped_word = word.strip()
+		anagrams_dict[sorted_string(stripped_word)].append(stripped_word)
 			
 
 for arg in argv[1:]:
