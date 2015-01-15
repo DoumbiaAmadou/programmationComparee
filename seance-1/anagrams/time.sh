@@ -10,11 +10,13 @@ __test_word() {
   ./anagram "$word" > $out 2>/dev/null
   if [ "$?" -ne "0" ]; then
     warn "KO"
+    rm -f $out
     return 1
   else
     grep -q "^$word: " $out
     if [ "$?" -ne "0" ]; then
       warn "KO"
+      rm -f $out
       return 1
     else
       inform "OK"
