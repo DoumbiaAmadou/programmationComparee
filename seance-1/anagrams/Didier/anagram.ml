@@ -10,7 +10,7 @@ let is_anagram s1 s2 =
   (List.sort compare (to_list s1)) = (List.sort compare (to_list s2))
 ;;
 
-let rec anamap m l = 
+let rec anamap m l dico= 
   let adm e1 e2 m = 
     if is_anagram e1 e2
     then let m = try (SMap.add e2 (e1::(SMap.find e2 m)) m)
@@ -22,13 +22,21 @@ let rec anamap m l =
   match l with
   | [] -> m
   | h::t -> 
-    let m = List.fold_left (fun m e -> adm h e m) m t
-    in anamap m t
+    let n = List.fold_left (fun m e -> adm h e m) m dico
+    in anamap n t dico
+;;
+
+let words = 
+   let rec read f l = 
+      try (read f ((input_line f)::l) )
+      with End_of_file -> l
+   in read (open_in "../words") []
 ;;
 
 let _ =
-  let map = anamap SMap.empty (List.tl (Array.to_list Sys.argv))
-  in List.iter (fun (s,l) -> 
-                   print_endline (s ^ " :" ^ (List.fold_left (fun s m -> s^" "^m) "" l))
+  let map = anamap SMap.empty (List.tl (Array.to_list Sys.argv)) words in 
+  List.iter (fun (s,l) -> 
+                   print_endline (s ^ " :" ^ (List.fold_left (fun w m -> 
+				                w^" "^m) "" l))
   ) (SMap.bindings map)
 ;;
