@@ -1,19 +1,6 @@
 #!/bin/bash
 
-function msg () {
-  normal='\033[0m'           
-  echo -e "${1}$2${normal}"             
-}
-
-function warn () {
-  red='\033[0;31m'
-  msg $red $1
-}
-
-function inform () {
-  green='\033[0;32m'
-  msg $green $1
-}
+. bench-utils.sh
 
 
 for i in `find . -maxdepth 1 -mindepth 1 -type d`; do
@@ -28,8 +15,5 @@ for i in `find . -maxdepth 1 -mindepth 1 -type d`; do
        cmd="./anagram ironique écran aube soigneur cuvé argent Tanger Chicane"
        /usr/bin/time -f "${t}" ${cmd} | head -0 
   fi
-  cd .. 
+  cd ..
 done
-    
-
-
