@@ -45,7 +45,8 @@ let rec print_ana l =
 let rec exec l bd =
   match l with
     | []-> ()  
-    | h::t -> print h;Printf.printf ": "; print_ana (anagrame h bd);Printf.printf "\n"; exec t bd
+    | h::t -> print h;Printf.printf ": ";print h;
+       print_ana (anagrame h bd);Printf.printf "\n"; exec t bd
 ;;
 
 let rec read_lines f = 
@@ -61,7 +62,7 @@ let get_arg =
   let rec aux i = 
     match i with
     | 1 -> []
-    | n -> Sys.argv.(i-1)::aux (i-1)
+    | n ->  Sys.argv.(i-1)::aux (i-1)
   in aux (Array.length Sys.argv)
 
 let () =
