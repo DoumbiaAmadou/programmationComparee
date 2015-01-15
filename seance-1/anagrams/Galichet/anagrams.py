@@ -24,4 +24,4 @@ with open("../words", "r") as file_words:
         words[len(w)].append(w)
 
 for arg in argv[1:]:
-    print "%s : %s" % (arg, " ".join(get_anagram(arg, words)))
+    print "%s: %s" % (arg, " ".join(get_anagram(arg, words)))
