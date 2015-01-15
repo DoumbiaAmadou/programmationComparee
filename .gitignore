@@ -1,0 +1,17 @@
+# Java etc
+*.class
+*.jar
+# Python
+*.pyc
+__pycache__
+# OCaml
+*.cm*
+# OSX
+.DS_Store
+# Windows
+*.exe
+# Vim/Emacs/etc
+*~
+.*.sw*
+# Tmp
+*.log

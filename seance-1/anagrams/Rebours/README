@@ -1,0 +1,70 @@
++--------------------------------------------------------------------+
+|                                                                    |
+|                                                                    |
+|       /\                                                           |
+|      /  \     _ __     __ _    __ _   _ __    __ _   _ __ ___      |
+|     / /\ \   | '_ \   / _` |  / _` | | '__|  / _` | | '_ ` _ \     |
+|    / ____ \  | | | | | (_| | | (_| | | |    | (_| | | | | | | |    |
+|   /_/    \_\ |_| |_|  \__,_|  \__, | |_|     \__,_| |_| |_| |_|    |
+|                                __/ |                               |
+|                               |___/                                |
+|                                                                    |
+|                                                                    |
++--------------------------------------------------------------------+
+
+Welcome to the marvelous Anagram program by Olden Inc.
+
+This program, coded in Ocaml, will allow you to find all possible anagrams of
+each word in a dictionary.  The possible anagrams are found in the very same
+dictionary then the one it is reading the words from. You can give this
+dictionary by simply giving a word list file as argument to the program.
+
+~*-,._.,-*~'`^`'~*-,._.,-*~'`^`'~*-,._.,-*~'`^`'~*-,._.,-*~'`^`'~*-,._.,-*~
+
+Thanks to the efficient implementation of Dictionary in Ocaml and the great
+flexibility of this programming language, the source code is only 50 lines
+long.
+
+This program uses the standard Ocaml implementation of Map. As defined in the
+manual (http://caml.inria.fr/pub/docs/manual-ocaml/libref/Map.html), all the
+operation are in logarithmic time. As the insertion operation is done for each
+word, the complexity is n * log(n) where n is the size of the file.
+
+The program is very specialized for String as it is now. But, even though the
+interface is not generic, it can easily become usable for any data by changing
+just a few functions. I tried to be generic in my approach, but the very
+fondation of the exercise was to work with String. I therefore sticked to the
+subject. By abstracting some of the function and extracting them from the
+function using them, it could easily become a generic program.
+
+~*-,._.,-*~'`^`'~*-,._.,-*~'`^`'~*-,._.,-*~'`^`'~*-,._.,-*~'`^`'~*-,._.,-*~
+
++---------------------------------------------------------------------------+
+|                                                                           |
+|   ____                          _                                  _      |
+|  |  _ \                        | |                                | |     |
+|  | |_) |   ___   _ __     ___  | |__    _ __ ___     __ _   _ __  | | __  |
+|  |  _ <   / _ \ | '_ \   / __| | '_ \  | '_ ` _ \   / _` | | '__| | |/ /  |
+|  | |_) | |  __/ | | | | | (__  | | | | | | | | | | | (_| | | |    |   <   |
+|  |____/   \___| |_| |_|  \___| |_| |_| |_| |_| |_|  \__,_| |_|    |_|\_\  |
+|                                                                           |
+|                                                                           |
++---------------------------------------------------------------------------+
+
+$ wc -l dict 
+629569 dict
+
+$ time ./anagram dict > /dev/null
+
+real    0m4.001s
+user    0m3.900s
+sys 0m0.096s
+
+$ wc -l small_dict 
+139719 small_dict
+
+$ time ./anagram small_dict > /dev/null
+
+real    0m1.163s
+user    0m1.133s
+sys 0m0.028s

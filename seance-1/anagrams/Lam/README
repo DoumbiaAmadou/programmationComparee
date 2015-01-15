@@ -1,0 +1,9 @@
+Langage utilisé : SCALA
+Ligne de code : 56
+
+La complexité du code est probablement de l'ordre de O(m*2n) pour m le nombre de
+mot dans le fichier et n la longueur de chaque mot car la fonction isAnagram 
+fait appel 2 fois à la fonction computeOcc qui a une complexité en O(n) qu'on 
+appelle m fois via la boucle principal.
+
+Le programme n'est pas générique

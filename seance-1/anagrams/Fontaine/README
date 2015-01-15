@@ -1,0 +1,27 @@
+Le langage utilisé est Python car il dispose de tout ce qu’il faut de base.
+C’est un langage apparu 12 ans avant Scala alors ça n’a aucun sens de comparer
+les deux à part si c’est juste pour le troll, pour plus d’infos c’est par ici :
+
+    https://en.wikipedia.org/wiki/Python_(programming_language)
+
+Le programme fait 28 lignes, dont 16 de code (d’après `sloccount`). On pourrait
+le réduire mais on perdrait en lisibilité (en Ruby il tient en un tweet).
+
+Il est optimisé pour un grand nombre de mots donnés en entrée, il pré-processe
+les mots du dictionnaire dans une table d’association où chaque clef est une
+suite de lettres ordonnées et la valeur correspondante la liste des mots qui
+sont une permutation de cette suite.
+Il suffit ensuite de trier les lettres de chaque mot en entrée et de récupérer
+les mots qui correspondent à la suite obtenue. Le résultat du pré-processing
+pourrait être stocké dans un fichier pour rendre le programme plus efficace les
+fois suivantes.
+
+Si on considère que le tri d’un mot est en temps constant (ce sont des petits
+mots, et la longueur d’un mot ne représente pas grand chose par rapport à la
+taille du dictionnaire), on a donc un pré-processing en O(N) (N = nombre de
+mots dans le dictionnaire).
+
+Le programme marche avec n’importe quel dictionnaire du moment qu’il a un mot
+par ligne. En dehors de ça il n’est pas très généralisable, mais en fait est-ce
+qu’on en a vraiment quelque chose à cir^Wfaire vu la taille du code et ce qu’il
+fait ?

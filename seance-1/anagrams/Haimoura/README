@@ -1,0 +1,10 @@
+Le lagage utilisé est le PHP. C'est un langage de script très connus pour son
+utilisation en web mais rarement utilisé pour réaliser des script sur console.
+
+Mon programme fait 12 ligne de code.
+
+La complexité correspond à la taille de la liste des arguments multipliée par
+la taille du dictionnaire.
+
+Ce programme est généraliste du moment ou le dictionnaire est ecrit de telle sorte
+qu'il y'ait un mot par ligne

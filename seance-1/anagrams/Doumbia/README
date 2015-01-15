@@ -1,0 +1,41 @@
+Ce Programme a pour but de  transformé une liste de Mot passé en paramètre du programme et de d'afficher la liste des anagrammes de cette  dernière
+
+Utilisation : 
+	Après avoir compilé avec le script.sh
+	il faut l'exécuté avec main.exe  suivie des a chercher. 
+	
+	
+Complexité. 
+	Ce programme parcourt une liste de string passé en paramètre  et pour chaque mot il parcourt les mots du dictionnaire nommé "words". 
+	Il regarde si la taille qu’un mot de celui-ci  est égal la taille du mot passé en.
+		Si c'est le cas il prend ce mot et génère une liste  ordonnées des occurrences de chaque caractère des deux caractères.  
+Exemple pour le mot « amadou »  cela donne [(a,2) ;(m,1) ;(d,1) ;(o,1);(u,1) ] 
+		Et il vérifié si ses deux tableau sont  les même. (Avec la liste ordonnées il sort des qu’un caractère n’a pas la même valeur des deux côtés.)
+		Soit L : List des mots entré, et L' la liste des mots de mon dictionnaire. 	
+Remarque: comme j'ai un long dictionnaire je génère la liste des occurrences de ce tableau que si la taille des deux strings sont les mêmes. 
+La génération des occurrences est une succession d'insertion ordonnées on peut l'estimé à 
+log (factoriel de la taille du mot)   = car il ne parcours pas toute la liste car la liste est déjà ordonnées. 
+Cette valeur est néglige dans le mot d’autant plus que la taille des mots sont en moyenne de 14 caractères. il  effectue un calcul que s’il trouve que la taille des deux mots sont les mêmes. 
+		la vérification : il   dépile  les caractères et regarder si les deux caractères ont la même occurrences sinon sortir. 
+		
+		Tous ces calculs dépendent de la taille du mot. Une fois la liste des occurrences à partir des deux strings, on aura un tableau encore plus petit que la taille des mots, sauf si le mot n’a pas de redondance.
+		Donc ses valeurs sont négligeables dans le calcul de la complexité.
+		la vraie complexité est le nombre de fois que ces calculs sont évoqué, c'est à dire quand les deux string ont la même taille. 
+		
+		
+		
+		Alors soit n  =la  taille de L et m la taille de mon Dictionnaire.
+		
+		Et soit m' le nombre de mot qui ont la même taille que mes mots de n et n' vise versa. 
+		la complexité de ce programme est   
+		
+		Complexité; (O) n' *m'.
+		Dans le meilleur est cas n' *m' peut même avoir la valeur 1 
+		pire des cas n' *m'  mais 
+			
+		n'*m'    <<  (strictement infèrieur)  n*m ; 
+		
+		
+		
+		
+		

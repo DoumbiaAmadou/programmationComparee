@@ -1,0 +1,13 @@
+<<<<<<< HEAD
+Le programme est réalisé en Scala
+Le code a total 23 lignes
+Complexité de la programme:
+Supposons 
+	n mots dans la dictionnaire
+	m mots dans les paramètres
+Pour chaque un mot de paramètre, on doit scanner la dictionnaire une fois. Donc la complexité est O(n*m)
+
+Limit (peut-être): Le programme n'est pas encore manipulé pour des mots avec les accents (ex: é, è, à, ...)
+=======
+seance-1 08/01/14
+>>>>>>> dcf660b7f69b3df8f88c8270b22b10f05f2126fc

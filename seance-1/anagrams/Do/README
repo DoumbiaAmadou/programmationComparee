@@ -1,0 +1,13 @@
+auteur: DO Syou-on
+
+Langage utilisé: Scala
+Nombre de lignes: 51
+
+Complexité:
+En supposant que la complexité de la fonction "occurrence" est linéaire, la fonction "anagram(mot1, mot2)" a pour complexité O(n) (avec n la taille du mot le plus grand entre mot1 et mot2).
+Enfin, la complexité de la fonction "anagrams" est donc de O(n*m), avec n la taille du mot et m le nombre de ligne du fichier "words".
+
+Généralité: non
+
+
+
