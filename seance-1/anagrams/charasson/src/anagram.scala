@@ -3,12 +3,12 @@ import scala.collection.mutable._
 import collection.mutable
 import scala.collection.SortedMap
 
-object Anagram {
+object anagram {
   val WORDS_FILE = "../../words"
-  def main(args: Array[String]) {    
-    val word_list = Source.fromFile(WORDS_FILE).getLines().toList
+  def main(args: Array[String]) {
+    //val word_list = Source.fromFile(WORDS_FILE).getLines().toList
     val mm = new mutable.HashMap[String, mutable.Set[String]] with mutable.MultiMap[String, String]
-    for(w<-word_list){
+    for(w<-args){
       var wo = w
       wo = "é|è|ê|ë".r.replaceAllIn(wo, "e")
       wo = "à|â|ä".r.replaceAllIn(wo, "a")
@@ -20,7 +20,6 @@ object Anagram {
       mm.addBinding(key, w)
     }
     //On tri les mots dans l'ordre alphabétique 
-    var sorted_word = SortedMap[String,String]()
     for(a<-mm){
       for(aa<-a._2){
         if(a._2.size==1){
