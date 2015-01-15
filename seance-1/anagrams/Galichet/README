@@ -1,0 +1,13 @@
+Le programme anagrams.py ourvre le fichier words et stock tous les mots dans un
+dictionnaire par rapport à leur taille.
+Quand nous demandons au programme l'anagramme d'un mots, il va trier les
+lettres dans l'ordre alphabétique et comparer avec le mot donner en
+arguments lui même trier. On range les résultat postif dans une nouvelle liste
+et nous renvoyons cette liste.
+
+Commande : python anagrams.py w1 ..wn
+
+Sortie :
+w1 : anagram1 ... anagramP
+wn : anagram1 ... anagramP
+
