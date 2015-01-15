@@ -9,10 +9,7 @@ word_hash = lambda w: "".join(sorted(w))
 
 def get_anagrams(w, bag):
     h = word_hash(w)
-    a = bag[h]
-    if w in a:  # the word is not in the bag
-        a.remove(w)
-    return a
+    return bag[h]
 
 # words pre-processing
 
