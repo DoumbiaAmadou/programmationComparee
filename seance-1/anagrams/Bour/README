@@ -1,0 +1,5 @@
+Le langage c'est OCaml, parce que windev n'était pas disponible.
+
+Lignes: 90.
+Complexité: algorithmique? c'est efficace, O(max(mot,args)) en temps, O(anagrammes) mémoire
+Degré de généralité: horrib.
