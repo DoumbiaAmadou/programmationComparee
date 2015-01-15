@@ -3,7 +3,7 @@ import scala.collection.mutable._
 import collection.mutable
 import scala.collection.SortedMap
 
-object anagram {
+object anagrams{
   val WORDS_FILE = "../../words"
   def main(args: Array[String]) {
     //val word_list = Source.fromFile(WORDS_FILE).getLines().toList //ancienne version
