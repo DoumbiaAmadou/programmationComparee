@@ -1,21 +1,23 @@
+#! /usr/bin/env python
 # coding=utf-8
+
+from __future__ import print_function
 from collections import defaultdict
+from sys import argv
 
-def is_anagram(str1, str2):
-    str1_list = list(str1)
-    str1_list.sort()
-    str2_list = list(str2)
-    str2_list.sort()
+def sorted_string(string):
+	str_list = list(string)
+	return "".join(sorted(str_list))
 
-    return (str1_list == str2_list)
+def anagrams(word, words):
+	return words[sorted_string(word)]
 
 with open('../words', 'r') as f:
 	words = defaultdict(list)
 	for l in f:
 		l = l.strip()
-		words[sorted(l)].append(l)
+		words[sorted_string(l)].append(l)
+			
 
-for word in words:
-	d[word] = 0
-	print word": "dict[word]
-
+for arg in argv[1:]:
+	print(arg+":"," ".join(anagrams(arg, words)))
