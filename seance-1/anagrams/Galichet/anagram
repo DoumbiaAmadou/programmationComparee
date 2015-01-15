@@ -10,8 +10,6 @@ def get_anagram(w, dic):
     h = len(w)
     l = dic[h]
     n_l = []
-    if w in l:
-        l.remove(w)
     s = sort_elt(w)
     for e in l:
         sort_e = sort_elt(e)
@@ -26,4 +24,4 @@ with open("../words", "r") as file_words:
         words[len(w)].append(w)
 
 for arg in argv[1:]:
-    print "%s : %s" % (arg, " ".join(get_anagram(arg, words)))
+    print "%s: %s" % (arg, " ".join(get_anagram(arg, words)))
