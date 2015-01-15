@@ -13,9 +13,7 @@ let is_anagram s1 s2 =
 let rec anamap m l dico= 
   let adm e1 e2 m = 
     if is_anagram e1 e2
-    then let m = try (SMap.add e2 (e1::(SMap.find e2 m)) m)
-                 with | Not_found -> SMap.add e2 [e1] m
-	 in try (SMap.add e1 (e2::(SMap.find e1 m)) m)
+    then try (SMap.add e1 (e2::(SMap.find e1 m)) m)
 	    with | Not_found -> SMap.add e1 [e2] m 
     else m
   in

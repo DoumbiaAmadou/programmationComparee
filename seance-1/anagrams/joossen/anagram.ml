@@ -40,7 +40,7 @@ let find_anagrams_from_string word dic =
 let print_result w anagrams =
   let my_print (word: string) : unit = print_string (" " ^ word) in
   let print_set s =  match SS.is_empty s with
-                         | true  -> print_endline "\t** no results **"
+                         | true  -> print_endline ""
                          | false -> SS.iter my_print s; print_string ("\n")
   in
   print_string (w ^ ":");

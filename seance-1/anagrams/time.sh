@@ -19,22 +19,15 @@ __test_word() {
     rm -f $out
     return 1
   else
-    grep -q "^$word: " $out
-    if [ "$?" -ne "0" ]; then
+    output=$(__sort_line $out)
+    if [ "$output" != "$expected" ]; then
       warn "KO"
+      echo " Expected:          '$expected'"
+      echo " Normalized Output: '$output'"
       rm -f $out
       return 1
     else
-      output=$(__sort_line $out)
-      if [ "$output" != "$expected" ]; then
-        warn "KO"
-        echo " Expected:          '$expected'"
-        echo " Normalized Output: '$output'"
-        rm -f $out
-        return 1
-      else
-       inform "OK"
-      fi
+      inform "OK"
     fi
   fi
 
