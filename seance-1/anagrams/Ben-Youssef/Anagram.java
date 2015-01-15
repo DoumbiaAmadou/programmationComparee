@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Vector;
 
-public class Dico {
+public class Anagram {
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new FileReader("../words"));
