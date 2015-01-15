@@ -1,1 +1,1 @@
-ocamlopt anagram.ml -o Sagot
+ocamlopt anagram.ml -o anagram
