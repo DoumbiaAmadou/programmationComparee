@@ -27,18 +27,16 @@ let arr = Array.make 256 0
 let anagram_class s =
 
   (* Step 1. Compute distribution of input characters *)
-  let h = ref (String.length s) in
   let cmin = ref max_int in
   let cmax = ref min_int in
   (* Count character occurences *)
   for i = 0 to String.length s - 1 do
     let c = Char.code s.[i] in
-    h := !h + (c * (c - 1));
     arr.(c) <- succ arr.(c);
     if c < !cmin then cmin := c;
     if c > !cmax then cmax := c;
   done;
-  let h = !h and cmin = !cmin and cmax = !cmax in
+  let cmin = !cmin and cmax = !cmax in
 
   (* Step 2. RLE compress result
      Otherwise memory is a problem with batch of short words *)
@@ -51,33 +49,26 @@ let anagram_class s =
   for i = cmin to cmax do
     if arr.(i) = 0 then
       incr contiguous
-    else if !contiguous = 0 then
-      incr chunks
     else
       begin
-        chunks := !chunks + 2;
+        incr chunks;
         contiguous := 0;
       end
   done;
   let chunks = !chunks in
 
   (* Step 2b. Fill result *)
-  let result = Array.make (chunks + 1) h in
-  let chunks = ref 1 in
+  let result = String.make (chunks * 2) '\000' in
+  let chunks = ref 0 in
   let contiguous = ref cmin in
   for i = cmin to cmax do
     if arr.(i) = 0 then
       incr contiguous
-    else if !contiguous = 0 then
-      begin
-        result.(!chunks) <- arr.(i);
-        incr chunks
-      end
     else
       begin
-        result.(!chunks) <- -(!contiguous);
-        result.(!chunks + 1) <- arr.(i);
-        chunks := !chunks + 2;
+        result.[!chunks * 2] <- Char.unsafe_chr !contiguous;
+        result.[!chunks * 2 + 1] <- Char.unsafe_chr arr.(i);
+        incr chunks;
         contiguous := 0;
       end;
     arr.(i) <- 0
@@ -86,18 +77,10 @@ let anagram_class s =
 
 (* Specialize hash table, to avoid polymorphic operators *)
 module H = Hashtbl.Make(struct
-    type t = int array
+    type t = string
     let equal (a : t) b =
-      let l = Array.length a in
-      l = Array.length b &&
-      try
-        for i = 0 to l - 1 do
-          if a.(i) <> b.(i) then
-            raise Not_found
-        done;
-        true
-      with Not_found -> false
-    let hash (a : t) = a.(0)
+      a = b
+    let hash (a : t) = Hashtbl.hash a
   end)
 
 (* From a list of values, partition them into an hashtable indexed
