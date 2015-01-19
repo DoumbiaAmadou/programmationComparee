@@ -18,3 +18,4 @@ a.out
 .*.sw*
 # Tmp
 *.log
+anagram

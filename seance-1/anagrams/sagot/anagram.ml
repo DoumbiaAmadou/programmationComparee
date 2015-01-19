@@ -1,38 +1,28 @@
-(* http://caml.inria.fr/pub/old_caml_site/FAQ/FAQ_EXPERT-fra.html#strings *)
-let explode s =
-  let rec exp i l =
-    if i < 0 then l else exp (i - 1) (s.[i] :: l) in
-  exp (String.length s - 1) [];;
+let hash s =
+  let len = String.length s in
+  let a = Array.make len ' ' in
+  let b = Bytes.create len in
+  String.iteri (fun i c -> Array.set a i c) s ;
+  Array.sort compare a ;
+  Array.iteri (fun i c -> Bytes.set b i c) a ;
+  Bytes.to_string b
 
-let implode l =
-  let res = String.create (List.length l) in
-  let rec imp i = function
-  | [] -> res
-  | c :: l -> res.[i] <- c; imp (i + 1) l in
-  imp 0 l;;
+let dictionnary f =
+  let d = Hashtbl.create 42 in
+  let chan = open_in f in
+  (try while true do
+	 let word = input_line chan in
+	 Hashtbl.add d (hash word) word
+       done
+   with End_of_file -> close_in chan) ;
+  d
 
-let sorted s = explode s |> List.sort compare |> implode
-
-let mk_dic filename acc =
-  let chan = open_in filename in
-  let rec read () = match input_line chan with
-    | word -> Hashtbl.add acc (sorted word) word ;
-	      read ()
-    | exception End_of_file -> close_in chan ; acc
-  in read ()
-
-let print_dic dic =
-  Hashtbl.iter (fun hash word -> print_endline (hash ^ " -> " ^ word)) dic
+let anagrams d w = Hashtbl.find_all d (hash w)
 
 let _ =
-  let dic = Hashtbl.create 42 in
-  let dic = mk_dic "../words" dic in
-  Sys.argv
-  |> Array.to_list
-  |> List.tl
-  |> List.iter
-       (fun word ->
-	print_string word ;
-	print_string " : " ;
-	print_endline (String.concat " " (Hashtbl.find_all dic (sorted word)
-					  |> List.sort compare)))
+  let d = dictionnary "../words" in
+  let print_a w =
+    Printf.printf "%s: %s\n" w (anagrams d w |> String.concat " ")
+  in
+  Array.sub Sys.argv 1 (Array.length Sys.argv - 1)
+  |> Array.iter print_a

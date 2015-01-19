@@ -23,14 +23,14 @@ object anagrams {
     	if(rep.isDefined){
     		for(r<-rep){
     			for (rr<-r._2)
-    				str += " "+rr
+    				str += rr+" "
     		}
     	}
     	sorted_word+=(arg->str)
     }
     //affichage sur la sortie standard:
     for(sw<-sorted_word){
-      println(sw._1+" : "+sw._2)
+      println(sw._1+" :"+sw._2)
     }
   }
 }
