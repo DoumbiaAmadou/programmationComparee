@@ -34,9 +34,9 @@ let speed_of_anagram path cmd n =
     Printf.printf "Lanching \"%s\" of %s %d times : %!" cmd path n;
     if Sys.file_exists "anagram" then
       let cmd = Printf.sprintf "%s > /dev/null 2> /dev/null" cmd in
-      try 
-        let l = exec_times cmd n in
-        let average_time = List.fold_left (fun sum x -> x +. sum) 0. l in
+      try
+        let average_time = exec_times cmd n |>
+                          List.fold_left (fun sum x -> x +. sum) 0. in
         Printf.printf "\027[1;32mOK\027[0m\n%!";
         Printf.printf "\027[1;32mAverage time = %.2f s\027[0m\n%!"
           (average_time /. float_of_int n)         
@@ -51,8 +51,8 @@ let () =
   let n = ref 0 in 
   if Array.length Sys.argv <= 1 then n := 10
   else n := (int_of_string Sys.argv.(1));
-  let allFiles = Sys.readdir "." in
-  Array.iter (fun path -> speed_of_anagram path cmd !n) allFiles
+  Sys.readdir "." |> 
+  Array.iter (fun path -> speed_of_anagram path cmd !n) 
 
   
   
