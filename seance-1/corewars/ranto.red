@@ -1,8 +1,6 @@
 ;author Ranto
 
-loop:	add	#4, @3
-mov	$2, @-2
-jmp	loop
-dat	#2, #4
-
-end	loop
+ADD #4, $3
+MOV $2, @2
+JMP -2
+DAT #0, #0
