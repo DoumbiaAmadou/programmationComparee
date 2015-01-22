@@ -6,8 +6,8 @@
 ;assert CORESIZE % 4 == 0
 
 loop:	add	#4, @3
-mov	$2, @2
+mov	$2, @-2
 jmp	loop
-dat	#0, #0
+dat	#2, #4
 
 end	loop
