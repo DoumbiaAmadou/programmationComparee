@@ -38,7 +38,7 @@ let () =
 
     let l = List.tl (Array.to_list Sys.argv) in
     let l = List.map String.lowercase l in 
-    let in_stream = open_in "words" in  
+    let in_stream = open_in "../words" in  
     let dic = read_file in_stream [] in 
     close_in in_stream ;
     List.iter  (fun (y,x) -> print_string (String.concat " " (List.map (fun r ->r ) x)^"\n"))  (genAna  l dic)  ; 
