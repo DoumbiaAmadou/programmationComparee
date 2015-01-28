@@ -1,5 +1,5 @@
 #!/bin/bash
 javac Anagram.java
-cp Anagram.java anagram
+jar -cvmf MANIFEST.MF anagram Anagram.class
+chmod +x anagram
 rm Anagram.class
-rm *~

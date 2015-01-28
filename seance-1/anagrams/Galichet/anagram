@@ -6,16 +6,13 @@ from sys import argv
 
 sort_elt = lambda e : "".join(sorted(e))
 
-def get_anagram(w, dic):
-    h = len(w)
-    l = dic[h]
-    n_l = []
+def get_anagram(w, words):
+    l = []
     s = sort_elt(w)
-    for e in l:
-        sort_e = sort_elt(e)
-        if sort_e == s:
-            n_l.append(e)
-    return n_l
+    for e in words:
+        if sort_elt(e) == s:
+            l.append(e)
+    return l
 
 with open("../words", "r") as file_words:
     words = defaultdict(list)
@@ -24,4 +21,4 @@ with open("../words", "r") as file_words:
         words[len(w)].append(w)
 
 for arg in argv[1:]:
-    print "%s: %s" % (arg, " ".join(get_anagram(arg, words)))
+    print "%s: %s" % (arg, " ".join(get_anagram(arg, words[len(arg)])))

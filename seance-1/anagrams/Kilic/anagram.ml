@@ -39,8 +39,7 @@ let anagrams l words =
       Printf.printf "%s : " w;
       List.iter (fun w' ->
           if not(w = w') && is_anagram w w' then
-            Printf.printf "%s " w'
-          else ()) words;
+            Printf.printf "%s " w') words;
       Printf.printf "\n"
     ) l
 
