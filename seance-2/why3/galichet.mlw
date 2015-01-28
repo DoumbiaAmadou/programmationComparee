@@ -1,12 +1,12 @@
 module Minimum
     use import int.Int
     use import ref.Ref
-    use import array.array
+    use import array.Array
         
     let min (tab: array int) (n:int)
         requires { 0 <= n = length tab }
         returns  { min -> forall i:int. 0 <= i < n -> tab[i] <= min }
-        = let min = ref 0 in
+        = let min = ref tab[0] in
         for i = 0 to n - 1 do 
             if !min < tab[i] then min := tab[i];
             sum := !sum + a[i] 
@@ -17,13 +17,13 @@ end
 module Median
     use import int.Int
     use import ref.Ref
-    use import array.array
+    use import array.Array
 
     let min (tab: array int) (n:int)
         requires { 0 <= n = length tab }
         requires { forall i:int. 0 <= i < n -> tab[i] <= tab[i+1] }
         returns { median -> tab[0] <= median <= tab[n-1]}
-        = let median = tab[n /2] in
-        done;
+        = let median = ref 0 in
+        median = tab[n /2]
         !median
 end

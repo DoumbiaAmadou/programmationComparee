@@ -1,3 +1,11 @@
+(*
+ * ----------------------------------------------------------------------------
+ * "THE BEER-WARE LICENSE" (Revision 42):
+ * <b@ptistefontaine.fr> wrote this file. As long as you retain this notice
+ * you can do whatever you want with this stuff. If we meet some day, and you
+ * think this stuff is worth it, you can buy me a beer in return.
+ * ----------------------------------------------------------------------------
+ *)
 module Fontaine
   use import int.Int
   use import ref.Ref
@@ -6,8 +14,10 @@ module Fontaine
   let min_num (a: array int) (n : int)
     requires { 0 <= n = length a }
     returns { min -> forall i:int. 0 <= i < n -> a[i] >= min }
-  = let min = ref 0 in
-      for i = 0 to n - 1 do
+  = let min = ref a[0] in
+      for i = 1 to n - 1 do
+        (* copied from fabre.mlw *)
+        invariant { forall j:int. 0 <= j < i -> !min <= a[j] }
         if !min > a[i] then min := a[i]
       done;
       !min
