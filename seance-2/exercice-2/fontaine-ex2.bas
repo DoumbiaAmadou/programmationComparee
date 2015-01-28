@@ -1,5 +1,5 @@
-001 REM Commore 64 Basic       Hoare Logic
-002 REM ================       ===========
+001 REM Commore 64 Basic       Hoare Logic (bfontaine flavor)
+002 REM ================       ==============================
 003 REM
 010 REM create your array here:
 018 REM                        ________________
@@ -15,15 +15,15 @@
 100 REM
 110 REM Look Ma! OCaml code!
 120 LET M = A(0)
-126 REM                                 ____________________________
-127 REM                                 {I>0 /\ I<=L-1} I:=I+1 {I>0}
-128 REM                        ________________________________________________
-129 REM                        {I>0} tantque I<=L-1 faire I:=I+1 {!I<=L /\ I>0}
+126 REM                              ____________________________
+127 REM                              {I>0 /\ I<=L-1} I:=I+1 {I>0}
+128 REM                        ___________________________________________
+129 REM                        {I>0} while I<=L-1 do I:=I+1 {!I<=L /\ I>0}
 130 FOR I = 1 TO L-1
-132 REM                        Avec E : A(I) < M
+132 REM                        With E : A(I) < M
 133 REM                             C : M=A(I)
 134 REM                             Q : M <= A(I)
-135 REM                             P : A(I) <= A(I)  on a :
+135 REM                             P : A(I) <= A(I)  we get :
 136 REM                        ______________     __________________
 137 REM                        {E /\ P} C {Q}     {!E /\ P} skip {Q}
 138 REM                        _____________________________________
