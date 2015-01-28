@@ -3,14 +3,13 @@
 ;author Alain Dias
 ;strategy Dwarf like but moves
 
-;assert CORESIZE > 8 == 1
+;assert CORESIZE > 4 == 1
 
 	org	loop
 
-loop:	add.ab	#8, bomb
-	mov.i	bomb, @bomb
+loop:	mov.i	bomb, @bomb
 	mov	0,4
 	jmp	loop
-bomb:	dat	#0, #0
+bomb:	dat	#0, 4
 
 	end
