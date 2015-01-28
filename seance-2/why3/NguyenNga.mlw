@@ -1,0 +1,16 @@
+module MinSearch
+
+  use import int.Int
+  use import ref.Ref
+  use import array.Array
+
+let min_search (a: array int) (n: int)
+    requires { 0 <= n = length a }
+    requires { forall i:int. 0 <= i < n -> a[i] >= 0 }
+    returns  { min }
+  = let min = ref 0 in
+    for i = 0 to n - 1 do
+      if !min > a[i] then min := a[i];
+    done;
+    (!min)
+end

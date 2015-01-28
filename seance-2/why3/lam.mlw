@@ -1,0 +1,21 @@
+module median
+
+  use import int.Int
+  use import int.EuclidianDivision
+  use import array.Array
+  use import ref.Ref
+  
+  let (tab: array int) (n: int) =
+    requires {0 <= n = length tab}
+    requires {forall i: int. 0 <= i < n - 1 -> 0 <= tab[i] < tab[i + 1]}
+    ensures {let median = result in tab[0] <= median <= tab[n - 1]}
+  = let median = ref 0 in
+    for i = 0 to n - 1 do
+      invariant {tab[0] <= !median <= tab[n - 1]}
+	if (length tab) mod 2 = 0 then
+          median := (tab[n div 2] + tab[n div 2 + 1]) div 2
+	else 
+	  median := tab[(n + 1) div 2];
+    done;
+    !median
+end

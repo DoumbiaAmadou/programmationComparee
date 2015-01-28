@@ -21,7 +21,7 @@ cd $i
 			for j in $(seq 1 10) 
 			do 	
 				{
-					./anagram abaissassiez abaissassions abaissés abaisseur abaisseurs abaissez abaissiez abaissions abaissons abajoue abajoues abandon abandonna  aube curve > /tmp/log.log 
+					./anagram abaissassiez abaissassions abaissÃ©s abaisseur abaisseurs abaissez abaissiez abaissions abaissons abajoue abajoues abandon abandonna  aube curve > /tmp/log.log 
 				} || {
 					echo -e "$red\n${i^^} Erreur d'execution : Performance IMPOSSIBLE $NC";START=0 ;break
 				}   
@@ -31,7 +31,7 @@ cd $i
 			t=$( echo "$t/10" | bc -l) 
 			echo  -e  "$green\nPerformance : ${i^^}  =  moyenne $t seconde(s) $NC"
 		else 
-			echo -e "\n ${i^^} : $red KO impossible compilation  echouée $NC " 
+			echo -e "\n ${i^^} : $red KO impossible compilation  echouÃ©e $NC " 
 		fi
 	else  
 		echo -e "$red\n${i^^}  : KO compile.sh n'existe pas $NC " 

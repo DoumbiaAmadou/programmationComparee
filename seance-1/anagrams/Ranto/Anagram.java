@@ -1,12 +1,12 @@
 import java.io.*;
 import java.util.*;
 
-public class tpMain {
+public class Anagram {
 	public static final void anagrams(String[] words, HashMap<String, String> dico) {
 		for (int i = 0; i < words.length; i++) {
 			System.out.print(words[i] + " : ");
 			for (Map.Entry<String, String> elementDico : dico.entrySet())
-				if (elementDico.getValue().equals(tpMain.sortWord(words[i])))
+				if (elementDico.getValue().equals(Anagram.sortWord(words[i])))
 					System.out.print(elementDico.getKey() + " ");
 			System.out.println();
 		}
@@ -27,7 +27,7 @@ public class tpMain {
 			BufferedReader bufferedReader = new BufferedReader(new FileReader(
 					dico));
 			while ((word = bufferedReader.readLine()) != null)
-				hashDico.put(word, tpMain.sortWord(word));
+				hashDico.put(word, Anagram.sortWord(word));
 			bufferedReader.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -37,9 +37,9 @@ public class tpMain {
 
 	public static void main(String[] args) {
 		// long before = System.currentTimeMillis();
-		HashMap<String, String> dico = tpMain.hashingDico(new File("words"));
+		HashMap<String, String> dico = Anagram.hashingDico(new File("words"));
 		//String[] words = { "niche", "marie", "cabans" };
-		tpMain.anagrams(args, dico);
+		Anagram.anagrams(args, dico);
 		// long after = System.currentTimeMillis();
 		// System.out.println("\n temps d'exeution : " + (after - before) +
 		// " ms");

@@ -1,2 +1,6 @@
 #!/bin/bash
-javac *.java
+javac Anagram.java
+cp Anagram.java anagram
+java Anagram "niche" "truc" "marie" "yolo" "a"
+rm Anagram.class
+rm *~
