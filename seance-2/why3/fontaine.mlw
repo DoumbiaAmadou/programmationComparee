@@ -14,6 +14,8 @@ module Fontaine
   let min_num (a: array int) (n : int)
     requires { 0 <= n = length a }
     returns { min -> forall i:int. 0 <= i < n -> a[i] >= min }
+    (* not sure if the syntax is correct here *)
+    returns { min -> exists i:int. not 0 <= i < n \/ a[i] = min }
   = let min = ref a[0] in
       for i = 1 to n - 1 do
         (* copied from fabre.mlw *)
