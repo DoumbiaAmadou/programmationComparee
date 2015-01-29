@@ -1,0 +1,19 @@
+module ArrayMin
+
+use import int.Int
+use import ref.Ref
+use import array.Array
+
+let array_min (a: array int) (n: int)
+    require { 0 <= n = length a }
+    require { forall i:int. 0 <= i < n -> a[i] >= 0 }
+    returns { _min -> forall i:int. 0 <= i < n -> a[i] >= _min }
+=
+    if (n = 0) then -1
+    let min = ref a[0] in
+    for i = 1 to n - 1 do
+        if !min > a[i] then min := a[i];
+        invariant { !min <= a[i] }
+    done;
+    (!min)
+end
