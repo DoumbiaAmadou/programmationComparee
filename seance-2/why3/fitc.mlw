@@ -11,7 +11,7 @@ module SearchMinFitc
   = let min = ref 0 in
     min := a[0];
     for i = 1 to n - 1 do
-      invariant { !min <= a[i] }
+      invariant {forall k:int. 0 <= k < i -> !min <= a[k] }
       if !min >= a[i] then min := a[i];
     done;
     !min
