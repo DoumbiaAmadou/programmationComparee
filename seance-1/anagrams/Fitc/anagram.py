@@ -17,7 +17,6 @@ with open('../words', 'r') as words:
 	for word in words:
 		stripped_word = word.strip()
 		anagrams_dict[sorted_string(stripped_word)].append(stripped_word)
-			
 
 for arg in argv[1:]:
 	print(arg+":"," ".join(anagrams(arg, anagrams_dict)))
