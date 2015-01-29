@@ -1,6 +1,6 @@
 -Langage utilisé : scala
 
--Compiler : lancer le fichier compile.sh, puis entrez "anagram mot1 mot2 ..."
+-Compiler : lancer le fichier compile.sh, puis entrez "./anagram mot1 mot2 ..."
 
 -Nombre de ligne de code : 41
 
