@@ -43,23 +43,17 @@ let anagram_class s =
 
   (* Step 2a. Compute number of RLE chunks *)
   let chunks = ref 0 in
-  (* Number of 0s in a stride *)
-  let contiguous = ref cmin in
   (* Compute result length *)
   for i = cmin to cmax do
-    if arr.(i) = 0 then
-      incr contiguous
-    else
-      begin
-        incr chunks;
-        contiguous := 0;
-      end
+    if arr.(i) <> 0 then
+      incr chunks
   done;
   let chunks = !chunks in
 
   (* Step 2b. Fill result *)
   let result = String.make (chunks * 2) '\000' in
   let chunks = ref 0 in
+  (* Number of 0s in a stride *)
   let contiguous = ref cmin in
   for i = cmin to cmax do
     if arr.(i) = 0 then
@@ -90,7 +84,7 @@ let compute_equivalence_table equivalence_class iter_keys iter_values =
   iter_keys (fun key ->
       let cls = equivalence_class key in
       try
-        let keys, values = H.find table cls in
+        let keys, _ = H.find table cls in
         keys := key :: !keys
       with Not_found ->
         H.add table cls (ref [key], ref []));
