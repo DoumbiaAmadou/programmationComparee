@@ -1,0 +1,23 @@
+compile.sh doit produire un executable "ed" tel que
+
+   ed [in] [out]
+
+utilise [in] comme fichier d'entrée et interprète les commandes
+fournies par l'utilisateur sur l'entrée standard pour produire
+[out].
+
+Rappel des commandes:
+- E 
+  pour finir
+- I,m,TEXT...
+  insère TEXT après la ligne m du fichier source
+- R,m,n,TEXT...
+  remplace par TEXT les lignes m à n du fichier source
+- D,m,n
+  supprime les lignes de m à n
+
+On interprète les commandes "en avançant" : si un utilisateur
+fournit une commande mal formée ou qui demande revenir en 
+arrière dans le fichier source, le programme s'arrête avec
+un statut d'erreur EXIT_FAILURE.
+
