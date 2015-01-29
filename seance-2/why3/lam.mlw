@@ -1,0 +1,18 @@
+module Median
+
+  use import int.Int
+  use import int.EuclideanDivision
+  use import array.Array
+  use import ref.Ref
+  
+let median (tab: array int) (n: int)
+    requires {0 <= n = length tab}
+    requires {forall i: int. 0 <= i < n -> 0 <= tab[i] < tab[i + 1]}
+    ensures {let m = result in tab[0] <= m <= tab[n - 1]}
+  = let m = ref 0 in
+    if (n mod 2) <> 0 then
+      m := tab[(n + 1) div 2]         
+    else 
+      m := (tab[n div 2] + tab[n div 2 + 1]) div 2;
+    !m
+end

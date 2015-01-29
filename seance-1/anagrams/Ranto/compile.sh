@@ -1,4 +1,6 @@
 #!/bin/bash
-javac tpMain.java
-java tpMain "ranto" "cabane" "banane" "correction" "test" "marie" "niche"
-rm tpMain.class
+javac Anagram.java
+cp Anagram.java anagram
+java Anagram "niche" "truc" "marie" "yolo" "a"
+rm Anagram.class
+rm *~

@@ -1,0 +1,15 @@
+module Min
+
+	use import int.Int
+	use import ref.Ref
+	use import array.Array
+
+	let min (a : array int)
+		requires { length a > 0}
+		returns { _min -> forall i:int. 0 <= i < length a -> _min <= a[i]}
+	=	let _min = ref 0 in
+		for i = 0 to length a do
+			if !_min > a[i] then _min := a[i];
+		done;
+		(!_min)
+end

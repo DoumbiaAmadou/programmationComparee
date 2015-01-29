@@ -8,12 +8,15 @@ object anagrams {
   def main(args: Array[String]) {
     val word_list = Source.fromFile(WORDS_FILE).getLines().toList
     val mm = new mutable.HashMap[String, mutable.Set[String]] with mutable.MultiMap[String, String]
+    
+    //création du dictionnaire :
     for(w<-word_list){
       var wo = w
       var key = wo.toCharArray().sorted.mkString("")
       mm.addBinding(key, w)
     }
-    //On tri les mots dans l'ordre alphabétique 
+    
+    //recherche des anagrames :
     var sorted_word = SortedMap[String,String]()
     for(arg<-args){
     	var wo = arg
