@@ -1,26 +1,23 @@
-#include <stdio.h>
+#include <unistd.h>
 
-typedef command;
-command read_cmd();
-int isExit(command c);
+/**
+ * Description de la boucle interactive
+ * et des flux entrée/sortie
+**/
 
-typedef text;
-text load(char * f);
-void print(text t);
-text apply(command c, text t);
-
-text ed(const text in){
+void ed(const int fdin, const int fdout){
   command cmd = read_cmd();
   while(!isExit(cmd)){
-    in = apply(cmd,in);
+    in = apply(cmd,fdin,fdout);
     cmd = read_cmd();
   }
-  return in;
 }
 
 int main(int argc, char** argv){
-  if(argc < 2) exit(1);
-  text t = load(argv[1]);
-  text res = ed(t);
-  print(res);
+  if(argc < 3) exit(1);
+  int in = open(argv[1],O_RDONLY);
+  int out = open(argv[2],O_WRONLY);
+  ed(in,out);
+  close(in);
+  close(out);
 }

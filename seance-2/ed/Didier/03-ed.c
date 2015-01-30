@@ -6,9 +6,10 @@
 #include <stdlib.h>
 
 /**
- * Definition des commandes 
- * et de leur interpretation
+ * Definition de l'application d'une commande
 **/
+
+int fdin, fdout, ln=0;
 
 typedef struct cmd {
   char code;
@@ -17,6 +18,29 @@ typedef struct cmd {
   char * text;
   int tlen;
 } command;
+
+void apply(command c){
+  switch(c.code){
+  case 'I':
+    if(copy(c.arg1))
+      write(fdout,c.text,c.tlen);
+    else exit(1);
+  
+  case 'D':
+    if(copy(c.arg1) && move(c.arg2));
+    else exit(1);
+  
+  case 'R':
+    if(copy(c.arg1) && move(c.arg2))
+      write(fdout,c.text,c.tlen);
+    else exit(1);
+  
+  default:
+    exit(1);
+  }
+}
+
+////////////////////////////////////////////////////////////
 
 int isExit(command c){
   return c.code=='E';
@@ -54,19 +78,20 @@ command read_cmd(){
 
 ////////////////////////////////////////////////////////////
 
-void ed(const int fdin, const int fdout){
+
+void ed(){
   command cmd = read_cmd();
   while(!isExit(cmd)){
-    apply(cmd,fdin,fdout);
+    apply(cmd);
     cmd = read_cmd();
   }
 }
 
 int main(int argc, char** argv){
   if(argc < 3) exit(1);
-  int in = open(argv[1],O_RDONLY);
-  int out = open(argv[2],O_WRONLY);
-  ed(in,out);
-  close(in);
-  close(out);
+  fdin = open(argv[1],O_RDONLY);
+  fdout = open(argv[2],O_WRONLY);
+  ed();
+  close(fdin);
+  close(fdout);
 }
