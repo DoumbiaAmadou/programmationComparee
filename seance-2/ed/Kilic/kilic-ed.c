@@ -5,28 +5,27 @@
 
 #define BUFSIZE 80
 
-struct cmd {
+typedef struct command {
   char c;
   int arg1;
   int arg2;
   char text[BUFSIZE];
-}cmd;
+}command;
 
-void read_instruction(struct cmd *c);
-
-void interpret_instruction(struct cmd *c);
-
-void print_command(struct cmd *c);
+void read_instruction(command *c);
+void interpret_instruction(command *c);
+int exit_ed(command *c);
+void print_command(command *c);
 
 int main(int argc, char **argv) {
-  struct cmd c;
-  read_instruction(&c);
-  print_command(&c);
-  interpret_instruction(&c);
+  command cmd = {' ', -1, -1};
+  read_instruction(&cmd);
+  print_command(&cmd);
+  interpret_instruction(&cmd);
   return 0;
 }
 
-void read_instruction(struct cmd *c) {
+void read_instruction(command *cmd) {
   char line[BUFSIZE], *tmp;
   ssize_t r;
   int arg,i;
@@ -37,7 +36,7 @@ void read_instruction(struct cmd *c) {
   }
   line[r] = '\0';
   tmp = line;
-  cmd.c = line[0];
+  cmd->c = line[0];
   tmp++; tmp++;
   arg = 0;
   if(line[0] == 'E') return;
@@ -45,7 +44,7 @@ void read_instruction(struct cmd *c) {
     arg = arg * 10 + (*tmp - '0');
     tmp++;
   }
-  cmd.arg1 = arg;
+  cmd->arg1 = arg;
   tmp++;
   if(line[0] == 'R' || line[0] == 'D') {
     arg = 0;
@@ -54,25 +53,28 @@ void read_instruction(struct cmd *c) {
       tmp++;
     }
     if(*tmp == ',') tmp++;
-    cmd.arg2 = arg;
+    cmd->arg2 = arg;
   }
   if(line[0] == 'I' || line[0] == 'R') {
     i = 0;  
     while(*tmp != '\n') {
-      cmd.text[i++] = *tmp;
+      cmd->text[i++] = *tmp;
       tmp++;
     }
   }
 }
 
-void interpret_instruction(struct cmd *c) {
+void interpret_instruction(command *c) { }
+
+int exit_ed(command *cmd) {
+  return (cmd->c == 'E');
 }
 
-void print_command(struct cmd *c) {
-  printf("Command = %c\n", cmd.c);
-  printf("Argument 1 = %d\n", cmd.arg1);
-  printf("Argument 2 = %d\n", cmd.arg2);
-  printf("Text = %s\n", cmd.text);
+void print_command(command *cmd) {
+  printf("Command = %c\n", cmd->c);
+  printf("Argument 1 = %d\n", cmd->arg1);
+  printf("Argument 2 = %d\n", cmd->arg2);
+  printf("Text = %s\n", cmd->text);
 }
 
 
