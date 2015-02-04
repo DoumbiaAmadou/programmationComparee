@@ -1,3 +1,6 @@
 - s'inscrire sur https://groups.google.com/forum/\#!forum/pcomp15 
-- seance-1 : Corewars
-- seance-2 : Why3
+x seance-1 : Corewars
+x seance-2 : Why3
+
+- implementation de malloc/free a l'aide de sbrk
+  en C, en rust ou x86
