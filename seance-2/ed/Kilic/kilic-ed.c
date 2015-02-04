@@ -2,23 +2,40 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
-#define BUFSIZE 80
+#define BUFSIZE 100
+
+int ln = 0, in = -1, out = -1;
 
 typedef struct command {
   char c;
   int arg1;
   int arg2;
+  int len_t;
   char text[BUFSIZE];
 }command;
 
 void read_instruction(command *c);
+void copy_n_lines(int m, char *s, int len_s);
 void interpret_instruction(command *c);
 int exit_ed(command *c);
 void print_command(command *c);
 
 int main(int argc, char **argv) {
-  command cmd = {' ', -1, -1};
+  command cmd = {' ', -1, -1, 0};
+  in = open(argv[1],O_RDONLY);
+  if(in < 0) {
+    perror("Error open");
+    exit(EXIT_FAILURE);
+  }
+  out = open(argv[2], O_RDWR | O_TRUNC | O_CREAT, 0644);
+  if(out < 0) {
+    perror("Error open");
+    exit(EXIT_FAILURE);
+  }
   read_instruction(&cmd);
   print_command(&cmd);
   interpret_instruction(&cmd);
@@ -61,10 +78,45 @@ void read_instruction(command *cmd) {
       cmd->text[i++] = *tmp;
       tmp++;
     }
+    cmd->len_t = i;
   }
 }
 
-void interpret_instruction(command *c) { }
+void copy_n_lines(int m, char *s, int len_s) {
+  char buf;
+  int r;
+  while(m > 0) {
+    if((r = read(in,&buf,1)) < 0) {
+      perror("Error read");
+      exit(EXIT_FAILURE);
+    }
+    if(buf == '\n') {
+      m--;
+      ln++;
+    }
+    if((write(out,&buf,1) < 0)) {
+      perror("Error read");
+      exit(EXIT_FAILURE);
+    }
+  }
+  if((write(out,s,len_s) < 0)) {
+    perror("Error read");
+    exit(EXIT_FAILURE);
+  }
+}
+
+    
+
+void interpret_instruction(command *cmd) {
+  switch(cmd->c) {
+  case 'I':
+    if(cmd->arg1 < ln) {
+      printf("Bad number of line.");
+      exit(EXIT_FAILURE);
+    }
+    copy_n_lines(cmd->arg1,cmd->text,cmd->len_t);
+  }
+}
 
 int exit_ed(command *cmd) {
   return (cmd->c == 'E');
@@ -75,6 +127,8 @@ void print_command(command *cmd) {
   printf("Argument 1 = %d\n", cmd->arg1);
   printf("Argument 2 = %d\n", cmd->arg2);
   printf("Text = %s\n", cmd->text);
+  printf("Size of text = %d\n", cmd->len_t);
 }
+
 
 
