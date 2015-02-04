@@ -1,4 +1,5 @@
-#! /bin/bash -e
+#! /usr/bin/env bash
+set -e
 
 #       This is the compile.sh for our C64 BASIC 'ed'. Since we can't compile
 #       it to machine code, we'll use an interpreter called `cbmbasic`. We'll
