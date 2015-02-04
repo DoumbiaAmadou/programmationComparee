@@ -85,15 +85,12 @@ void read_instruction(command *cmd) {
 void copy_n_lines(int m, char *s, int len_s) {
   char buf;
   int r;
-  while(m > 0) {
+  while(ln < m) {
     if((r = read(in,&buf,1)) < 0) {
       perror("Error read");
       exit(EXIT_FAILURE);
     }
-    if(buf == '\n') {
-      m--;
-      ln++;
-    }
+    if(buf == '\n') ln++;
     if((write(out,&buf,1) < 0)) {
       perror("Error read");
       exit(EXIT_FAILURE);
