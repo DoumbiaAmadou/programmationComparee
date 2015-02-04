@@ -1,9 +1,10 @@
-#include <stdio.h>
 #include <unistd.h>
 
 /**
  * A dead-simple malloc/free implementation, using only sbrk(2). It works as a
  * stack; you can only free the last malloc'ed pointer.
+ *
+ * Note: the `bf_free` function doesn't work for now.
  *
  * This could be circumvented by using a global register, but didier.c
  * already did it and it might be interesting to try other ways.
@@ -29,6 +30,7 @@
  * - It adds a `sizeof(size_t)` overhead to each pointer
  * - It prevents pointers arithmetic since malloc-ed spaces are not contiguous
  *   (there're `sizeof(size_t)` bytes between each addressable memory space)
+ * - It doesn't reuse previously malloc-then-freed space
  *
  * Advantages:
  * - This implementation can virtually malloc memory up to the limit set by the
@@ -44,35 +46,35 @@
 
 void *bf_malloc(size_t size) {
         void *p = sbrk(BF_SIZESIZE + size);
+        if (p == (void*)-1) { return NULL; }
         *(size_t*)p = size;
         return (void*)((size_t*)p + 1);
 }
 
 int bf_free(void *p) {
+        // doesn't work, it doesn't free space. We should keep a pointer to the
+        // currently available space
         void *ret = sbrk(-BF_SIZEOF(p) - BF_SIZESIZE);
         // yes it could be shortened but this expression is clearer for the
         // programmer
         return (ret == (void*)-1) ? 1 : 0;
 }
 
+// simple test
 int main(void) {
         int *p1 = bf_malloc(sizeof(int)),
             *p2 = bf_malloc(sizeof(int)),
             *p3;
 
-        printf("p1=%p p2=%p\n", p1, p2);
+        if (p1 == NULL || p2 == NULL) { return 1; }
 
-        *p1 = 42;
-        *p2 = 17;
-
-        if (bf_free(p2) != 0) { puts("Error when freeing p2"); }
-        if (bf_free(p1) != 0) { puts("Error when freeing p1"); }
+        if (bf_free(p2) != 0 || bf_free(p1) != 0) { return 2; }
 
         p3 = bf_malloc(sizeof(int));
 
-        printf("p1=%p, %d\n", p3, p1 == p3);
+        if (p1 != p3) { return 3; }
 
-        bf_free(p1);
+        if (bf_free(p3) != 0) { return 4; }
 
         return 0;
 }
