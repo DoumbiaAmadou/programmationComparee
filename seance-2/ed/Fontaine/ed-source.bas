@@ -1,4 +1,4 @@
-0100 REM fontaine's ed
+0100 REM Fontaine's ed
 0110 REM     version 1
 0120 REM     codename "Do Reinvent The Wheel To Learn How To Build A Wheel"
 0130 REM input file
