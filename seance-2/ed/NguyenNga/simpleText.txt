@@ -1,0 +1,13 @@
+En informatique, un fichier texte ou fichier texte brut ou fichier texte simple
+est un fichier dont le contenu représente uniquement une suite de caractères; 
+il utilise nécessairement une forme particulière de codage de caractère qui 
+peut être une variante ou une extension du standard local des États-Unis, l'ASCII. 
+Il n'existe aucune définition officielle, et les différentes interprétations 
+de ce qu'est un fichier texte partagent des propriétés essentielles. 
+Les caractères considérés sont généralement les caractères imprimables, 
+d'espaces et de retours à la ligne. Certains codages de caractères normalisés 
+incluent également certains caractères de contrôleN 1, séquence d'échappementN 
+2ou marqueurs N 3 qui peuvent faire l'objet de différences d'appréciations. 
+La notion de fichier texte est donc subjective et dépend notamment des 
+systèmes de codage de caractère considérés (windows-1252 et ISO-8859-1 
+n'offrant pas les mêmes plages de valeurs «imprimables».)
