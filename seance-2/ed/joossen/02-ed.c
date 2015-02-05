@@ -13,6 +13,27 @@ int entry, outfile, ln, idx_cmd;
 char cmd[CMD_SIZE];
 char l[LINE_SIZE];
 
+void cmd_exit() {
+  // TODO
+  _exit(EXIT_FAILURE);
+};
+void next_arg() {
+  // TODO
+  _exit(EXIT_FAILURE);
+}
+void cmd_delete() {
+  // TODO
+  _exit(EXIT_FAILURE);
+}
+void cmd_insert() {
+  // TODO
+  _exit(EXIT_FAILURE);
+}
+void cmd_replace() {
+  // TODO
+  _exit(EXIT_FAILURE);
+}
+
 /**
  * Functions declaration by alphabetical order
  **/
