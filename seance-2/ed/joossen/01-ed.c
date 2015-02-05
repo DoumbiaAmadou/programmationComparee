@@ -8,6 +8,23 @@
 
 int entry, outfile, ln;
 
+void notif_error() {
+  // TODO
+  _exit(EXIT_FAILURE);
+}
+void store_line() {
+  // TODO
+  _exit(EXIT_FAILURE);
+}
+void read_instr() {
+  // TODO
+  _exit(EXIT_FAILURE);
+}
+void inter_instr() {
+  // TODO
+  _exit(EXIT_FAILURE);
+}
+
 
 /**
  * Function implementation by use order
