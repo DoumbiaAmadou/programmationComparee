@@ -1,1 +1,2 @@
-(lambda () "Hello Lisp World")
+#lang racket
+(printf "Hello Lisp World \n")
