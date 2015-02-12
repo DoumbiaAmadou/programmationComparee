@@ -1,2 +1,2 @@
 #lang racket
-(print "hello_world")
+(printf "hello world\n")
