@@ -1,0 +1,1 @@
+(lambda () "Hello Lisp World")
