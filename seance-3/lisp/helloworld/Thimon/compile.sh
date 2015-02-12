@@ -1,3 +1,4 @@
 #! /bin/bash
-gcl -load helloworld.lisp
+echo "gcl -load helloworld.lisp" > helloworld
+chmod +x helloworld
 
