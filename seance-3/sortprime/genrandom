@@ -13,7 +13,10 @@ let max_list_length =
   1024
 
 let initialization =
-  Random.self_init ()
+  try
+    Random.init (int_of_string (Sys.getenv "RSEED"))
+  with _ ->
+    Random.self_init ()
 
 let list_length =
   Random.int max_list_length
