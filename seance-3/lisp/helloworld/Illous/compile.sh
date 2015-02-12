@@ -1,2 +1,3 @@
 raco exe illous.lisp
-mv illous.lisp helloworld
+mv illous helloworld
+chmod u+x helloworld
