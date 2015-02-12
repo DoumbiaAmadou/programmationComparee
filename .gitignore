@@ -11,6 +11,7 @@ __pycache__
 a.out
 # OSX
 .DS_Store
+._*
 # Windows
 *.exe
 # Vim/Emacs/etc
