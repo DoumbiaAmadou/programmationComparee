@@ -1,3 +1,2 @@
-OUTPUT=`clisp helloworld.lisp`
-echo 'echo '$OUTPUT > helloworld
+cp helloworld.lisp helloworld
 chmod +x helloworld
