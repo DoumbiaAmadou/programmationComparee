@@ -1,5 +1,6 @@
 (ns fontaine.core
-  (:require [clojure.java.io :as io]))
+  (:require [clojure.java.io :as io])
+  (:gen-class))
 
 (defn get-words
   "Return a non-lazy sequence of all words in the given file"
