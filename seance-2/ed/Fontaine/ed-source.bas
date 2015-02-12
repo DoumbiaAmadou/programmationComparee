@@ -34,8 +34,8 @@
 
 3000 REM interpret the command
 3010 REM TODO for now, just copy the text
+3019 REM XXX doesn't read the text
 3020 INPUT# ID%,LS$
-3029 REM FIXME
 3030 PRINT# OD%,LS$
 3040 RETURN
 

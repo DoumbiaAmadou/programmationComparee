@@ -13,6 +13,23 @@ int entry, outfile, ln, idx_cmd;
 char cmd[CMD_SIZE];
 char l[LINE_SIZE];
 
+void get_int_opt() {
+  // TODO
+  _exit(EXIT_FAILURE);
+}
+void copy_lines() {
+  // TODO
+  _exit(EXIT_FAILURE);
+}
+void goto_line() {
+  // TODO
+  _exit(EXIT_FAILURE);
+}
+void write_text() {
+  // TODO
+  _exit(EXIT_FAILURE);
+}
+
 /**
  * Functions declaration by alphabetical order
  **/

@@ -1,0 +1,12 @@
+Faites les exercices suivants dans un langage fonctionnel de votre
+choix.  \- Soit le programme \verb!genrandom! qui produit sur sa
+sortie standard une liste finie de taille aléatoire d'entiers positifs
+aléatoires séparés par des retours chariots. On suppose qu'au bout de
+$N$ lignes, \verb!genrandom k! ne peut produire de nombre supérieur à
+$k \cdot N$.
+
+On souhaite écrire un programme \verb!sortprime! qui lit la sortie
+standard de \verb!genrandom!, affiche le plus tôt possible le nombre
+produit si il est premier, et, une fois que \verb!genrandom! a fini
+son travail, affiche la liste triée des nombres premiers rencontrés.
+

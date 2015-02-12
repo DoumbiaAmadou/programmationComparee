@@ -1,0 +1,3 @@
+- Ecrire une fonction \verb!pow n! qui produit la S-expr représentant la fonction
+  qui a $x$ associe $x^n$.
+
