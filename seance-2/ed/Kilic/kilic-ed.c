@@ -8,7 +8,7 @@
 
 #define BUFSIZE 100
 
-int ln = 0, in = -1, out = -1;
+int ln = 1, in = -1, out = -1;
 
 typedef struct command {
   char c;
@@ -19,7 +19,8 @@ typedef struct command {
 }command;
 
 void read_instruction(command *c);
-void copy_n_lines(int m, char *s, int len_s);
+void add_line(int position, char *s, int len_s);
+void replace_lines(int begin, int end, char *s, int len_s, char mode);
 void interpret_instruction(command *c);
 int exit_ed(command *c);
 void print_command(command *c);
@@ -36,9 +37,10 @@ int main(int argc, char **argv) {
     perror("Error open");
     exit(EXIT_FAILURE);
   }
-  read_instruction(&cmd);
-  print_command(&cmd);
-  interpret_instruction(&cmd);
+  do {
+    read_instruction(&cmd);
+    interpret_instruction(&cmd);
+  }while(!exit_ed(&cmd));
   return 0;
 }
 
@@ -58,7 +60,7 @@ void read_instruction(command *cmd) {
   arg = 0;
   if(line[0] == 'E') return;
   while(*tmp != ',') {
-    arg = arg * 10 + (*tmp - '0');
+    if(*tmp != ' ') arg = arg * 10 + (*tmp - '0');
     tmp++;
   }
   cmd->arg1 = arg;
@@ -74,7 +76,7 @@ void read_instruction(command *cmd) {
   }
   if(line[0] == 'I' || line[0] == 'R') {
     i = 0;  
-    while(*tmp != '\n') {
+    while(*tmp != '\0') {
       cmd->text[i++] = *tmp;
       tmp++;
     }
@@ -82,36 +84,69 @@ void read_instruction(command *cmd) {
   }
 }
 
-void copy_n_lines(int m, char *s, int len_s) {
+void add_line(int position, char *s, int len_s) {
   char buf;
-  int r;
-  while(ln < m) {
-    if((r = read(in,&buf,1)) < 0) {
-      perror("Error read");
-      exit(EXIT_FAILURE);
-    }
+  position++;
+  while(read(in, &buf,1) > 0) {
     if(buf == '\n') ln++;
-    if((write(out,&buf,1) < 0)) {
-      perror("Error read");
-      exit(EXIT_FAILURE);
+    if(ln < position || ln > position) {
+      write(out,&buf,1);
+    } else {
+      write(out,"\n",1);
+      write(out,s,len_s);
+      ln++;
     }
-  }
-  if((write(out,s,len_s) < 0)) {
-    perror("Error read");
-    exit(EXIT_FAILURE);
   }
 }
 
-    
 
+void replace_lines(int begin, int end, char *s, int len_s, char mode) {
+  char buf;
+  int writer_line = end - begin;
+  while(read(in,&buf,1) > 0) {
+    if(buf == '\n') ln++;
+    if(ln < begin || ln > end) {
+      if((write(out,&buf,1)) < 0) {
+      	perror("Error write");
+      	exit(EXIT_FAILURE);
+      }
+    } else {
+      if(mode == 'R') {
+	if(writer_line-- >= 0) {
+	  if(write(out,"\n",1) < 0) {
+	    perror("Error write");
+	    exit(EXIT_FAILURE);
+	  }
+	  if((write(out,s,len_s-1)) < 0) {
+	    perror("Error write");
+	    exit(EXIT_FAILURE);
+	  }
+	}
+      }
+    }
+  }
+}
+   
 void interpret_instruction(command *cmd) {
   switch(cmd->c) {
   case 'I':
     if(cmd->arg1 < ln) {
+      printf("arg 1 = %d && line number = %d\n", cmd->arg1, ln);
       printf("Bad number of line.");
       exit(EXIT_FAILURE);
     }
-    copy_n_lines(cmd->arg1,cmd->text,cmd->len_t);
+    add_line(cmd->arg1,cmd->text,cmd->len_t);
+    break;
+  case 'R':
+    if(cmd->arg1 < ln) {
+      printf("Bad number of line.");
+      exit(EXIT_FAILURE);
+    }
+    replace_lines(cmd->arg1,cmd->arg2, cmd->text,cmd->len_t, cmd->c);
+    break;   
+  case 'D':
+    replace_lines(cmd->arg1, cmd->arg2, NULL,-1, 'D');
+    break;
   }
 }
 
