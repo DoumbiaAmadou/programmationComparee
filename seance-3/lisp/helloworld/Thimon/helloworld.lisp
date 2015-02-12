@@ -1,3 +1,1 @@
-(defun helloWorld()
-"Hello Lisp World!"
-)
+(print "Hello Lisp World!")
