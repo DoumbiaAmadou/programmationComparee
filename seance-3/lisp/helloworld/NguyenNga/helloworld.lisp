@@ -1,2 +1,4 @@
+; lisp
 (defun helloworld ()
-      (print (list 'Hello 'Lisp 'World '!)))
+   "Hello Lisp World !")
+(helloworld)
