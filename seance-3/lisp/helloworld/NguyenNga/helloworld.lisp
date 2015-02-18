@@ -1,4 +1,2 @@
-; lisp
-(defun helloworld ()
-   "Hello Lisp World !")
-(helloworld)
+
+(format t "Hello Lisp World !~%")
