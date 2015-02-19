@@ -1,0 +1,8 @@
+Langages utilises:
+Akka
+
+Organisation:
+-Gerer les interactions avec le serveur
+-Interface graphique
+-Premier programme pour une fourmi
+-Premier programme pour un zombie
