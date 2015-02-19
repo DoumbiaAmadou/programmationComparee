@@ -1,0 +1,8 @@
+-Pas de déplacement en diagonale
+-On ne peut pas reculer
+-Observer n’est pas une action
+-On peut créer autant de comptes que l’on veut
+-Source de nourriture illimitée
+-Un zombie peut reprogrammer un autre zombie
+-Un zombie peut se cloner
+-On peut voir les informations de toutes nos fourmis y compris les zombies

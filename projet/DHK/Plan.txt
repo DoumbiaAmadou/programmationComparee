@@ -1,0 +1,20 @@
+
+- Main/organisation de toutes les fourmis (ensemble + spec)
+	- definir environement de chacune des fourmis
+
+- Traitement des requetes
+	- lecture des requetes (Ali)
+	- ecriture des requetes (Anas)
+
+- IA pour les fourmis 
+	- definir l'automate des actions (Keryan)
+
+// Lazy.repartition 
+- Script Fourmi zombie
+	- mini compilateur vers assembleur
+
+- Rejouer (seulement nous)
+
+- Interface
+ - ligne de commande 
+ - graphique si necessaire / avoir le temps / pas trop la flemme (Ali n'est pas d'accord avec cela)
