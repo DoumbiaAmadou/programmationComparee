@@ -1,0 +1,43 @@
+Paradigme : Objet
+langage : A définir (Python ? Java ? Scala ?)
+
+0) Création d'un nom badass à base de mauvais jeu de mot.
+
+I) Conception
+	1) COnception de la couche réseau
+	2) Conception de la couche application :
+		2.1) Conception du monde
+		2.2) Conception du module d'analyse
+		2.3) Conception du joueur
+	3) Choix du langage
+
+II) Implémentation
+	1) Programmer la couche réseau
+	2) Programmer la couche application :
+		2.1)Définir les objets du monde
+			2.1.1) définir les entités qui font partie du monde
+			2.1.2) définir un monde
+		2.2) Créer un module qui analyse des données et choisit le comportement le plus adapté pour une stratégie globale
+		2.3) Définir un joueur qui peut changer de comportement
+			2.3.1) Implémenter le pattern stratégie du joueur
+			2.3.2) définir différentes stratégies de jeu
+			2.3.3) définir les scripts pour les zombis (ex : zombi agressif, defensif, lemming)
+	3) Tests et ajustement des comportements
+		Elements importants à faire évoluer ensemble : 
+			Module de choix de stratégie
+			Stratégies
+			Scripts zombis
+
+
+Répartition des taches :
+	Vladislav :
+		Couche réseau
+		Définition du monde
+	Josian : 
+		Squelette du module analyse 
+		Implémentation du joueur
+	Tâches à répartir plus tard : 
+		Différentes stratégies
+		différents scripts
+	Tâches communes : 
+		Partie 3 : améliorer l'analyse des données et les stratégies
