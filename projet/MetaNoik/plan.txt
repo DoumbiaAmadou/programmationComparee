@@ -6,3 +6,7 @@ Organisation:
 -Interface graphique
 -Premier programme pour une fourmi
 -Premier programme pour un zombie
+
+Premier objectif:
+-Avoir un systeme qui permet d'envoyer des fourmis basiques sur le serveur
+-Fourmi standard veut dire qui ne va que tout droit
