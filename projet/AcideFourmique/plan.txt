@@ -1,0 +1,14 @@
+============================ Plan de developpement ============================
+
+0) Attendre les notes de POCA
+
+------------------------------- 1ere etape ----------------------------------
+1) Parsing des instructions (Reception et envoi) : Syou-On et Victor 
+2) Creer un client capable de faire bouger une fourmi : Hugo
+
+------------------------------- 2eme etape ----------------------------------
+3) Gestion de plusieurs fourmi
+4) Integration de strategies de jeu
+
+------------------------------- 3eme etape ----------------------------------
+5) Gestion des zombies
