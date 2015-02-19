@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <assert.h>
 
 #define MEM_SIZE (640*1024)
@@ -6,29 +7,23 @@
 
 #define MAX_NUM ((MEM_SIZE)-(BUF_SIZE)/2)
 
-// this could be optimized since we use only one bit per number
-char numbers[MAX_NUM],
-
-     counts[MAX_NUM];
+// we could optimize the memory usage here but the program would be slower
+static unsigned char numbers[MAX_NUM],
+                     counts[MAX_NUM];
 
 void eratosthene(int n) {
-        if (n <= 1) return;
-
+        if (n < 2) { return; }
         for (int i=n*2; i<MAX_NUM; i += n) {
                 numbers[i] = 0;
         }
 }
 
 void init(void) {
-        for (int i=0; i<MAX_NUM; ++i) {
-                numbers[i] = 1;
-                counts[i] = 0;
-        }
+        memset(numbers, 1, MAX_NUM);
+        memset(counts, 0, MAX_NUM);
 }
 
-void add_number(int n) {
-        assert(n < MAX_NUM);
-
+void add_number(const int n) {
         if (numbers[n]) {
                 printf("%d\n", n);
                 ++counts[n];
@@ -52,10 +47,10 @@ int main(int argc, char **argv) {
         init();
 
         int line = 1,
-            n = 0,
-            ret;
+            n = 0;
 
-        while ((ret = scanf("%d\n", &n)) == 1) {
+        while (scanf("%d\n", &n) == 1) {
+                assert(n < MAX_NUM);
                 eratosthene(line);
                 add_number(n);
                 ++line;
