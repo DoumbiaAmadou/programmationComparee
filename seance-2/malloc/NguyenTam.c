@@ -15,7 +15,7 @@ void *malloc(size_t size) {
   	if (dict == NULL)
     	dict = sbrk(1024 * sizeof(mem_dict)); 
   	dict[dict_count].addr = return_ptr;
- 	dict[dict_count].size = size;
+ 	  dict[dict_count].size = size;
   	dict_count++;
   
   	return return_ptr;

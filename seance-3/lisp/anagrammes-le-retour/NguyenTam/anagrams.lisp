@@ -1,33 +1,14 @@
-;; reference version
+#! /usr/local/bin/clisp
 
-(defun anagrams (&optional (path "../words"))
-  (let ((words (drakma:http-request path :want-stream t))
-        (wordsets (make-hash-table :test 'equalp)))
+;Main
+(setq SourceFile (open "words.txt"))   ;open file to read
+(setq FileLine (read-line SourceFile)) ;read file content
+(close SourceFile) 
+(loop for line in FileLine
+  do (if (comparingString line (car *args*)) (print line)))
 
-    ;; populate the wordsets and close stream
-    (do ((word (read-line words nil nil) (read-line words nil nil)))
-        ((null word) (close words))
-      (let ((letters (sort (copy-seq word) 'char<)))
-        (multiple-value-bind (pair presentp)
-            (gethash letters wordsets)
-          (if presentp
-           (setf (car pair) (1+ (car pair))
-                 (cdr pair) (cons word (cdr pair)))
-           (setf (gethash letters wordsets)
-                 (cons 1 (list word)))))))
+;Comparing two strings after sorted
+(defun comparingString (w1 w2) (string-equal (sortWord w1) (sortWord w2)))
 
-    ;; find and return the biggest wordsets
-    (loop with maxcount = 0 with maxwordsets = '()
-          for pair being each hash-value of wordsets
-          if (> (car pair) maxcount)
-          do (setf maxcount (car pair)
-                   maxwordsets (list (cdr pair)))
-          else if (eql (car pair) maxcount)
-          do (push (cdr pair) maxwordsets)
-          finally (return (values maxwordsets maxcount)))))
-
-;; evalutating
-;; (multiple-value-bind (wordsets count) (anagrams)
-;;  (pprint wordsets)
-;;  (print count))
-
+;Sorting a word
+(defun sortWord(s) (sort (copy-seq s) #'char))
