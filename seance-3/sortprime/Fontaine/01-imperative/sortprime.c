@@ -59,8 +59,8 @@ void print_list(void) {
 }
 
 int main(int argc, char **argv) {
-        if (argc != 2) {
-                fprintf(stderr, "Usage:\n\tgenrandom <k> | %s <k>\n", argv[0]);
+        if (argc > 1) {
+                fprintf(stderr, "Usage:\n\tgenrandom <k> | %s\n", argv[0]);
                 return 1;
         }
 
