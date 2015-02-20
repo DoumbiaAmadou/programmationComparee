@@ -3,14 +3,26 @@
 #include <assert.h>
 
 #define MEM_SIZE (640*1024)
-#define BUF_SIZE 1024
+#define MAX_NUM ((MEM_SIZE)/(sizeof (unsigned char)))
 
-#define MAX_NUM ((MEM_SIZE)-(BUF_SIZE)/2)
+/**
+ * This represents both the Sieve of Eratosthene and an array of counters for
+ * each number.
+ *
+ * When the program starts, all the array is filled with 1's. These 1's are
+ * changed to 0's when we run the Sieve algorithm. When we find a prime number,
+ * we increment the corresponding index.
+ *
+ * This means the program can process numbers up to MAX_NUM-1 (655,359), with
+ * max. 254 times the same number.
+ *
+ * Most of this array will be set to 0s.
+ **/
+static unsigned char numbers[MAX_NUM];
 
-// we could optimize the memory usage here but the program would be slower
-static unsigned char numbers[MAX_NUM],
-                     counts[MAX_NUM];
-
+/**
+ * Set all [numbers[i]] to 0 for all [i] where [i%n == 0].
+ **/
 void eratosthene(int n) {
         if (n < 2) { return; }
         for (int i=n*2; i<MAX_NUM; i += n) {
@@ -18,21 +30,29 @@ void eratosthene(int n) {
         }
 }
 
+/**
+ * Initialize the Sieve of Eratosthene
+ **/
 void init(void) {
         memset(numbers, 1, MAX_NUM);
-        memset(counts, 0, MAX_NUM);
 }
 
-void add_number(const int n) {
+/**
+ * Add a number to our counters
+ **/
+void add_number(const unsigned int n) {
         if (numbers[n]) {
                 printf("%d\n", n);
-                ++counts[n];
+                assert(numbers[n]++ < 254);
         }
 }
 
+/**
+ * Print the list of collected numbers
+ **/
 void print_list(void) {
         for (int i=0; i<MAX_NUM; ++i) {
-                for (int j=0; j<counts[i]; ++j) {
+                for (int j=1; j<numbers[i]; ++j) {
                         printf("%d\n", i);
                 }
         }
