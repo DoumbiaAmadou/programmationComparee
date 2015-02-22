@@ -1,3 +1,5 @@
+# 21-02-2015
+
 ''' import os
     output = os.popen(’ls’).read() # If you want to get the output data
 '''
@@ -15,10 +17,12 @@ lstNumbers = []
 
 # Convert string to int
 for n in numbers:
-	lstNumbers.append(int(n))
+    lstNumbers.append(int(n))
 
 # Check if a number is prime
 def is_prime(n):
+    if n == 0 or n == 1:
+        return False
     if n % 2 == 0 and n > 2: 
         return False
     for i in range(3, int(math.sqrt(n)) + 1, 2):
@@ -33,7 +37,7 @@ def findPrime(lst):
     for l in lst:
         if (is_prime(l)):
             lstPrime.append(l)
+    return lstPrime
 
 # Sort the result
-lstNumbers = sorted(lstNumbers)
-
+lstPrime = sorted(findPrime(lstNumbers))
