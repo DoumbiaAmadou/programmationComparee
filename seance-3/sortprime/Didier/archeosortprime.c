@@ -30,5 +30,6 @@ int main(){
     }
     printf("%d : %s\n",current,primes[current]?"Prime":"Not prime");
   }
+  return 0;
 }
 

@@ -12,7 +12,7 @@ void init(){
 
 void expand(){
   int i;
-  realloc(primes,current+1);
+  primes = realloc(primes,current+1);
   for(i=max+1;i<=current;i++)
     primes[i]=1;
 }
@@ -28,7 +28,9 @@ void erato(){
 
 int main(){
   init();
-  while(scanf("%d",&current)!=EOF){
+  while(1){
+    int c = scanf("%d",&current);
+    if(c==EOF || !c) break;
     if(current > max){
       expand();
       erato();
@@ -36,5 +38,6 @@ int main(){
     }
     printf("%d : %s\n",current,primes[current]?"Prime":"Not prime");
   }
+  return 0;
 }
 
