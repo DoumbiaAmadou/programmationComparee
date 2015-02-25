@@ -4,34 +4,46 @@
 
 #define SIZE 640000
 
-/***************************************************
- * principe : nous avons un tableau de booléen
- * nous éléminnons à chaques nombres premier trouvés
- * les multiples de ce nombre
- * *************************************************/
+char prem[SIZE];
 
-void eratosthene(int N){
-	printf("1\n");//cas particulier 1
-	char prem[SIZE];
+void eratosthene(){
 	memset(prem,1,SIZE);
-	int i,j,cpt = 1;
-	for(i=2 ; (i<SIZE) && (cpt<N) ; i++){
-
+	prem[0]=0;
+	int i,j;
+	for(i=2 ; (i<SIZE) ; i++){
 		if(prem[i]){
-			
 			for(j=i*2 ; j<SIZE ; j+=i)
 				prem[j]=0;
-
-			cpt++;
-			printf("%d\n",i);
 		}
-
 	}
 }
 
 
-int main(int argc,char *argv[]){
-	if(argc != 2) return EXIT_FAILURE;
-	eratosthene(atoi(argv[1]));
+int main(){
+	int num = 0;
+	/* "liste" des chiffres premier rencontrés */
+	char match[SIZE];
+	memset(match,0,SIZE);
+	eratosthene();
+	
+	/* afficher le plus vite possible le nombre si il est premier */
+	while(fscanf(stdin,"%d\n",&num)!=EOF){
+		if(num<SIZE){
+			if(prem[num]){
+				printf("%d\n",num);
+				match[num]=1;
+			}
+			/* else printf("%d is not prime\n",num); */
+		}
+	}
+
+	/* afficher la liste des nombres premiers rencontrés */
+	printf("sorted prime list :\n"); 
+	for(num=0 ; num<SIZE ; num++){
+		if(match[num])
+			printf("%d\n",num);
+	}
+	
+
 	return EXIT_SUCCESS;
 }
