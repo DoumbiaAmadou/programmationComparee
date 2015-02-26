@@ -15,34 +15,37 @@
  *       ii- call malloc_info(0, stdout)
  */
 
-/* In order to respect the exercise : 
+/* In order to respect the exercise :
  */
 
 int mem[SIZE/4];
 
+#define VARA (mem[0])
+#define VARB (mem[1])
+
 int main(int argc, char** argv) {
     /*
-     * To get results with gdb : 
+     * To get results with gdb :
      * int *mem = (int*) malloc((SIZE / 4) * sizeof(int));
      */
     memset(mem, 1, (SIZE / 4) * sizeof(int));
-    for(mem[0] = 2; mem[0] < (SQSIZE / 4); mem[0]++) {
-        if(mem[mem[0]]) {
-            for(mem[1] = mem[0] * mem[0]; mem[1] < (SIZE / 4); mem[1] += mem[0]) { 
-                mem[mem[1]] = 0;
+    for(VARA = 2; VARA < (SQSIZE / 4); VARA++) {
+        if(mem[VARA]) {
+            for(VARB = VARA * VARA; VARB < (SIZE / 4); VARB += VARA) {
+                mem[VARB] = 0;
             }
         }
     }
-    while(scanf("%d", &mem[0]) != EOF) {
-        if(mem[mem[0]]) mem[mem[0]] = 2;
+    while(scanf("%d", &VARA) != EOF) {
+        if(mem[VARA]) mem[VARA] = 2;
     }
-    for(mem[0] = 2; mem[0] < (SIZE / 4); mem[0]++) {
-        if(mem[mem[0]] == 2) printf("%d\n", mem[0]);
+    for(VARA = 2; VARA < (SIZE / 4); VARA++) {
+        if(mem[VARA] == 2) printf("%d\n", VARA);
     }
     return EXIT_SUCCESS;
 }
 
-/* 
+/*
  *
  * gdb results :
  * (gdb) call malloc_stats()

@@ -3,12 +3,16 @@
 #include <assert.h>
 using namespace std;
 
-class Eratosthene {
+class PrimeChecker {
+  virtual bool is_prime (int x) = 0;
+};
+
+class Eratosthene : public PrimeChecker {
 
 private:
       int num;
       bool* prime;
-      
+
 public:
       Eratosthene (int num) {
             this->num = num;
@@ -23,14 +27,14 @@ public:
                   if(prime[i] == true){
                         cout << i << endl;
                   }
-            } 
+            }
       }
 
       int eratosthene(){
 
             for(int i = 2; i < num; i++){
                   if(i <= sqrt(num) && prime[i] == true){
-                        for(int j = i*2; j < num; j+=i){            
+                        for(int j = i*2; j < num; j+=i){
                               prime[j] = false;
                         }
                   }
