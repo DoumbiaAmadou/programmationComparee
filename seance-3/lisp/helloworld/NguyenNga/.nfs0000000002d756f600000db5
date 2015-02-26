@@ -1,0 +1,1 @@
+gcl -load helloworld.lisp -batch
