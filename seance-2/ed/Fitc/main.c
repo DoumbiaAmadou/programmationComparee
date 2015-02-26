@@ -9,11 +9,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <fcntl.h>
 
 #define NUMBER_OF_STRINGS   100
 #define STRING_LENGTH       80
 #define EXIT                69
 #define TRUE                1
+#define INSERT_CMD          'I'
+#define DELETE_CMD          'D'
+#define REPLACE_CMD         'R'
+#define EXIT_CMD            'E'
 
 char inputText[NUMBER_OF_STRINGS][STRING_LENGTH+1];
 char outputText[NUMBER_OF_STRINGS][STRING_LENGTH+1];
@@ -83,6 +88,59 @@ char* getString(){
     return strtok('\0', "");
 }
 
+void interpretCommand(char *command){
+    char *p = strtok(command, " ");
+    char cmd = p[0];
+    
+    switch (cmd) {
+        case INSERT_CMD:
+            m = getInt();
+            p = getString();
+            
+            putLinesToOutput(xl, m);
+            putCurrentLineToOutput();
+            putLineToOutput(p);
+            
+            break;
+        
+        case DELETE_CMD:
+            m = getInt();
+            n = getInt();
+            
+            putLinesToOutput(xl, m);
+            xl = n+1;
+            
+            break;
+            
+        case REPLACE_CMD:
+            m = getInt();
+            n = getInt();
+            p = getString();
+            
+            putLinesToOutput(xl, m);
+            putLineToOutput(p);
+            xl = n+1;
+            
+            break;
+            
+        case EXIT_CMD:
+            
+            putLinesToOutput(xl, m);
+            putRestOfInputToOutput();
+            showText(outputText);
+            exit(EXIT_SUCCESS);
+            
+            break;
+            
+        default:
+            perror("Unknown command");
+            exit(EXIT_FAILURE);
+            break;
+    }
+}
+
+
+
 int main(int argc, const char * argv[]) {
     char *s = "A best practice is a method or technique that has consistently shown results superior to those achieved with other means, and that is used as a benchmark. In addition, a \"best\" practice can evolve to become better as improvements are discovered. Best practice is considered by some as a business buzzword, used to describe the process of developing and following a standard way of doing things that multiple organizations can use.";
     splitByStrings(s);
@@ -90,44 +148,9 @@ int main(int argc, const char * argv[]) {
 
     while (TRUE) {
         printf("Input command: \n");
-        char str[128];
-        fgets(str, 126, stdin);
-        char *p;
-        
-        p = strtok(str, " ");
-        m = getInt();
-        if (m == -1) {
-            m = xl;
-        }
-        
-        putLinesToOutput(xl, m);
-        if (strncmp(p, "I", 1) == 0) {
-            p = getString();
-            putCurrentLineToOutput();
-            putLineToOutput(p);
-            
-        } else if (strncmp(p, "D", 1) == 0){
-            n = getInt();
-            if (n == -1) {
-                n = m;
-            }
-            xl = n+1;
-            
-        } else if (strncmp(p, "R", 1) == 0){
-            n = getInt();
-            if (n == -1) {
-                n = m;
-            }
-            p = getString();
-            putLineToOutput(p);
-            xl = n+1;
-
-        } else if (strncmp(p, "E", 1) == 0){
-            putRestOfInputToOutput();
-            showText(outputText);
-            exit(EXIT_SUCCESS);
-        }
-        
+        char cmd[128];
+        fgets(cmd, 126, stdin);
+        interpretCommand(cmd);
         showText(outputText);
     }
     
