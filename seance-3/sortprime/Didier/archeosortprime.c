@@ -30,6 +30,9 @@ int main(){
     }
     printf("%d : %s\n",current,primes[current]?"Prime":"Not prime");
   }
+  int i;
+  for(i=0; i<=max; i++)
+    if(primes[i]) printf("%d\n",i);
   return 0;
 }
 
