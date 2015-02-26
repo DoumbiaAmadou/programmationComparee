@@ -26,33 +26,34 @@ public:
             } 
       }
 
-      void eratosthene(){
+      int eratosthene(){
+
             for(int i = 2; i < num; i++){
                   if(i <= sqrt(num) && prime[i] == true){
-                        for(int j = i*i; j < num; j++){ 
-                              
-                              if(j % i == 0){  
-                                          
-                                    prime[j] = false;
-                              } 
+                        for(int j = i*2; j < num; j+=i){            
+                              prime[j] = false;
                         }
                   }
             }
-
             printPrime();
 
             delete [] prime;
+
+            return 0;
       }
 };
 
-// don't use genrandom
 int main() {
       int number;
-      cout << "Enter a number: ";
-      cin >> number;
+      int stop = 5;
+      int i = 0;
+      while (i < stop) {
+            cout << "Enter a number: ";
+            cin >> number;
 
-      Eratosthene *eratos = new Eratosthene(number);
-      eratos->eratosthene();
-      delete [] eratos;
+            Eratosthene *eratos = new Eratosthene(number);
+            eratos->eratosthene();
+            delete [] eratos;
+      }
       return 0;
 }
