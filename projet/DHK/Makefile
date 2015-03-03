@@ -1,5 +1,5 @@
 all :
-	ocamlbuild main.native
+	ocamlbuild -use-ocamlfind -pkgs netclient main.native 
 
 clean :
 	rm -rf *.{cma,cmi} main.native _build
