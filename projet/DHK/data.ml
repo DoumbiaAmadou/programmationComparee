@@ -24,12 +24,10 @@ and food =
 and command = 
   | Attack of int
   | Move
+  | Rest
   | TurnLeft
   | TurnRight
-  | Zombify of program 
-
-(*en attendant la spec*)
-and program = int
+  | Zombify of string 
 
 type position =
   | Front
@@ -49,6 +47,14 @@ let energy = function
 let acid = function 
   | Ally(s,_) -> Some s.acid
   | _ -> None
+
+let string_of_command = function
+  | Attack i -> "attack@" ^ (string_of_int i)
+  | Move -> "forward"
+  | Rest -> "rest"
+  | TurnLeft -> "left"
+  | TurnRight -> "right"
+  | Zombify s -> "hack@[" ^ s ^ "]"
 
 (* 
    Avec une fourmie orientee vers le haut,
