@@ -1,0 +1,11 @@
+modules du projet:
+
+_reprogrammation fourmis, identification des allies : Alain
+_gestion fourmie : Andeol
+_communication serveur : clement
+_construire la carte, recherche ressources proches : Andeol
+_definir la strategie : groupe
+
+architecture: 
+C - communication serv curl
+Scala - corps métier
