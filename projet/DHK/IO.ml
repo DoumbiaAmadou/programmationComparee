@@ -55,18 +55,30 @@ let create_new_game ~users ~teaser ~pace ~nb_turn ~nb_ant_per_player
     Printf.printf "%s\n" s
   with _ -> raise HttpGetError 
 
-let destroy_game id =
-  let url = concat_url url "destroy" in
-  let url = url ^ "?id=" ^ id  in
+(* [do_game_action i action] will send a request, doing the action [action], 
+   to the game having the id [i]. Raise an HttpGetError if the request fails. *)
+let do_game_action i action =
+  let url = concat_url url action in
+  let url = url ^ "?id=" ^ i  in
   try
     let s = http_get url in
     Printf.printf "%s\n" s
   with _ -> raise HttpGetError
 
+(* [destory_game i] try to destroy the game having the id [i].*)
+let destroy_game i = do_game_action i "destroy"
+
+(* [join_game i] try to join the game having the id [i]. *)
+let join_game i = do_game_action i "join"
+
+(* [get_current_games] get the list of all visibles games.*)
 let get_current_games () =
   let url = concat_url url "games" in
   try
     let s = http_get url in
     Printf.printf "%s\n" s
-  with _ -> raise HttpGetError 
-  
+  with _ -> raise HttpGetError
+
+
+
+
