@@ -71,6 +71,9 @@ let destroy_game i = do_game_action i "destroy"
 (* [join_game i] try to join the game having the id [i]. *)
 let join_game i = do_game_action i "join"
 
+(* [log_game i] try to get the log of the game having the id [i]. *)
+let log_game i = do_game_action i "log"
+
 (* [get_current_games] get the list of all visibles games.*)
 let get_current_games () =
   let url = concat_url url "games" in
