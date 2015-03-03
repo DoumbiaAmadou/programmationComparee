@@ -63,4 +63,10 @@ let destroy_game id =
     Printf.printf "%s\n" s
   with _ -> raise HttpGetError
 
+let get_current_games () =
+  let url = concat_url url "games" in
+  try
+    let s = http_get url in
+    Printf.printf "%s\n" s
+  with _ -> raise HttpGetError 
   
