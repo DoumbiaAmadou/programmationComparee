@@ -2,4 +2,4 @@ all :
 	ocamlbuild main.native
 
 clean :
-	rm -rf *.cmi *.cma main.native _build
+	rm -rf *.{cma,cmi} main.native _build
