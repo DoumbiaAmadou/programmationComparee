@@ -34,12 +34,12 @@ let rec loop primes maxn =
     in
     match is_prime n primes maxn with
     | (b,primes) -> 
-      if b 
-      then Printf.printf "%d : Prime\n" n
-      else Printf.printf "%d : Not prime\n" n;
+       if b 
+       then Printf.printf "%d : Prime\n" n
+       else Printf.printf "%d : Not prime\n" n;
       loop primes (max n maxn)
   with _ -> primes 
 ;;
 
-let () = ignore(loop [2] 2)
+let () = iter (fun x -> Printf.printf "%d\n" x) (rev (loop [2] 2))
 
