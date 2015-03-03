@@ -8,3 +8,6 @@ Contraintes :
 
 - On doit pouvoir re executer le programme
 - Le programme doit tourne dans un navigateur web
+
+Compilation du module httpRequest :
+ocamlfind ocamlopt httpRequest.ml -package netclient -linkpkg -o exe
