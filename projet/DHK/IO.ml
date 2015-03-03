@@ -37,8 +37,7 @@ let auth_user l p =
 
 (* [create_new_game users teaser pace nb_turn nb_ant_per_player nb_player
    minimal_nb_player initial_energy initial_acid] try to create a new game.
-   Raise an HttpGetError exception if the request fails.
-*)
+   Raise an HttpGetError exception if the request fails. *)
 let create_new_game ~users ~teaser ~pace ~nb_turn ~nb_ant_per_player
     ~nb_player ~minimal_nb_player ~initial_energy ~initial_acid =  
   let url = concat_url url "create" in
@@ -55,5 +54,13 @@ let create_new_game ~users ~teaser ~pace ~nb_turn ~nb_ant_per_player
     let s = http_get url in
     Printf.printf "%s\n" s
   with _ -> raise HttpGetError 
-  
+
+let destroy_game id =
+  let url = concat_url url "destroy" in
+  let url = url ^ "?id=" ^ id  in
+  try
+    let s = http_get url in
+    Printf.printf "%s\n" s
+  with _ -> raise HttpGetError
+
   
