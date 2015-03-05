@@ -28,7 +28,7 @@ ant () {
 
 ant '.status' register a f
 ant '.status' auth a f
-ant '.response.identifier' new 'a' 'Dance floor for hacking ants!' $PACE $NBTURNS $NBANTS 1 1 $E0 $A0
+ant '.response.identifier' new 'a' 'Putain mais comment ça marche bordel' $PACE $NBTURNS $NBANTS 1 1 $E0 $A0
 GID=$OUT
 ant '.status' join $GID
 TURN=0
