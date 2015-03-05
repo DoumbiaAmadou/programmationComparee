@@ -8,22 +8,62 @@
 
 import Foundation
 
-for i in 0..<60000 {
-
-    let values = [i/10000 % 6 + 1, i/1000 % 6 + 1, i/100 % 6 + 1, i/10 % 6 + 1, i % 6 + 1]
-    var occurencies:[Int:Int] = [1:0, 2:0, 3:0, 4:0, 5:0, 6:0]
+enum Dice: Int {
+    typealias Carry = Bool
+    case One    = 1
+    case Two    = 2
+    case Three  = 3
+    case Four   = 4
+    case Five   = 5
+    case Six    = 6
     
-    for value in values {
-        occurencies[value] = occurencies[value]! + 1
+    init(){
+        self = One
     }
+    
+    func succ() -> (Dice, Carry) {
+        switch self {
+        case .Six:
+            return (.One, true)
+        default:
+            return (Dice(rawValue: self.rawValue+1)!, false)
+        }
+    }
+}
 
+var dices = [Dice(), Dice(), Dice(), Dice(), Dice()]
+
+func succ(dices: [Dice]) -> [Dice] {
+    var succ = [Dice]()
+    
+    for (var i = dices.count-1; i >= 0; --i){
+        succ.append(dices[i].succ().0)
+        if !dices[i].succ().1 {
+            for (var j = i-1; j >= 0; --j){
+                succ.append(dices[j])
+            }
+            break
+        }
+    }
+    
+    return succ.reverse()
+}
+
+func showDices(dices: [Dice]){
+    println(dices.map{"\($0.rawValue) "}.reduce("", combine: +))
+}
+
+while dices != [.Six, .Six, .Six, .Six, .Six] {
+    dices = succ(dices)
+    var occurencies:[Dice:Int] = [.One:0, .Two:0, .Three:0, .Four:0, .Five:0, .Six:0]
+    for dice in dices {
+        occurencies[dice] = occurencies[dice]! + 1
+    }
     let suite = occurencies.values.array.filter{ $0 == 0 }.isEmpty
     let full = !occurencies.values.array.filter{ $0 == 3 }.isEmpty && !occurencies.values.array.filter{ $0 == 2 }.isEmpty
-    
+
     if (full || suite) {
-        for value in values {
-            print("\(value) ")
-        }
-        print("\n")
+        showDices(dices)
     }
+    
 }
