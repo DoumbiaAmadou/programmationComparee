@@ -19,8 +19,12 @@ register () {
     if [ $# -ne 3 ]; then
         error "antroid.sh register login password"
     fi
+<<<<<<< HEAD
     echo $CURL $ANTROID/register -d login=$2 -d password=$3
     $CURL $ANTROID/register -d login=$2 -d password=$3
+=======
+    $CURL -X POST $ANTROID/register -d login=$2 -d password=$3
+>>>>>>> c32da5337c76bd5e30cbc74c4eda36708609a3c3
 }
 
 auth () {
