@@ -1,6 +1,7 @@
 Langages utilises:
 Akka
 
+
 Liste des taches:
 
 *Prerequis
@@ -21,6 +22,3 @@ Liste des taches:
 
 
 PS: Penser a envoyer des rapports de bug
-
-
-
