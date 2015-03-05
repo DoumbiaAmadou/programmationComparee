@@ -31,7 +31,7 @@ void main(){
 		int n = 5;
 		int d[n];
 		for (int i = 0; i < n; i++) {
-			d[i] = math.rand() % 7;
+			d[i] = rand() % 7;
 		}
 		if (isFull(d,n))
 			cout << "d is full";
