@@ -26,6 +26,17 @@ bool isSuite(int d[], int n) {
 	return true;
 }
 
+void sort (int d[], int n) {
+	for (int i = 0; i < n; i++) {
+		for (int j = i; j < n; j++) 
+			if (d[i] > d[j]) {
+				int temp = d[j];
+				d[i] = d[j];
+				d[j] = temp;
+			}
+	}
+}
+
 int main(){
 	for (int t = 0; t < 100; t++) {
 		int n = 5;
@@ -33,6 +44,7 @@ int main(){
 		for (int i = 0; i < n; i++) {
 			d[i] = rand() % 7;
 		}
+		sort(d,n);
 		if (isFull(d,n))
 			cout << "d is full";
 		else if (isSuite(d,n))
