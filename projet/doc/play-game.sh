@@ -6,10 +6,28 @@ PACE=10
 E0=1
 A0=100
 
-if [ ! -e jq ]; then
-  curl -k http://stedolan.github.io/jq/download/linux64/jq
+install_jq() {
+  local system=$(uname -a)
+  local arch=
+
+  case "$system" in
+    Linux*x86_64*)
+      arch=linux64 ;;
+    Linux*)
+      arch=linux32 ;;
+    Darwin*x86_64*)
+      arch=osx64 ;;
+    Darwin*)
+      arch=osx32 ;;
+    *)
+      arch=linux64 ;;
+  esac
+
+  curl -sL "http://stedolan.github.io/jq/download/$arch/jq" > jq
   chmod u+x jq
-fi
+}
+
+[ ! -e jq ] && install_jq
 
 OUT=''
 ant () {

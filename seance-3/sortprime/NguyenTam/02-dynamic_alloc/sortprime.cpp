@@ -11,7 +11,7 @@ void setDefault(bool* prime, int num){
 
 void printPrime (bool* prime, int n) {
       if (prime[n]) {
-          cout << n << " is a prime" << endl; 
+          cout << n << " is a prime" << endl;
       }
 }
 
@@ -21,7 +21,7 @@ int eratosthene(int num){
 
       for(int i = 2; i < num; i++){
             if(i <= sqrt(num) && prime[i] == true){
-                  for(int j = i*2; j < num; j+=i){            
+                  for(int j = i*2; j < num; j+=i){
                         prime[j] = false;
                   }
             }
