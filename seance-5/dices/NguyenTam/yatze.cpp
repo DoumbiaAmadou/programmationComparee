@@ -26,7 +26,7 @@ bool isSuite(int d[], int n) {
 	return true;
 }
 
-void main(){
+int main(){
 	for (int t = 0; t < 100; t++) {
 		int n = 5;
 		int d[n];
@@ -38,5 +38,6 @@ void main(){
 		else if (isSuite(d,n))
 			cout << "d is suite";
 	}
+	return 0;
 }
 
