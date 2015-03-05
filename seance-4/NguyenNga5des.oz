@@ -31,5 +31,5 @@ proc {CinqDSuite Sol}
    end
 end
 
-{Browse {SearchAll CinqDFull}}
-{ExploreAll CinqDFull}
+{Browse {SearchAll CinqDSuites}}
+{ExploreAll CinqDSuites}
