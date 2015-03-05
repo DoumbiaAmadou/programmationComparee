@@ -8,6 +8,8 @@
 
 import Foundation
 
+
+
 for i in 0..<60000 {
     let values = [i/10000 % 6 + 1, i/1000 % 6 + 1, i/100 % 6 + 1, i/10 % 6 + 1, i % 6 + 1]
     var occurencies:[Int:Int] = [1:0, 2:0, 3:0, 4:0, 5:0, 6:0]
@@ -18,6 +20,7 @@ for i in 0..<60000 {
 
     var hasThreeOccurrencies = false
     var hasTwoOccurrencies = false
+    var suite = false
     
     for j in 1...6 {
         if occurencies[j]! == 3 {
@@ -28,8 +31,10 @@ for i in 0..<60000 {
             hasTwoOccurrencies = true
         }
     }
-    
-    if hasThreeOccurrencies && hasTwoOccurrencies {
+
+    suite = occurencies.values.array.filter{ $0 == 0 }.isEmpty
+        
+    if (hasThreeOccurrencies && hasTwoOccurrencies) || suite {
         for value in values {
             print("\(value) ")
         }
