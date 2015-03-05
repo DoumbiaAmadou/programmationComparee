@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	minDice = Dice(1)
-	maxDice = Dice(6)
+	minDie = Die(1)
+	maxDie = Die(6)
 
 	dicesCount = 5
 )
@@ -20,23 +20,23 @@ var (
 	errUnknownHand = errors.New("Unknown hand")
 )
 
-// Dice represents a dice
-type Dice int
+// Die represents a dice
+type Die int
 
-// Dices is an ordered set of dices
-type Dices [dicesCount]Dice
+// Dice is an ordered set of dices
+type Dice [dicesCount]Die
 
-func (d *Dices) Len() int           { return len(d) }
-func (d *Dices) Swap(i, j int)      { d[i], d[j] = d[j], d[i] }
-func (d *Dices) Less(i, j int) bool { return d[i] < d[j] }
+func (d *Dice) Len() int           { return len(d) }
+func (d *Dice) Swap(i, j int)      { d[i], d[j] = d[j], d[i] }
+func (d *Dice) Less(i, j int) bool { return d[i] < d[j] }
 
 // Clone returns a new copy of this set
-func (d Dices) Clone() Dices {
+func (d Dice) Clone() Dice {
 	return d
 }
 
 // Reverse reverses a dices set in-place
-func (d Dices) Reverse() (d2 Dices) {
+func (d Dice) Reverse() (d2 Dice) {
 	for i := range d {
 		j := dicesCount - i - 1
 		d2[j] = d[i]
@@ -47,11 +47,11 @@ func (d Dices) Reverse() (d2 Dices) {
 
 // A Stream represents a possibly infinite stream of dices sets.
 type Stream interface {
-	Filter(func(Dices) bool)
-	Next() Dices
+	Filter(func(Dice) bool)
+	Next() Dice
 }
 
-func (d Dices) String() string {
+func (d Dice) String() string {
 	var s bytes.Buffer
 
 	for _, v := range d {
@@ -63,25 +63,25 @@ func (d Dices) String() string {
 
 // A HandStream is the basic implementation of a Stream
 type HandStream struct {
-	filters []func(Dices) bool
-	dices   Dices
+	filters []func(Dice) bool
+	dices   Dice
 }
 
 // NewHandStream returns a new HandStream
 func NewHandStream() *HandStream {
 	hs := &HandStream{
-		filters: make([]func(Dices) bool, 1),
+		filters: make([]func(Dice) bool, 1),
 	}
 
 	for i := range hs.dices {
-		hs.dices[i] = minDice
+		hs.dices[i] = minDie
 	}
 
 	return hs
 }
 
 // Filter adds a new filter to the current stream
-func (hs *HandStream) Filter(fn func(Dices) bool) {
+func (hs *HandStream) Filter(fn func(Dice) bool) {
 	hs.filters = append(hs.filters, fn)
 }
 
@@ -103,14 +103,14 @@ func (hs *HandStream) accept() bool {
 }
 
 // Next returns the next dices set
-func (hs *HandStream) Next() *Dices {
+func (hs *HandStream) Next() *Dice {
 
 	for {
 
 		var i int
 
-		for ; i < dicesCount && hs.dices[i] == maxDice; i++ {
-			hs.dices[i] = minDice
+		for ; i < dicesCount && hs.dices[i] == maxDie; i++ {
+			hs.dices[i] = minDie
 		}
 
 		if i == dicesCount {
@@ -128,7 +128,7 @@ func (hs *HandStream) Next() *Dices {
 
 // Curr returns the current dices set, if it matches the filter(s). If it
 // doesn't, the first matching dices set is returned.
-func (hs *HandStream) Curr() *Dices {
+func (hs *HandStream) Curr() *Dice {
 	if hs.accept() {
 		return &hs.dices
 	}
@@ -137,7 +137,7 @@ func (hs *HandStream) Curr() *Dices {
 }
 
 // Produce gets a chan, write all dices sets on it and exits
-func (hs *HandStream) Produce(d chan Dices) {
+func (hs *HandStream) Produce(d chan Dice) {
 	for dices := hs.Curr(); dices != nil; dices = hs.Next() {
 		d <- *dices
 	}
@@ -145,11 +145,11 @@ func (hs *HandStream) Produce(d chan Dices) {
 	os.Exit(0)
 }
 
-var filters = map[string]func(Dices) bool{
-	"full": func(d Dices) bool {
+var filters = map[string]func(Dice) bool{
+	"full": func(d Dice) bool {
 		return d[0] == d[1] && d[1] == d[2] && d[3] == d[4]
 	},
-	"suit": func(d Dices) bool {
+	"suit": func(d Dice) bool {
 		step := d[0] - d[1]
 
 		if step != 1 && step != -1 {
@@ -163,7 +163,7 @@ var filters = map[string]func(Dices) bool{
 		}
 		return true
 	},
-	"none": func(d Dices) bool { return true },
+	"none": func(d Dice) bool { return true },
 }
 
 func printHands(hand string) (err error) {
@@ -177,7 +177,7 @@ func printHands(hand string) (err error) {
 	hs := NewHandStream()
 	hs.Filter(fn)
 
-	feed := make(chan Dices, 10)
+	feed := make(chan Dice, 10)
 
 	go hs.Produce(feed)
 
