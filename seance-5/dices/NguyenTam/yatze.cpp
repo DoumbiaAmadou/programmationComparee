@@ -1,4 +1,6 @@
-include <istream>
+#include <iostream>
+
+using namespace std;
 
 bool isFull(int d[], int n) {
 	for (int i = 0; i < n; i++) {
@@ -18,20 +20,36 @@ bool isSuite(int d[], int n) {
 		if (d[i] != d[i+1] - 1)
 			return false;
 	}
-	for (in i = 0; i < n; i++) {
+	for (int i = 0; i < n; i++) {
 		cout << d[i];
 	}
 	return true;
 }
 
-void main(){
-	int d = new int[5];
-	for (int i = 0; i < 5; i++) {
-		d[i] = math.rand() % 7;
+void sort (int d[], int n) {
+	for (int i = 0; i < n; i++) {
+		for (int j = i; j < n; j++) 
+			if (d[i] > d[j]) {
+				int temp = d[j];
+				d[i] = d[j];
+				d[j] = temp;
+			}
 	}
-	if (isFull(d))
-		cout << "d is full";
-	else if (isSuite(d))
-		cout << "d is suite";
+}
+
+int main(){
+	for (int t = 0; t < 100; t++) {
+		int n = 5;
+		int d[n];
+		for (int i = 0; i < n; i++) {
+			d[i] = rand() % 7;
+		}
+		sort(d,n);
+		if (isFull(d,n))
+			cout << "d is full";
+		else if (isSuite(d,n))
+			cout << "d is suite";
+	}
+	return 0;
 }
 
