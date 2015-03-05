@@ -31,8 +31,6 @@ enum Dice: Int {
     }
 }
 
-var dices = [Dice(), Dice(), Dice(), Dice(), Dice()]
-
 func succ(dices: [Dice]) -> [Dice] {
     var succ = [Dice]()
     
@@ -53,17 +51,27 @@ func showDices(dices: [Dice]){
     println(dices.map{"\($0.rawValue) "}.reduce("", combine: +))
 }
 
-while dices != [.Six, .Six, .Six, .Six, .Six] {
-    dices = succ(dices)
+func fullSuite(dices: [Dice]){
     var occurencies:[Dice:Int] = [.One:0, .Two:0, .Three:0, .Four:0, .Five:0, .Six:0]
+    
     for dice in dices {
         occurencies[dice] = occurencies[dice]! + 1
     }
+    
     let suite = occurencies.values.array.filter{ $0 == 0 }.isEmpty
     let full = !occurencies.values.array.filter{ $0 == 3 }.isEmpty && !occurencies.values.array.filter{ $0 == 2 }.isEmpty
-
+    
     if (full || suite) {
         showDices(dices)
     }
     
+    switch succ(dices) {
+    case let finished where finished.filter{$0 != .One}.isEmpty:
+        break
+    default:
+        fullSuite(succ(dices))
+    }
 }
+
+fullSuite([.One, .One, .One, .One, .One])
+
