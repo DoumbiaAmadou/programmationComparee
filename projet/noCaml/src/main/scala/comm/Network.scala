@@ -1,10 +1,10 @@
 package comm
 
-//XXX import scalaj.http._
 import sys.process._
 
-class Network{
-  /*toute ressemblance avec un code existant ne saurait être que fortuite*/
+/*toute ressemblance avec un code existant ne saurait être que fortuite*/
+object Network {
+  
   private val version_num = 0
   private val antroide_url="https://yann.regis-gianas.org/antroid/"+version_num
   private val cookies = ".cookies"
@@ -23,11 +23,14 @@ class Network{
     return cmd.!!
   }
   
-  def new_game(users:String, teaser:String, pace:Int, nb_turn:Int,
-               nb_ant_per_player:Int , nb_player:Int, 
-               minimal_nb_players:Int, intial_energy:Int,
-               initial_acid:Int):String={
-    //TODO voir la manière de présenté les argumanets sur plusieurs lignes
+  def new_game(  users:String,
+                 teaser:String, 
+                 pace:Int, nb_turn:Int,
+                 nb_ant_per_player:Int,
+                 nb_player:Int, 
+                 minimal_nb_players:Int,
+                 intial_energy:Int,
+                 initial_acid:Int):String={
     var cmd = curl+" "+antroide_url+"/create"
         cmd = cmd+" -d users="+users
         cmd = cmd+" --data-urlencode teaser="+teaser
@@ -74,14 +77,5 @@ class Network{
   def atomic(atom:String):String={
     val cmd = curl+" "+antroide_url+"/"+atom
     return cmd.!!
-  }
-}
-
-object Network {
-  def main(args: Array[String])={
-    val o = new Network
-    //val r = o.register("a1", "b1")
-    val r = o.auth("a1", "b1")
-    println(r)
   }
 }

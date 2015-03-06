@@ -15,7 +15,8 @@ class Game(
         val initial_acid:Int){
   
   val parse = new Parse(this)
-  private var idx = 0
+  //val party = parse.create_game
+  private var idx = 0//replacer 0 par party.id //correspond à l'id de la partie (il faut l'initialiser
   
   def id = idx
   def new_game()={
