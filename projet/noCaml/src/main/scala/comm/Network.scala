@@ -1,6 +1,6 @@
 package comm
 
- import scalaj.http._
+//XXX import scalaj.http._
 import sys.process._
 
 class Network{
