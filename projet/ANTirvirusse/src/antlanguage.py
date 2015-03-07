@@ -1,4 +1,5 @@
-from antcommand import *
+ # -*- coding: utf-8 -*-
+
 from abc import ABCMeta, abstractmethod
 
 ### Expressions of ant language 
@@ -11,7 +12,7 @@ class Expression(object):
         pass
 
 class Int(Expression):
-
+	# Integer variable
    	def __init__(self, value):
    		self.value = value
 
@@ -27,8 +28,9 @@ class Var(Expression):
 	def rawValue(self):
 		return "?%s" %(self.var_label)
 
-class Add(Expression):
+# Arithmetics
 
+class Add(Expression):
 	def __init__(self, left, right):
    		self.left = left
    		self.right = right
@@ -148,19 +150,21 @@ class Fork(Instruction):
 
 # Tests
 
-print Add(Int(1), Sub(See(), Mul(Int(3), Div(SeeAnt(), Var("x"))))).rawValue()
+# from antcommand import Left
+def test():	
+	print Add(Int(1), Sub(See(), Mul(Int(3), Div(SeeAnt(), Var("x"))))).rawValue()
 
-print InstructionCommand(Left()).rawValue()
-print InstructionCommand(Left(), "label").rawValue()
+	print InstructionCommand(Left()).rawValue()
+	print InstructionCommand(Left(), "label").rawValue()
 
-print Store("x", Add(Int(1), Int(2))).rawValue()
-print Store("x", Add(Int(1), Int(2)), "label").rawValue()
+	print Store("x", Add(Int(1), Int(2))).rawValue()
+	print Store("x", Add(Int(1), Int(2)), "label").rawValue()
 
-print Jump("jlabel").rawValue()
-print Jump("jlabel", "label").rawValue()
+	print Jump("jlabel").rawValue()
+	print Jump("jlabel", "label").rawValue()
 
-print ConditionalJump("x", "jlabel").rawValue()
-print ConditionalJump("x", "jlabel", "label").rawValue()
+	print ConditionalJump("x", "jlabel").rawValue()
+	print ConditionalJump("x", "jlabel", "label").rawValue()
 
-print Fork().rawValue()
-print Fork("label").rawValue()
+	print Fork().rawValue()
+	print Fork("label").rawValue()
