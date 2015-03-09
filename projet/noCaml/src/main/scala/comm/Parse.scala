@@ -2,20 +2,23 @@ package comm
 
 import game.Game
 import scala.collection.immutable._
-import aliases.Type._;
+import aliases.Type._
+import game.CreateGame
+import net.liftweb.json._
 
-class Parse(val game:Game){
+class Parse[T <: Game](val game:T){
   private var actions:SortedMap[AntNum,Command] = new TreeMap
   
   def register(login:String,password:String)={
     val json = Network.register(login,password)
   }
   
-  def auth(login:String,password:String)={
+  def auth(login:String,password:String):Boolean={
     val json = Network.auth(login,password)
+    false
   }
   
-  def new_game(  users:String,
+  def new_game(  users:String,//TODO remplacer par une liste de users
                  teaser:String, 
                  pace:Int, nb_turn:Int,
                  nb_ant_per_player:Int,
@@ -69,19 +72,12 @@ class Parse(val game:Game){
   def add_action(ant_num:Int,command:Command)=
     actions = actions + ((ant_num,command))
 
-  
-
-
-
 }
-
-
-
-
 
 object Parse{
   def main(args: Array[String])={
-    val game = new Game("","",0,0,0,0,0,0,0)
+    val game = new CreateGame("user","pass","","",0,0,0,0,0,0,0)
+    println("game id ="+game.id)
     val parse = new Parse(game)
     parse.add_action(0, Atk(20))
     parse.add_action(2, Left)
@@ -98,3 +94,4 @@ object Parse{
     parse.play()
   }
 }
+
