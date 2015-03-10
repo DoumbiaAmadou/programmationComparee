@@ -1,20 +1,18 @@
 from network_layer import *
-from antcommand import *
+#from antcommand import *
 
 class Ant():
 
-	def __init__(self, ident, energy, acid, brain, position):
+	def __init__(self, ident, energy, acid, brain, x, y):
 		self.ident = ident
 		self.energy = energy
 		self.acid = acid
 		self.brain = brain
-		self.position = position
+		self.x = x
+		self.y = y
 
-	def get_position (self):
-		return position
-
-	def set_position (self, position):
-		self.position = position
+	def get_id (self):
+		return ident
 
 	def add_hp (self, hp):
 		self.energy += hp
@@ -22,11 +20,36 @@ class Ant():
 	def minus_hp (self, hp):
 		self.energy -= hp
 
+	def get_energy (self):
+		return energy
+
+	def set_energy (self, energy):
+		this.energy = energy
+
 	def add_acid (self, acid):
 		self.acid += acid
 
 	def minus_acid (self, acid):
 		self.acid -= acid
+
+	def get_acid (self):
+		return acid
+
+	def set_acid (self, acid):
+		this.acid = acid
+
+	def get_brain (self):
+		return brain
+
+	def set_brain (self, brain):
+		this.brain = brain
+
+	def get_position (self):
+		return x, y
+
+	def set_position (self, x, y):
+		self.x = x
+		self.y = y
 
 class Case():
 
@@ -35,43 +58,35 @@ class Case():
 		self.x = x
 		self.y = y
 
-	def is_not_moved (self):
-		if is_food (x,y):
-			return TypeOfCase.Food
-		if is_obstacle (x,y):
-			return TypeOfCase.Obstacle
-
 	def is_food (self):
 		if Map.get_type_of_case_at (x,y) == Food.Wheat or Map.get_type_of_case_at (x,y) == Food.Fromage or Map.get_type_of_case_at (x,y) == Food.Sugar: 
 		   return True
 
 	def is_obstacle (self):
-		if Map.get_type_of_case_at (x,y) == Obstacle.Rock or Map.get_type_of_case_at (x,y) == Obstacle.Water or Map.get_type_of_case_at (x,y) == Obstacle.Obstacle : 
+		if Map.get_type_of_case_at (x,y) == Obstacle.Rock or Map.get_type_of_case_at (x,y) == Obstacle.Water or Map.get_type_of_case_at (x,y) == Obstacle.Obstacle: 
 		   return True
 
-
 class TypeOfCase():
-	Empty = 0
-	Food = 1
-	Obstacle = 2
+	Empty = 'empty'
+	Food = 'food'
+	Obstacle = 'Obstacle'
 
 class Obstacle():
-	Rock = 0
-	Water = 1
-	Grass = 2
+	Rock = 'rock'
+	Water = 'water'
+	Grass = 'grass'
 
 class Food():
-	Wheat = 0
-	Fromage = 1
-	Sugar = 2
+	Wheat = 'wheat'
+	Cheese = 'cheese'
+	Sugar = 'sugar'
 
 class Map():
 
-	def __init__(self, line, col, nb_ant, nb_enemy):
+	def __init__(self, line, col, nb_ant):
 		self.line = line
 		self.col = col
 		self.nb_ant = nb_ant
-		self.nb_enemy = nb_enemy
 		self.matrix = [[0 for x in range(line)] for x in range(col)]
 
 	def scan_map(self):
@@ -80,18 +95,43 @@ class Map():
 				matrix[l][c] = TypeOfCase.Empty # just false values
 		return matrix
 
+	def get_info (self, x, y, gid, cmds):
+		game = game_play (gid, cmds)
+		ants = []
+		for i in range(nb_ant):
+
+			ident = game[i][0]['id']
+			energy = game[i][0]['energy']
+			acid = game[i][0]['acid']
+			brain = game[i][0]['brain']
+			x = game[i][0]['x']
+			y = game[i][0]['y']
+
+			ant1 = Ant(ident, energy, acid, brain, x, y)
+			ants.append(ant1)
+
+			matrix[x-1][y-1] = game[i][1][0]['content']['kind']
+			matrix[x][y-1] = game[i][1][1]['content']['kind']
+			matrix[x+1][y-1] = game[i][1][2]['content']['kind']
+			matrix[x-1][y] = game[i][1][3]['content']['kind']
+			matrix[x][y] = game[i][1][4]['content']['kind']
+			matrix[x+1][y] = game[i][1][5]['content']['kind']
+			matrix[x-1][y+1] = game[i][1][6]['content']['kind']
+			matrix[x][y+1] = game[i][1][7]['content']['kind']
+			matrix[x+1][y+1] = game[i][1][8]['content']['kind']
+
 	def get_type_of_case_at(self, x, y):
 		# game_log, return empty or not
 		return maxtrix[x][y]
-
+''' # not use
 	def enemy_position(self):
-		# game_log, all positions of enemy
+		# all positions of enemy
 		pass
 
 	def ally_position(self):
-		# game_log, all positions of ally
+		# all positions of ally
 		pass
-
+'''
 class Action():
 	TurnLeft = 1
 	TurnRight = 2

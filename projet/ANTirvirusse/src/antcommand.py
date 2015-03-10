@@ -58,7 +58,6 @@ class Hack(Command):
       instructions_list += instruction.rawValue()+";"
     return "hack@[%s]" %(instructions_list)
 
-
 # Tests
 
 def test():
