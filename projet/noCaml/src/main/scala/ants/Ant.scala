@@ -3,8 +3,11 @@ package ants
 import ants.behaviors._;
 
 /* TODO: Peut etre remplacer direction [partie Comm qui decide]*/
-abstract class Ant (val numAnt: Int, val energy:Int, 
-    val acid:Int, val direction: Int, val behavior: Behavior) {
+abstract class Ant (  val numAnt: Int, 
+                      val energy:Int, 
+                      val acid:Int,
+                      val direction: Int,
+                      val behavior: Behavior){
   
   /* 
    * Pas le droit de modifier l'objet [Contrainte] donc on en créer un nouveau

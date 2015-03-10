@@ -48,7 +48,7 @@ object Network {
   }
   
   def status(game_id:String):String={
-    val cmd = curl+" "+antroide_url+"/status id="+game_id
+    val cmd = curl+" -G "+antroide_url+"/status -d id="+game_id
     println("cmd=[ "+cmd+" ]\n\n")//debug
     return cmd.!!
   }
@@ -60,7 +60,8 @@ object Network {
   }
   
   def destroy(game_id:String):String={
-    val cmd = curl+" "+antroide_url+"/destroy id="+game_id
+    val cmd = curl+" -G "+antroide_url+"/destroy -d id="+game_id
+    println("cmd=[ "+cmd+" ]\n\n")//debug
     return cmd.!!
   }
   
@@ -71,17 +72,18 @@ object Network {
   }
   
   def observe(game_id:String,ant_id:Int):String={
-    val cmd = curl+" "+antroide_url+"/observe id="+game_id+" -d antid="+ant_id
+    val cmd = curl+" -G "+antroide_url+"/observe id="+game_id+" -d antid="+ant_id
     return cmd.!!
   }
   
   def log(game_id:String):String={
-    val cmd = curl+" "+antroide_url+"/log id="+game_id
+    val cmd = curl+" -G "+antroide_url+"/log -d id="+game_id
     return cmd.!!
   }
   
   def atomic(atom:String):String={
     val cmd = curl+" "+antroide_url+"/"+atom
+    println("cmd=[ "+cmd+" ]\n\n")//debug
     return cmd.!!
   }
 }

@@ -58,12 +58,10 @@ class ObservationSerializer extends CustomSerializer[Observations](format => (
                           ::Nil))   
                       :: Nil)=>
          var ant_infos : List[AntInfos]=Nil
-         println("\n\n")
          /*list des informations sur les fourmies*/
          for(ant_inf <- list_ant){
            var ant_state : AntState = null
            var ant_view : List[AntView] = Nil
-           println("Ant Info:")
            ant_inf match{
              case JArray(a_l:List[JValue])=>
                for( a <-a_l){
@@ -77,16 +75,15 @@ class ObservationSerializer extends CustomSerializer[Observations](format => (
                                   ::JField("id",JInt(id))
                                   ::JField("energy",JInt(energy))
                                   ::JField("acid",JInt(acid))
-                                  ::Nil)=> println("id["+id+"] coord["+x+";"+y+"]")
-                                           ant_state = new AntState(  x.intValue,
-                                                                      y.intValue,
-                                                                      dx.intValue,
-                                                                      dy.intValue,
-                                                                      brain,
-                                                                      id.intValue,
-                                                                      energy.intValue,
-                                                                      acid.intValue)
-                   /*informations sur l'environnemet d'un fourmie*/
+                                  ::Nil)=>ant_state = new AntState(  x.intValue,
+                                                                     y.intValue,
+                                                                     dx.intValue,
+                                                                     dy.intValue,
+                                                                     brain,
+                                                                     id.intValue,
+                                                                     energy.intValue,
+                                                                     acid.intValue)
+                   /*informations sur l'environnemet d'un fourmi*/
                    case JArray(view:List[JValue])=>
                      for(v <- view){
                        v match{
@@ -94,8 +91,7 @@ class ObservationSerializer extends CustomSerializer[Observations](format => (
                                  JField("y",JInt(y))::
                                  JField("content",JObject(List(JField("kind",JString(kind)))))
                                  ::Nil
-                              )=>println("["+x+";"+y+"]"+kind)
-                                 ant_view = ant_view.::(new AntView(x.intValue,y.intValue,List(Kind(kind))))
+                              )=>ant_view = ant_view.::(new AntView(x.intValue,y.intValue,List(Kind(kind))))
                          case _=>
                        }                           
                      }

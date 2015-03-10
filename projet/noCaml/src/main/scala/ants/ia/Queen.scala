@@ -1,6 +1,5 @@
 package ants.ia
 
-import comm.Parse
 import ants.Ant
 
 //Pour le moment je mets ici jusqu'a avoir la vraie classe
@@ -11,7 +10,7 @@ class World {
 }
   
 
-class Queen (parser: Parse) {
+class Queen () {
 
   
   def turn(world: World, ants: List[Ant]) : Unit = { //Un peu à l'aveugle

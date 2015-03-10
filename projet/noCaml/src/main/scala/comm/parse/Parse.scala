@@ -53,17 +53,17 @@ class Parse[T <: Game](val game:T){
     return JSONParse.msg_create(json).response.identifier
   }
   
-  def status()={
+  def status={
      val json = Network.status(game.id)
      error_msg(json)
   }
   
-  def join()={
+  def join={
      val json = Network.join(game.id)
      error_msg(json)
   }
   
-  def destroy()={
+  def destroy={
      val json = Network.destroy(game.id)
      error_msg(json)
   }
@@ -73,10 +73,18 @@ class Parse[T <: Game](val game:T){
      error_msg(json)
   }
   
-  def log()={
+  def log={
      val json = Network.log(game.id)
      error_msg(json)
   }
+  
+  def api = atomic("api")
+  
+  def whoami = atomic("whoami")
+  
+  def logout = atomic("logout")
+  
+  def games = atomic("games")
   
   def atomic(atom:String)={
      val json = Network.atomic(atom)
@@ -85,7 +93,7 @@ class Parse[T <: Game](val game:T){
   
   /**envoyer toutes les actions*/
   def play():Observations={
-    val cmds:String = actions.foldLeft("")((acc,kv)=>acc+parse_action(kv._1,kv._2))////////////////////////////////////TODO voir pourquoi ça marche pas //+";")
+    val cmds:String = actions.foldLeft("")((acc,kv)=>acc+parse_action(kv._1,kv._2)+",")
     println("CHAINE : "+cmds)//TODO info debug à retirer
     val json = Network.play(game.id, cmds)
     error_msg(json)
