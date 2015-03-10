@@ -1,6 +1,8 @@
-from antcommand import *
+ # -*- coding: utf-8 -*-
+
 from abc import ABCMeta, abstractmethod
 
+### Expressions of ant language 
 
 class Expression(object):
     __metaclass__ = ABCMeta
@@ -10,7 +12,7 @@ class Expression(object):
         pass
 
 class Int(Expression):
-
+	# Integer variable
    	def __init__(self, value):
    		self.value = value
 
@@ -26,8 +28,9 @@ class Var(Expression):
 	def rawValue(self):
 		return "?%s" %(self.var_label)
 
-class Add(Expression):
+# Arithmetics
 
+class Add(Expression):
 	def __init__(self, left, right):
    		self.left = left
    		self.right = right
@@ -80,58 +83,88 @@ class SeeAnt():
 	def rawValue(self):
 		return "ant_see"
 
+### Instructions of ant language 
 
 class Instruction(object):
     __metaclass__ = ABCMeta
 
-    @abstractmethod
+    def __init__(self, instr_label=None):
+   		self.instr_label = instr_label
+
     def rawValue(self):
-        pass
+		if self.instr_label is not None:
+			return self.instr_label+">"
+		else:
+			return ""
 
 class InstructionCommand(Instruction):
 
-   	def __init__(self, command):
+   	def __init__(self, command, instr_label=None):
    		self.command = command
+   		super(InstructionCommand, self).__init__(instr_label)
 
 	def rawValue(self):
-		return self.command.rawValue()
+		return super(InstructionCommand, self).rawValue() + self.command.rawValue()
 
 class Store(Instruction):
 	# 'store!x!e' stores the evaluation of the expression 'e' in variable 'x'
 
-	def __init__(self, var_label, expression):
+	def __init__(self, var_label, expression, instr_label=None):
 		self.var_label = var_label
 		self.expression = expression
+		super(Store, self).__init__(instr_label)
 
 	def rawValue(self):
-		return "store!%s!%s" %(self.var_label, self.expression.rawValue())
+		return super(Store, self).rawValue() + "store!%s!%s" %(self.var_label, self.expression.rawValue())
 
 class Jump(Instruction):
 	# 'jump!L' to go to a label L
 
-	def __init__(self, label):
-		self.label = label
+	def __init__(self, to_label, instr_label=None):
+		self.to_label = to_label
+		super(Jump, self).__init__(instr_label)
 
 	def rawValue(self):
-		return "jump!%s" %(self.label)
+		return super(Jump, self).rawValue() +"jump!%s" %(self.to_label)
 
 class ConditionalJump(Instruction):
 	# 'jumpifz!x!L' to go to a label L if the variable x is 0
 
-	def __init__(self, var_label, label):
-		self.var_label = var_label
-		self.label = label
+	def __init__(self, var_label, to_label, instr_label=None):
+		self.var_label 	= var_label
+		self.to_label 	= to_label
+		super(ConditionalJump, self).__init__(instr_label)
 
 	def rawValue(self):
-		return "jumpifz!%s!%s" %(self.var_label, self.label)
+		return super(ConditionalJump, self).rawValue() + "jumpifz!%s!%s" %(self.var_label, self.to_label)
 
 class Fork(Instruction):
 	# 'fork' to fork the current ant's code into a dead ant
 
+	def __init__(self, instr_label=None):
+		super(Fork, self).__init__(instr_label)
+
 	def rawValue(self):
-		return "fork"
+		return super(Fork, self).rawValue() + "fork"
 
 
-print Add(Int(1), Sub(See(), Mul(Int(3), Div(SeeAnt(), Int(5))))).rawValue()
-print InstructionCommand(Left()).rawValue()
+# Tests
 
+# from antcommand import Left
+def test():	
+	print Add(Int(1), Sub(See(), Mul(Int(3), Div(SeeAnt(), Var("x"))))).rawValue()
+
+	print InstructionCommand(Left()).rawValue()
+	print InstructionCommand(Left(), "label").rawValue()
+
+	print Store("x", Add(Int(1), Int(2))).rawValue()
+	print Store("x", Add(Int(1), Int(2)), "label").rawValue()
+
+	print Jump("jlabel").rawValue()
+	print Jump("jlabel", "label").rawValue()
+
+	print ConditionalJump("x", "jlabel").rawValue()
+	print ConditionalJump("x", "jlabel", "label").rawValue()
+
+	print Fork().rawValue()
+	print Fork("label").rawValue()
