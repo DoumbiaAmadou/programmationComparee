@@ -3,7 +3,7 @@ open Nethttp_client.Convenience
 exception HttpPostError
 exception HttpGetError
   
-(* The static prefix of the server URL *)
+(* Prefix of the server URL *)
 let prefix_url = "http://yann.regis-gianas.org/antroid/"
 
 (* The current version of the API *)
@@ -21,8 +21,14 @@ let register_user l p =
   let url = concat_url url "register" in 
   let post_params = [("login",l); ("password",p)] in
   try 
-    let s = http_post url post_params in  
-    Printf.printf "%s\n" s
+    let json_string = http_post url post_params in
+    let json = Yojson.Basic.from_string json_string in
+    let open Yojson.Basic.Util in
+    let status = json |> member "status" |> to_string in
+    match status with
+    | "error" -> false
+    | "completed" -> true
+    | _ -> assert false 
   with _ -> raise HttpPostError
 
 (* [auth_user l p] make the authentication of a user having the login [l] and 
@@ -31,29 +37,63 @@ let auth_user l p =
   let url = concat_url url "auth" in
   let post_params = [("login",l); ("password",p)] in
   try 
-    let s = http_post url post_params in
-    Printf.printf "%s\n" s
+    let json_string = http_post url post_params in
+    let json = Yojson.Basic.from_string json_string in
+    let open Yojson.Basic.Util in
+    let status = json |> member "status" |> to_string in
+    match status with 
+    | "error" -> false
+    | "completed" -> true
+    | _ -> assert false 
   with _ -> raise HttpPostError
 
+(* [is_between min max v] check if the value [v] is between [min] and [max]. *)
+let is_between min max v = v >= min && min <= max
+
+(* [check_users_id users] test if [users] is well formed. *)
+let check_users_id users =
+  let regexp = Str.regexp "^\\([0-9A-Za-z]+\\)\\(,[0-9A-Za-z]+\\)*$" in
+  users = "all" || Str.string_match regexp users 0
+
+(* [encode str] replace all space character in [space] by the character "+" *)
+let encode str = Str.global_replace (Str.regexp " ") "+" str
+
+exception BadFormatArgument
+  
 (* [create_new_game users teaser pace nb_turn nb_ant_per_player nb_player
    minimal_nb_player initial_energy initial_acid] try to create a new game.
    Raise an HttpGetError exception if the request fails. *)
 let create_new_game ~users ~teaser ~pace ~nb_turn ~nb_ant_per_player
-    ~nb_player ~minimal_nb_player ~initial_energy ~initial_acid =  
-  let url = concat_url url "create" in
-  let url = url ^ "?users=" ^ users ^
-            "&teaser=" ^ teaser ^
-            "&pace=" ^ (string_of_int pace) ^
-            "&nb_turn=" ^ (string_of_int nb_turn) ^
-            "&nb_ant_per_player=" ^ (string_of_int nb_ant_per_player) ^
-            "&nb_player=" ^ (string_of_int nb_player) ^
-            "&minimal_nb_player=" ^ (string_of_int minimal_nb_player) ^
-            "&initial_energy=" ^ (string_of_int initial_energy) ^
+    ~nb_player ~minimal_nb_player ~initial_energy ~initial_acid =
+  let predicates =
+    [ check_users_id users;
+      is_between 1 100 pace;
+      is_between 1 10000 nb_turn;
+      is_between 1 42 nb_ant_per_player;
+      is_between 1 42 nb_player;
+      is_between 1 nb_player minimal_nb_player;
+      is_between 1 1000 initial_energy;
+      is_between 1 1000 initial_acid
+    ] in
+  let b = List.fold_left (fun acc p -> acc && p) true predicates in
+  if b then 
+    let url = concat_url url "create" in
+    let url = url ^ "?users=" ^ users ^
+              "&teaser=" ^ encode(teaser) ^
+              "&pace=" ^ (string_of_int pace) ^
+              "&nb_turn=" ^ (string_of_int nb_turn) ^
+              "&nb_ant_per_player=" ^ (string_of_int nb_ant_per_player) ^
+              "&nb_player=" ^ (string_of_int nb_player) ^
+              "&minimal_nb_player=" ^ (string_of_int minimal_nb_player) ^
+              "&initial_energy=" ^ (string_of_int initial_energy) ^
             "&initial_acid=" ^ (string_of_int initial_acid) in
-  try
-    let s = http_get url in
-    Printf.printf "%s\n" s
-  with _ -> raise HttpGetError 
+    try
+      Printf.printf "%s\n" url;
+      let s = http_get url in
+      Printf.printf "%s\n" s
+    with _ -> raise HttpGetError
+  else raise BadFormatArgument
+    
 
 (* [do_game_action i action] will send a request, doing the action [action], 
    to the game having the id [i]. Raise an HttpGetError if the request fails. *)
@@ -84,6 +124,7 @@ let get_current_games () =
     let s = http_get url in
     Printf.printf "%s\n" s
   with _ -> raise HttpGetError
+
 
 
 
