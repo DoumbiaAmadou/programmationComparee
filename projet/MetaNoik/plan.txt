@@ -1,8 +1,24 @@
 Langages utilises:
 Akka
 
-Organisation:
--Gerer les interactions avec le serveur
--Interface graphique
--Premier programme pour une fourmi
--Premier programme pour un zombie
+
+Liste des taches:
+
+*Prerequis
+1-Apprendre ce qu’est la programmation avec acteurs
+2-regarder comment envoyer des requêtes html en akka
+
+*Fourmis:
+1-Premier programme pour une fourmi qui avance simplement
+2-pour Olden: mettre toutes les fourmis ensemble
+3-Ameliorer fourmis
+
+*Carte:
+1-mapping de la carte
+
+*Zombie:
+1-Premier programme pour un zombie simple
+2-Ameliorer zombie
+
+
+PS: Penser a envoyer des rapports de bug
