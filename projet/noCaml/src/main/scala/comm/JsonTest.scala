@@ -4,7 +4,7 @@ import net.liftweb.json._
 import net.liftweb.json.Serialization.{read, write => swrite}
 import net.liftweb.json.FieldSerializer._
 
-
+/*
 //trait Response
 abstract class Response()
 case class ErrorResponse(error_code:Int,error_msg:String)extends Response
@@ -17,7 +17,7 @@ class ResponseSerializer extends CustomSerializer[ErrorResponse](format => (
     {
       case JObject(JField("status", JString("error"))::JField("response", JObject(JField("error_code",JInt(errc)) :: JField("error_msg",JString(errm)):: Nil)) :: Nil) =>
         new ErrorResponse(errc.intValue,errm.toString)
-      case JObject(List(JField("status",JString(status)), JField("response",JObject(List()))))=>
+      case JObject(List(JField("status",JString(status)), JField("response",JObject(a:List[JValue]))))=>
         new ErrorResponse(0,"no error")
 
     },
@@ -36,9 +36,11 @@ case class Observations(val status:String, val turn:Int, val ants_infos:List[Ant
 object JsonTest {
   def main(args: Array[String])={
     val foo = Foo()
-    foo.foo
+    foo.bar
   }
 }
+
+/*divers tests*/
 case class Foo(){
 	
   
@@ -47,9 +49,9 @@ case class Foo(){
     implicit val formats = Serialization.formats(NoTypeHints) + new ResponseSerializer
     val data = DataJson
     
-    val json1 = parse(data.auth_ok)    
+    val json1 = net.liftweb.json.parse(data.auth_ok)    
     println("#1#"+json1 +"\n\n")
-    val json2 = parse(data.auth_err)    
+    val json2 = net.liftweb.json.parse(data.auth_err)    
     println("#2#"+json2)
     println("#1#"+json1.extractOpt[ParseJson])
     println("#2#"+json2.extractOpt[ParseJson])
@@ -62,7 +64,7 @@ case class Foo(){
   def baz={
     implicit val formats = Serialization.formats(NoTypeHints) + new ResponseSerializer
     val data = DataJson
-    val json = parse(data.auth_err)
+    val json = net.liftweb.json.parse(data.auth_err)
     println(json)
   }
   
@@ -137,7 +139,7 @@ case class Foo(){
 
     implicit val formats = Serialization.formats(NoTypeHints) + new MySerializer
 
-    val json = parse(DataJson.play)
+    val json = net.liftweb.json.parse(DataJson.play)
     println(json)
     val obs:Observations = read[Observations](DataJson.play) 
     println("\n\n"+obs.turn)
@@ -150,7 +152,7 @@ case class Foo(){
 
 
 
-
+/*exemples de données reçu après une requête*/
 object DataJson {
     val register = """{ "status": "completed", "response": {} }"""
     val auth_err ="""{
@@ -353,3 +355,4 @@ object DataJson {
     
 
 }
+*/
