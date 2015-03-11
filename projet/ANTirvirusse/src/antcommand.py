@@ -23,6 +23,11 @@ class Command(object):
   def rawValue(self):
     pass
 
+class Rest(Command):
+
+  def rawValue(self):
+    return "rest"
+
 class Left(Command):
 
   def rawValue(self):

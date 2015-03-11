@@ -1,5 +1,5 @@
 from network_layer import *
-#from antcommand import *
+from antcommand import *
 
 class Ant():
 
@@ -10,6 +10,7 @@ class Ant():
 		self.brain = brain
 		self.x = x
 		self.y = y
+		self.nextCommand = Rest()
 
 	def get_id (self):
 		return ident
@@ -50,6 +51,24 @@ class Ant():
 	def set_position (self, x, y):
 		self.x = x
 		self.y = y
+
+	def rest():
+		nextCommand = Rest()
+
+	def forward():
+		nextCommand = Forward()
+
+	def left():
+		nextCommand = Left()
+
+	def right():
+		nextCommand = Right()
+
+	def attack(level):
+		nextCommand = Attack(level)
+
+	def hack(instructions):
+		nextCommand = Hack(instructions)
 
 class Case():
 
