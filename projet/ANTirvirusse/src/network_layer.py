@@ -10,6 +10,7 @@ from antcommand import *
 base_url = "https://yann.regis-gianas.org/antroid/0"
 cj = CookieJar()
 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
+pp = pprint.PrettyPrinter(indent=4)
 
 def makeURL(command):
 	return "%s/%s" %(base_url, command)
@@ -256,7 +257,9 @@ def test():
 		print game_status(gid)
 		print get_games()
 		game_join(gid)
-		print game_play(gid, [AttachedCommand(0, Left()), AttachedCommand(1, Forward())])
+		pp.pprint(game_play(gid, [AttachedCommand(0, Left()), AttachedCommand(1, Forward())]))
 		print game_status(gid)
 		game_destroy(gid)
 		logout()
+
+test()
