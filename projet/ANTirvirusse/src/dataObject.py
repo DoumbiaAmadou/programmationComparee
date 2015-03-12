@@ -110,18 +110,10 @@ class Food():
 
 class Map():
 
-	def __init__(self, line, col, nb_ant):
-		self.line = line
-		self.col = col
+	def __init__(self, nb_ant):
 		self.nb_ant = nb_ant
 		self.mapDict = {}
 		self.ants = []
-
-	def scan_map(self):
-		for l in line:
-			for c in col:
-				matrix[l][c] = TypeOfCase.Empty # just false values
-		return matrix
 
 	def get_info (self, x, y, gid, cmds):
 		game = game_play (gid, cmds)
@@ -149,9 +141,20 @@ class Map():
 			mapDict[(x+1, y+1)] = game[i][1][8]['content']['kind']
 
 	def get_type_of_case_at(self, x, y):
-		# game_log, return empty or not
 		return mapDict[(x, y)]
-		
+
+	def set_type_of_case_at(self, x, y, typeCase):
+		mapDict[(x, y)] = typeCase
+	
+	def get_nbAnt(self):
+		return nb_ant
+
+	def get_ants_list(self):
+		return ants
+
+	def get_map_dict(self):
+		return mapDict
+
 ''' # not use
 	def enemy_position(self):
 		# all positions of enemy
