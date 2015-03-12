@@ -20,7 +20,7 @@ class Player(object):
     def register(cls, login, password):
         if nl.register_user(login, password):
             return Player(login, password)
-        if nl.login("vlad", "muravei"):
+        if nl.login(login, password):
             return None
 
     def get_created_games():
