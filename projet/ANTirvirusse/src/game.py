@@ -97,7 +97,7 @@ class Game():
 	def show_state():
 		print nl.game_status(self.game_id)
 
-
-if nl.login("vlad", "muravei"):
-	game = create_game(teaser='Test',users='vlad',pace=50, nb_turn=100, nb_ant_per_player=3, nb_player=2, minimal_nb_player=1, initial_energy=100, initial_acid=50)
-	game.destroy()
+def test():
+	if nl.login("vlad", "muravei"):
+		game = create_game(teaser='Test',users='vlad',pace=50, nb_turn=100, nb_ant_per_player=3, nb_player=2, minimal_nb_player=1, initial_energy=100, initial_acid=50)
+		game.destroy()
