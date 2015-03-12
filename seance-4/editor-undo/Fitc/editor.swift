@@ -9,14 +9,14 @@
 import Foundation
 
 typealias Text = String
-typealias Chariot = Int
+typealias Focus = Int
 
 let standardInput = NSFileHandle.fileHandleWithStandardInput()
 
-var textsHead: [(Text, Chariot)] = [("", 0)]
-var textsTail: [(Text, Chariot)] = []
+var textsHead: [(Text, Focus)] = [("", 0)]
+var textsTail: [(Text, Focus)] = []
 
-var currentState: (Text, Chariot) {
+var currentState: (Text, Focus) {
     return textsHead.last ?? ("",0)
 }
 
@@ -24,7 +24,7 @@ var currentText: Text {
     return textsHead.last?.0 ?? ""
 }
 
-var currentChariot: Chariot {
+var currentFocus: Focus {
     return textsHead.last?.1 ?? 0
 }
 
@@ -32,14 +32,16 @@ var currentTextLength: Int {
     return countElements(currentText.0)
 }
 
-var currentChariotIndex: String.Index {
+var currentFocusIndex: String.Index {
     return advance(currentText.0.startIndex, currentState.1)
 }
 
 enum Command {
-    case AddString(String)
-    case MoveChariot(Int)
+    case InsertString(String)
+    case MoveFocus(Int)
     case DeleteChar
+    case InsertChar(Character)
+    case ChangeChar(Character)
     case Undo
     case Redo
 }
@@ -47,13 +49,13 @@ enum Command {
 func processCommand(command: Command){
     switch command {
         
-    case .AddString(let string):
-        let left = currentText.substringToIndex(currentChariotIndex)
-        let right = currentText.substringFromIndex(currentChariotIndex)
-        textsHead.append(left + string + right, currentChariot+countElements(string))
+    case .InsertString(let string):
+        let left = currentText.substringToIndex(currentFocusIndex)
+        let right = currentText.substringFromIndex(currentFocusIndex)
+        textsHead.append(left + string + right, currentFocus+countElements(string))
         
-    case .MoveChariot(let offset):
-        switch currentChariot + offset {
+    case .MoveFocus(let offset):
+        switch currentFocus + offset {
         case let c where c > currentTextLength:
             textsHead.append(currentText, currentTextLength)
             
@@ -61,14 +63,26 @@ func processCommand(command: Command){
             textsHead.append(currentText, 0)
             
         default:
-            textsHead.append(currentText, currentChariot + offset)
+            textsHead.append(currentText, currentFocus + offset)
         }
         
     case .DeleteChar:
-        let left = currentText.substringToIndex(currentChariotIndex.predecessor())
-        let right = currentText.substringFromIndex(currentChariotIndex)
+        let left = currentText.substringToIndex(currentFocusIndex.predecessor())
+        let right = currentText.substringFromIndex(currentFocusIndex)
         
-        textsHead.append(left + right, currentChariot-1)
+        textsHead.append(left + right, currentFocus-1)
+        
+    case .InsertChar(let char):
+        let left = currentText.substringToIndex(currentFocusIndex)
+        let right = currentText.substringFromIndex(currentFocusIndex)
+        
+        textsHead.append(left + String(char) + right, currentFocus)
+        
+    case .ChangeChar(let char):
+        let left = currentText.substringToIndex(currentFocusIndex.predecessor())
+        let right = currentText.substringFromIndex(currentFocusIndex)
+
+        textsHead.append(left + String(char) + right, currentFocus)
         
     case .Undo:
         if let previousText = textsHead.last {
@@ -96,23 +110,31 @@ func processInput(input: String) -> Command? {
     switch inputCmd {
         
     case "A" where countElements(input) > 2:
-        return Command.AddString(input.substringFromIndex(advance(input.startIndex, 2)))
+        return Command.InsertString(input.substringFromIndex(advance(input.startIndex, 2)))
         
-    case "M" where countElements(input) > 2:
-        if let offset = input.substringFromIndex(advance(input.startIndex, 2)).toInt() {
-            return Command.MoveChariot(offset)
-        } else {
-            fallthrough
-        }
-    
+    case "C" where countElements(input) > 2:
+        let char = Array(input.substringFromIndex(advance(input.startIndex, 2)))[0]
+        return Command.ChangeChar(char)
+        
     case "D":
         return Command.DeleteChar
         
-    case "U":
-        return Command.Undo
+    case "I" where countElements(input) > 2:
+        let char = Array(input.substringFromIndex(advance(input.startIndex, 2)))[0]
+        return Command.InsertChar(char)
         
+    case "M" where countElements(input) > 2:
+        if let offset = input.substringFromIndex(advance(input.startIndex, 2)).toInt() {
+            return Command.MoveFocus(offset)
+        } else {
+            fallthrough
+        }
+
     case "R":
         return Command.Redo
+        
+    case "U":
+        return Command.Undo
         
     default:
         println("Wrong command: \(input)")
