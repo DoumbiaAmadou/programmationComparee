@@ -114,7 +114,8 @@ class Map():
 		self.line = line
 		self.col = col
 		self.nb_ant = nb_ant
-		self.matrix = [[0 for x in range(line)] for x in range(col)]
+		self.mapDict = {}
+		self.ants = []
 
 	def scan_map(self):
 		for l in line:
@@ -124,7 +125,7 @@ class Map():
 
 	def get_info (self, x, y, gid, cmds):
 		game = game_play (gid, cmds)
-		ants = []
+
 		for i in range(nb_ant):
 
 			ident = game[i][0]['id']
@@ -137,19 +138,20 @@ class Map():
 			ant1 = Ant(ident, energy, acid, brain, x, y)
 			ants.append(ant1)
 
-			matrix[x-1][y-1] = game[i][1][0]['content']['kind']
-			matrix[x][y-1] = game[i][1][1]['content']['kind']
-			matrix[x+1][y-1] = game[i][1][2]['content']['kind']
-			matrix[x-1][y] = game[i][1][3]['content']['kind']
-			matrix[x][y] = game[i][1][4]['content']['kind']
-			matrix[x+1][y] = game[i][1][5]['content']['kind']
-			matrix[x-1][y+1] = game[i][1][6]['content']['kind']
-			matrix[x][y+1] = game[i][1][7]['content']['kind']
-			matrix[x+1][y+1] = game[i][1][8]['content']['kind']
+			mapDict[(x-1, y-1)] = game[i][1][0]['content']['kind']
+			mapDict[(x, y-1)] = game[i][1][1]['content']['kind']
+			mapDict[(x+1, y-1)] = game[i][1][2]['content']['kind']
+			mapDict[(x-1, y)] = game[i][1][3]['content']['kind']
+			mapDict[(x, y)] = game[i][1][4]['content']['kind']
+			mapDict[(x+1, y)] = game[i][1][5]['content']['kind']
+			mapDict[(x-1, y+1)] = game[i][1][6]['content']['kind']
+			mapDict[(x, y+1)] = game[i][1][7]['content']['kind']
+			mapDict[(x+1, y+1)] = game[i][1][8]['content']['kind']
 
 	def get_type_of_case_at(self, x, y):
 		# game_log, return empty or not
-		return maxtrix[x][y]
+		return mapDict[(x, y)]
+		
 ''' # not use
 	def enemy_position(self):
 		# all positions of enemy
