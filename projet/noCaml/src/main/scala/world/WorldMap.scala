@@ -1,6 +1,6 @@
-package map
+package world
 
-class Map {
+class WorldMap {
   
   def init(size:Int) {
     var x = Array.ofDim[Position](size, size);

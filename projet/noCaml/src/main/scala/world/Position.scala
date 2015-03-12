@@ -1,4 +1,4 @@
-package map
+package world
 
 class Position(val environment : Int = 0, val ant: String = "") {
   def makePosition (a: String) : Position = {
