@@ -1,16 +1,21 @@
+ # -*- coding: utf-8 -*-
+
 from network_layer import *
 from antcommand import *
 
 class Ant():
 
-	def __init__(self, ident, energy, acid, brain, x, y):
+	def __init__(self, ident, energy, acid, brain, x=0, y=0):
 		self.ident = ident
 		self.energy = energy
 		self.acid = acid
 		self.brain = brain
 		self.x = x
 		self.y = y
-		self.nextCommand = Rest()
+		self.next_command = Left()
+
+	def __str__(self):
+		return "Ant id: %i brain: %r energy: %i acid: %i [x: %i, y: %i]" %(self.ident, self.brain, self.energy, self.acid, self.x, self.y)
 
 	def get_id (self):
 		return ident
@@ -25,7 +30,7 @@ class Ant():
 		return energy
 
 	def set_energy (self, energy):
-		this.energy = energy
+		self.energy = energy
 
 	def add_acid (self, acid):
 		self.acid += acid
@@ -37,13 +42,13 @@ class Ant():
 		return acid
 
 	def set_acid (self, acid):
-		this.acid = acid
+		self.acid = acid
 
 	def get_brain (self):
 		return brain
 
 	def set_brain (self, brain):
-		this.brain = brain
+		self.brain = brain
 
 	def get_position (self):
 		return x, y
@@ -53,22 +58,22 @@ class Ant():
 		self.y = y
 
 	def rest():
-		nextCommand = Rest()
+		self.next_command = Rest()
 
 	def forward():
-		nextCommand = Forward()
+		self.next_command = Forward()
 
 	def left():
-		nextCommand = Left()
+		self.next_command = Left()
 
 	def right():
-		nextCommand = Right()
+		self.next_command = Right()
 
 	def attack(level):
-		nextCommand = Attack(level)
+		self.next_command = Attack(level)
 
 	def hack(instructions):
-		nextCommand = Hack(instructions)
+		self.next_command = Hack(instructions)
 
 class Case():
 
@@ -76,6 +81,9 @@ class Case():
 		self.type = type
 		self.x = x
 		self.y = y
+
+	def __str__(self):
+		return "Case type: %s [x: %i, y: %i]" %(self.type, self.x, self.y)
 
 	def is_food (self):
 		if Map.get_type_of_case_at (x,y) == Food.Wheat or Map.get_type_of_case_at (x,y) == Food.Fromage or Map.get_type_of_case_at (x,y) == Food.Sugar: 

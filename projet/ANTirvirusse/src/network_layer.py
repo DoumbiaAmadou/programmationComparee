@@ -215,7 +215,8 @@ def game_join(game_id):
 	data = urllib.urlencode(query_args)
 
 	response = opener.open(makeURL("join")+"?"+data)
-	data = json.loads(response.read())
+	r = response.read()
+	data = json.loads(r)
 	if data["status"] == "completed":
 		print "Successfully joined game %s" %(game_id)
 		return True
@@ -248,18 +249,29 @@ def game_play(game_id, attached_commands):
 	if data["status"] == "completed":
 		return data["response"]["observations"]
 	else:
+		print "***"
 		print data["response"]["error_msg"]
 
+
 # Tests
+
+def destroy_my_games():
+	login("vlad", "muravei")
+	my_games = filter(lambda game: game["game_description"]["creator"] == "vlad", get_games())
+	my_games_ids = map(lambda game: game["game_description"]["identifier"], my_games)
+
+	for gid in my_games_ids:
+		game_destroy(gid)
+
 def test():
 	if login("vlad", "muravei"):
 		gid = game_create(teaser='Test',users='vlad',pace=50, nb_turn=100, nb_ant_per_player=3, nb_player=2, minimal_nb_player=1, initial_energy=100, initial_acid=50)
-		print game_status(gid)
-		print get_games()
+		pp.pprint(game_status(gid))
+		pp.pprint(get_games())
 		game_join(gid)
-		pp.pprint(game_play(gid, [AttachedCommand(0, Left()), AttachedCommand(1, Forward())]))
-		print game_status(gid)
+		pp.pprint(game_status(gid))
+		print "===="
+		pp.pprint(game_play(gid, [AttachedCommand(0, Left()), AttachedCommand(1, Left()), AttachedCommand(2, Left())])[0][1])
+		print "===="
 		game_destroy(gid)
 		logout()
-
-test()
