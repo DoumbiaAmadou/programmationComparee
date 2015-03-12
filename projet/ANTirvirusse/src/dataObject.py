@@ -57,6 +57,9 @@ class Ant():
 		self.x = x
 		self.y = y
 
+	def get_type_position (self):
+		return Map.get_type_of_case_at (x, y)
+
 	def rest():
 		self.next_command = Rest()
 
@@ -88,15 +91,27 @@ class Case():
 	def is_food (self):
 		if Map.get_type_of_case_at (x,y) == Food.Wheat or Map.get_type_of_case_at (x,y) == Food.Fromage or Map.get_type_of_case_at (x,y) == Food.Sugar: 
 		   return True
+		return False
 
-	def is_obstacle (self):
-		if Map.get_type_of_case_at (x,y) == Obstacle.Rock or Map.get_type_of_case_at (x,y) == Obstacle.Water or Map.get_type_of_case_at (x,y) == Obstacle.Obstacle: 
+	def is_rock (self):
+		if Map.get_type_of_case_at (x,y) == Obstacle.Rock:
 		   return True
+		return False
+
+	def is_water (self):
+		if Map.get_type_of_case_at (x,y) == Obstacle.Water:
+			return True
+		return False
+
+	def is_grass (self):
+		if Map.get_type_of_case_at (x,y) == Obstacle.Grass:
+			return True
+		return False
 
 class TypeOfCase():
 	Empty = 'empty'
 	Food = 'food'
-	Obstacle = 'Obstacle'
+	Obstacle = 'obstacle'
 
 class Obstacle():
 	Rock = 'rock'
