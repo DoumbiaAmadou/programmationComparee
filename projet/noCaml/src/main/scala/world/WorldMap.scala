@@ -1,5 +1,18 @@
 package world
 
+import scala.collection.immutable.HashMap
+import comm.parse.Kind
+import comm.parse.AntState
+
+
+class WorldMap (val cells : HashMap[(Int, Int), Kind],
+                val ants : List[AntState]) {
+  
+  
+  
+}
+
+/*
 class WorldMap {
   
   def init(size:Int) {
@@ -29,3 +42,4 @@ class WorldMap {
   }
   
 }
+*/

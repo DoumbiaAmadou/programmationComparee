@@ -1,19 +1,38 @@
 package ants.ia
 
 import ants.Ant
-
-//Pour le moment je mets ici jusqu'a avoir la vraie classe
-//Les methodes sont fictives et pas representatives de la classe finale
-class World {
-  def closestFood(x:Int, y:Int) : Option[Tuple2[Int,Int]] = None
-  def closestAnt(x:Int, y:Int) : Option[Tuple2[Int,Int]] = None
-}
+import world.WorldMap
+import comm.parse.AntState
+import ants.AntFactory
+import ants.behaviors.FoodSeeker
+import ants.Controlled
   
 
 class Queen () {
-
   
-  def turn(world: World, ants: List[Ant]) : Unit = { //Un peu à l'aveugle
+  def antsInit(world : WorldMap) : List[Ant] = {
+    
+    def aux(states : List[AntState]) : List[Ant] = {
+      states match {
+        case Nil => Nil
+        case a::t => AntFactory.make(a, FoodSeeker):: aux(t) //TODO: Autres comportements
+      }
+    }
+    
+    aux(world.ants)
+  }
+  
+  
+  def turn(world : WorldMap) : Unit = { 
+    
+    val ants = this antsInit world
+        
+    val commands = ants.map {
+      _ match {
+        case ant : Ant with Controlled => ant.playTurn(world)
+        case _ => ()
+      }
+    }.filter { _ != () }
     
   }
   
