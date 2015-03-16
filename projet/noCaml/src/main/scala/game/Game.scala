@@ -45,7 +45,7 @@ abstract class  Game(){
       }
   }
   
-  def main_loop()={
+  def main_loop():Unit={
       /**rejoindre la partie*/
       try{
         com_parse.join
@@ -53,8 +53,6 @@ abstract class  Game(){
         case ex: ServerErrorException =>
           if (ex.er.response.error_code == 443034632){
             println("alredy in game")
-          }else if(ex.er.response.error_code == 357629463){
-            "sleep 1".!!//TODO à modifier
           }else{
             throw ex
           }
@@ -70,8 +68,19 @@ abstract class  Game(){
          val obss = queen.turn(mapp)
          aux(loop-1,com_parse,Some(mapp),Some(obss))
       }
-  
-      aux(nb_turn,com_parse,None,None)
+      
+      try{
+        aux(nb_turn,com_parse,None,None)
+      }catch{
+        case ex: ServerErrorException =>
+          if(ex.er.response.error_code == 357629463){
+            println("waiting for payers")
+            "sleep 1".!!//TODO à modifier
+            main_loop()
+          }else{
+            throw ex
+          }
+      } 
     }
     
     def test_loop(login:String,password:String,sleep:String)={//avant de pouvoir utiliser main loop
@@ -238,7 +247,7 @@ object CreateGame2players{
     val nb_ants=25
     val nb_players = 2
     val minimal_players = 2
-    val g1 = new CreateGame("koko","atat",List("all"),"test_create_Game!",10,nb_turn,nb_ants,nb_players,minimal_players,1,100)//XXX ici il faut changer le nom car j'ai le cookie de l'utilisateur koko
+    val g1 = new CreateGame("koko","atat",List("all"),"test_create_Game!",10,nb_turn,nb_ants,nb_players,minimal_players,1,100)
     g1.main_loop()
     
   }
@@ -252,7 +261,7 @@ object JoinGame1player{
     val nb_ants=25
     val nb_players = 2
     val minimal_players = 2
-    val id ="136252565941941454183945855112273920"
+    val id =""
     val g2 = new JoinGame("ikki","atat",List("all"),"test_create_Game!",10,nb_turn,nb_ants,nb_players,minimal_players,1,100,id)    
     g2.main_loop()
     

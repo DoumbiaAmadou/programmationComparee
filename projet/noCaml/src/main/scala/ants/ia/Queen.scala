@@ -11,7 +11,7 @@ import comm.parse.Observations
 import ants.behaviors.RandomExplorer
   
 
-class Queen (private [this] val parse : Parse[_]) {
+class Queen (val parse : Parse[_]) {
   
    def turn(world : WorldMap) : Observations = { 
     val ants = this antsInit world
