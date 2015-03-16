@@ -11,7 +11,7 @@ let args =
 let _ =
   Arg.parse args failwith "";
   if !print_doc then
-    match Programmierschnittstelle.raw_doc () with
+    match Programmierschnittstelle.api () with
     | Correct json ->
        Yojson.Basic.pretty_to_string json |> print_endline
     | Error exn ->
