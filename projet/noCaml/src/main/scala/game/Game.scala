@@ -20,7 +20,7 @@ abstract class  Game(){
   val nb_ant_per_player:Int
   val nb_player:Int
   val minimal_nb_players:Int
-  val intial_energy:Int
+  val initial_energy:Int
   val initial_acid:Int
   val id:StringId
   val com_parse:Parse[G]
@@ -45,8 +45,40 @@ abstract class  Game(){
       }
   }
   
-  def main_loop()
+  def main_loop()={
+      /**rejoindre la partie*/
+      com_parse.join
       
+      val queen = new Queen()//TODO passer parse
+      
+      def aux(loop:Int,parse:Parse[G],map:Option[WorldMap],obs:Option[Observations]):Unit={
+         if(loop == 0)
+           return
+         val mapp = WorldMapHCreator.make(map,obs)
+         val obss = queen.turn(mapp)
+         aux(loop-1,com_parse,Some(mapp),None)//TODO pas de None
+      }
+  
+      aux(nb_turn,com_parse,None,None)
+    }
+    
+    def test_loop(login:String,password:String,sleep:String)={//avant de pouvoir utiliser main loop
+      sleep.!!//le sleep sert à tricher pour l'atomicité...
+      com_parse.auth(login, password)
+      com_parse.join
+      val a = (0,Forward)::(1,Forward)::Nil
+      def aux(loop:Int):Unit={
+        if(loop == 0)
+          return
+        println("PLAYER "+login+"=====================\n\n")
+        sleep.!!
+        com_parse.auth(login, password)//attention pas atomic...
+        com_parse.play(a)
+        println("======================================\n")
+        aux(loop-1)
+      }
+      aux(nb_turn)
+    }
 }
 
 /**Game crée une partie*/
@@ -59,7 +91,7 @@ class CreateGame( override val user:String,
                   override val nb_ant_per_player:Int,
                   override val nb_player:Int,
                   override val minimal_nb_players:Int,
-                  override val intial_energy:Int,
+                  override val initial_energy:Int,
                   override val initial_acid:Int)extends Game{
   
   /**Construction (initialisation de la partie)**************/
@@ -73,22 +105,10 @@ class CreateGame( override val user:String,
                                          nb_ant_per_player,
                                          nb_player,
                                          minimal_nb_players,
-                                         intial_energy,
+                                         initial_energy,
                                          initial_acid)
   /**********************************************************/
 
-  override def main_loop()={//TODO
-    /**rejoindre la partie*/
-    com_parse.join
-    
-    val queen = new Queen()
-    
-    def aux(loop:Int,parse:Parse[CreateGame],map:Option[WorldMap],obs:Option[Observations])={
-       val mapp = WorldMapHCreator.make(map,obs)
-    }
-
-    aux(nb_turn,com_parse,None,None)
-  }
   
   
 }
@@ -102,7 +122,7 @@ class JoinGame(  override val user:String,
                  override val nb_ant_per_player:Int,
                  override val nb_player:Int,
                  override val minimal_nb_players:Int,
-                 override val intial_energy:Int,
+                 override val initial_energy:Int,
                  override val initial_acid:Int,
                  override val id:StringId)extends Game{
   
@@ -110,11 +130,7 @@ class JoinGame(  override val user:String,
   type G = JoinGame
   override val com_parse = new Parse[JoinGame](this)
   force_auth()
-  /**********************************************************/
-
-  override def main_loop()={//TODO
-    com_parse.join
-  }   
+  /**********************************************************/   
 }
 
 
@@ -173,8 +189,6 @@ object CreateGame2players{//XXX version sans les threads
     
   }
 }
-
-
 
 object CreateGame1player{//XXX version sans les threads
   def main(args: Array[String]):Unit={
