@@ -2,7 +2,10 @@ package game
 
 import aliases.Type._
 import comm._
+import comm.parse.Observations
 import sys.process._
+import world._
+import ants.ia._
 
 //TODO faire Une classe player des Threads pour les Games (peut être extends sur Game) ou peut utiliser les Actor pour synchroniser 2 joureurs
 
@@ -75,7 +78,16 @@ class CreateGame( override val user:String,
   /**********************************************************/
 
   override def main_loop()={//TODO
+    /**rejoindre la partie*/
     com_parse.join
+    
+    val queen = new Queen()
+    
+    def aux(loop:Int,parse:Parse[CreateGame],map:Option[WorldMap],obs:Option[Observations])={
+       val mapp = WorldMapHCreator.make(map,obs)
+    }
+
+    aux(nb_turn,com_parse,None,None)
   }
   
   

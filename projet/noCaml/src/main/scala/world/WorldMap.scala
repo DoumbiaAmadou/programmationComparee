@@ -1,45 +1,21 @@
 package world
 
 import scala.collection.immutable.HashMap
-import comm.parse.Kind
-import comm.parse.AntState
+import comm.parse._
 
-
-class WorldMap (val cells : HashMap[(Int, Int), Kind],
-                val ants : List[AntState]) {
+abstract class  WorldMap(){
   
+  /** @return : retourne le contenu de la case x,y*/
+  def get(x:Int,y:Int)
   
-  
+  /** @return : retourne la liste des fourmis*/
+  def ants: List[AntState]
 }
 
-/*
-class WorldMap {
+case class WorldMapH (val cells : HashMap[(Int, Int), Kind], val ants : List[AntState]) extends WorldMap(){
   
-  def init(size:Int) {
-    var x = Array.ofDim[Position](size, size);
-    for (i <- 0 to size) {
-      for (j <- 0 to size) {
-        x(i)(j) = new Position();
-      }
-    }
-    createMap(x);
-  } 
+  override def get(x:Int,y:Int) = null//TODO
   
-  def createMap(init: Array[Array[Position]]) {
-    var newMap = Array.ofDim[Position](init.length, init(0).length);
-     for (i <- 0 to init.length) {
-        for (j <- 0 to init(0).length) {
-           newMap(i)(j) = init(i)(j).makePosition("");
-        }
-     }
-     //var newInfos = getInfos();
-     //for (i in newInfos) {
-     // add ground & ants
-     //}
-     
-     //send the new map to ants
-     createMap(newMap);
-  }
+  //override def ants: List[AntState] = ants_list//XXX à retirer si pas utile
   
 }
-*/

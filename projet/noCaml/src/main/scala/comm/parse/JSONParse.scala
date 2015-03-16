@@ -160,7 +160,7 @@ case class Observations(val status:String, val turn:Int, val ants_infos:List[Ant
 /*Kind*/
 abstract class Kind(val value:String)
 object Grass extends Kind("grass")
-object Rock extends Kind("rock")//XXX non vérifié
+object Rock extends Kind("rock")
 object Water extends Kind("water")//verifié
 
 /*Brain*/
