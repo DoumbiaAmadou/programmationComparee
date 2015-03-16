@@ -263,7 +263,7 @@ object JoinGame1player{
     val nb_ants=25
     val nb_players = 2
     val minimal_players = 2
-    val id ="56253430884850420308915446704950342"
+    val id ="133612195308865721604164734442725325"
     val g2 = new JoinGame("ikki","atat",List("all"),"test_create_Game!",10,nb_turn,nb_ants,nb_players,minimal_players,1,100,id)    
     g2.main_loop()
     
