@@ -47,7 +47,18 @@ abstract class  Game(){
   
   def main_loop()={
       /**rejoindre la partie*/
-      com_parse.join
+      try{
+        com_parse.join
+      }catch{
+        case ex: ServerErrorException =>
+          if (ex.er.response.error_code == 443034632){
+            println("alredy in game")
+          }else if(ex.er.response.error_code == 357629463){
+            "sleep 1".!!//TODO à modifier
+          }else{
+            throw ex
+          }
+      } 
       
       val queen = new Queen(com_parse)
       
@@ -55,6 +66,7 @@ abstract class  Game(){
          if(loop == 0)
            return
          val mapp = WorldMapHCreator.make(map,obs)
+         println(mapp.ants)
          val obss = queen.turn(mapp)
          aux(loop-1,com_parse,Some(mapp),Some(obss))
       }
@@ -128,7 +140,19 @@ class JoinGame(  override val user:String,
   type G = JoinGame
   override val com_parse = new Parse[JoinGame](this)
   force_auth()
-  /**********************************************************/   
+  /**********************************************************/
+  /*
+  override def main_loop()={
+    try{
+      super.main_loop()
+    }catch{
+      case ex: ServerErrorException =>
+        if (ex.er.response.error_code == 443034632){//already in game
+          main_loop()
+        }
+    }      
+  }
+  */
 }
 
 
@@ -228,7 +252,7 @@ object JoinGame1player{
     val nb_ants=25
     val nb_players = 2
     val minimal_players = 2
-    val id =""
+    val id ="136252565941941454183945855112273920"
     val g2 = new JoinGame("ikki","atat",List("all"),"test_create_Game!",10,nb_turn,nb_ants,nb_players,minimal_players,1,100,id)    
     g2.main_loop()
     
