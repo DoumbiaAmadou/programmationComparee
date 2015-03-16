@@ -43,13 +43,13 @@ object AntFactory {
   
   def make(antState: AntState, behavior: Behavior) : Ant = {
     antState.brain match {
-      case _ : Controlled => 
+      case Controlled => 
         new Ant(antState.id, behavior) with Controlled
         
-      case _ : Enemy =>
+      case Ennemy =>
         new Ant(antState.id, Independent) with Enemy
         
-      case _ : Zombie =>
+      case Zombie =>
         new Ant(antState.id, Independent) with Zombie
     }
   }
