@@ -1,7 +1,7 @@
 open Gemeinsam
 open Kommunikation
 
-let games =
+let games () =
   call_api "games" `Get []
 
 let raw_doc () =
