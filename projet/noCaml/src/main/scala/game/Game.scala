@@ -49,14 +49,14 @@ abstract class  Game(){
       /**rejoindre la partie*/
       com_parse.join
       
-      val queen = new Queen()//TODO passer parse
+      val queen = new Queen(com_parse)
       
       def aux(loop:Int,parse:Parse[G],map:Option[WorldMap],obs:Option[Observations]):Unit={
          if(loop == 0)
            return
          val mapp = WorldMapHCreator.make(map,obs)
          val obss = queen.turn(mapp)
-         aux(loop-1,com_parse,Some(mapp),None)//TODO pas de None
+         aux(loop-1,com_parse,Some(mapp),Some(obss))
       }
   
       aux(nb_turn,com_parse,None,None)
@@ -109,8 +109,6 @@ class CreateGame( override val user:String,
                                          initial_acid)
   /**********************************************************/
 
-  
-  
 }
 
 class JoinGame(  override val user:String,
@@ -199,40 +197,7 @@ object CreateGame1player{//XXX version sans les threads
     val minimal_players = 1
     val g1 = new CreateGame("koko","atat",List("all"),"test_create_Game!",10,nb_turn,nb_ants,nb_players,minimal_players,1,100)//XXX ici il faut changer le nom car j'ai le cookie de l'utilisateur koko
     
-    val p1 = g1.com_parse
-    println("STATUS 1")
-    p1.status
-    
-    
-    p1.join
-    println("STATUS 2 (player 1 join)")
-    
-    //p1.destroy
-    //println("STATUS 4 destroy")
-    //p1.status
-
-    val actions = (0, Forward)::(1, Left)::(2, Forward)::(3, Forward)::(4, Forward)::(5, Forward)::(6, Forward)::(7, Forward)::(8, Forward)::(9, Forward)::(10, Forward)::(11, Forward)::(12, Forward)::(13, Forward)::(14, Forward)::(15, Forward)::(16, Forward)::(17, Forward)::(18, Forward)::(19, Forward)::(20, Forward)::(21, Forward)::(22, Forward)::(23, Forward)::(24, Forward)::Nil
-    val sleep = "sleep 1"
-
-    println("\n\n\n\n\nMAIN LOOP\n\n\n")
-    
-    for(x <- 1 to nb_turn){
-      
-      
-      //p1.auth("koko", "atat")
-      //p1.whoami
-      try{ 
-        p1.play(actions)
-      }catch{
-        case e : RuntimeException => println("time_out")//TODO regarder si l'erreur est 28 = time out
-      }
-      
-      p1.status
-      
-      //sleep.!!//XXX ceci est un sleep à l'arache à ne pas utiliser
-      
-      println("\n\n\nLOOP\n\n\n")
-    }
+    g1.main_loop()
     
   }
 }

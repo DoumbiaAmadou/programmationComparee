@@ -2,6 +2,7 @@ package ants.behaviors
 
 import world.WorldMap
 import comm._
+import scala.util.Random
 
 /* L'IA des fourmies pourra utiliser un "behavior" pour determiner
  * sa prochaine action.
@@ -18,7 +19,7 @@ abstract class Behavior () {
 object Independent extends Behavior {
   
   def live(world : WorldMap) : SimpleCommand = {
-    throw new Exception("Not allowed")
+    throw new Exception("Independent.live : Not allowed")
   }
   
 }
@@ -27,6 +28,15 @@ object FoodSeeker extends Behavior {
 
   def live(world : WorldMap) : SimpleCommand = {
     Left //TODO: Pour le moment, rien du tout a part tourner sur soi même
+  }
+  
+}
+
+object RandomExplorer extends Behavior {
+  
+  def live(world : WorldMap) : SimpleCommand = {
+    val commands = List (Left, Right, Forward, Rest)
+    commands(Random.nextInt(commands.length))
   }
   
 }

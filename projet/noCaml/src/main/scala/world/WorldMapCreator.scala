@@ -49,5 +49,14 @@ object WorldMapHCreator {
     
     createMap(observation.ants_infos, new HashMap)
   }
-      
+  
+  
+  def main(args: Array[String]) {
+    
+    val map = HashMap[Int,Int]() +  (1->2) + (2->3)
+    
+    println(map(1))
+    println(map(5))
+    
+  }  
 }
