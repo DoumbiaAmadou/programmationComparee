@@ -64,7 +64,9 @@ abstract class  Game(){
          if(loop == 0)
            return
          val mapp = WorldMapHCreator.make(map,obs)
-         println(mapp.ants)
+         for(zz<-mapp.ants)
+           println(zz)
+         println("\n")
          val obss = queen.turn(mapp)
          aux(loop-1,com_parse,Some(mapp),Some(obss))
       }
@@ -261,7 +263,7 @@ object JoinGame1player{
     val nb_ants=25
     val nb_players = 2
     val minimal_players = 2
-    val id =""
+    val id ="56253430884850420308915446704950342"
     val g2 = new JoinGame("ikki","atat",List("all"),"test_create_Game!",10,nb_turn,nb_ants,nb_players,minimal_players,1,100,id)    
     g2.main_loop()
     

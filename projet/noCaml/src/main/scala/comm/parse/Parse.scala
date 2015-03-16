@@ -101,7 +101,7 @@ class Parse[T <: Game](val game:T){
    * Lance une exception en cas de message d'erreur
    */
   private def server_error(rep_from:String, json_string:String)={
-    println("Function<"+rep_from+"> message from server:"+json_string)//afficher les infos en provenance du serveur
+    //println("Function<"+rep_from+"> message from server:"+json_string)//afficher les infos en provenance du serveur
     val err = JSONParse.msg_server(json_string)
     err match{
       case err:ErrorResponse => throw ServerErrorException(err)
