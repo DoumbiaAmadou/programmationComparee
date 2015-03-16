@@ -132,8 +132,9 @@ class JoinGame(  override val user:String,
 }
 
 
-
-object CreateGame2players{//XXX version sans les threads
+/*
+object CreateGame2players__{//XXX version sans les threads
+  
   def main(args: Array[String]):Unit={
     println("Creation de la partie")
     val nb_turn = 100
@@ -186,9 +187,12 @@ object CreateGame2players{//XXX version sans les threads
     }
     
   }
-}
 
-object CreateGame1player{//XXX version sans les threads
+}
+*/
+
+/*
+object CreateGame1player{
   def main(args: Array[String]):Unit={
     println("Creation de la partie")
     val nb_turn = 25
@@ -196,8 +200,37 @@ object CreateGame1player{//XXX version sans les threads
     val nb_players = 1
     val minimal_players = 1
     val g1 = new CreateGame("koko","atat",List("all"),"test_create_Game!",10,nb_turn,nb_ants,nb_players,minimal_players,1,100)//XXX ici il faut changer le nom car j'ai le cookie de l'utilisateur koko
-    
     g1.main_loop()
+    
+  }
+}
+*/
+
+
+object CreateGame2players{
+  def main(args: Array[String]):Unit={
+    println("Creation de la partie")
+    val nb_turn = 25
+    val nb_ants=25
+    val nb_players = 2
+    val minimal_players = 2
+    val g1 = new CreateGame("koko","atat",List("all"),"test_create_Game!",10,nb_turn,nb_ants,nb_players,minimal_players,1,100)//XXX ici il faut changer le nom car j'ai le cookie de l'utilisateur koko
+    g1.main_loop()
+    
+  }
+}
+
+
+object JoinGame1player{
+  def main(args: Array[String]):Unit={
+    println("Creation de la partie")
+    val nb_turn = 25
+    val nb_ants=25
+    val nb_players = 2
+    val minimal_players = 2
+    val id =""
+    val g2 = new JoinGame("ikki","atat",List("all"),"test_create_Game!",10,nb_turn,nb_ants,nb_players,minimal_players,1,100,id)    
+    g2.main_loop()
     
   }
 }
