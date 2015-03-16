@@ -9,6 +9,7 @@ import ants.Controlled
 import comm.Parse
 import comm.parse.Observations
 import ants.behaviors.RandomExplorer
+import ants.behaviors.Forwarder
   
 
 class Queen (val parse : Parse[_]) {
@@ -35,7 +36,7 @@ class Queen (val parse : Parse[_]) {
     def aux(states : List[AntState]) : List[Ant] = {
       states match {
         case Nil => Nil
-        case a::t => AntFactory.make(a, RandomExplorer):: aux(t) //TODO: Autres comportements
+        case a::t => AntFactory.make(a, Forwarder):: aux(t) //TODO: Autres comportements
       }
     }
     aux(world.ants)

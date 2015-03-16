@@ -35,8 +35,16 @@ object FoodSeeker extends Behavior {
 object RandomExplorer extends Behavior {
   
   def live(world : WorldMap) : SimpleCommand = {
-    val commands = List (Left, Right, Forward, Rest)
+    val commands = List (Left, Right, Forward)
     commands(Random.nextInt(commands.length))
+  }
+  
+}
+
+object Forwarder extends Behavior {
+  
+  def live(world : WorldMap) : SimpleCommand = {
+    Forward
   }
   
 }
