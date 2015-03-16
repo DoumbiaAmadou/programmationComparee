@@ -15,7 +15,7 @@ final class AntCommand(ant: Int, command: Command) {
   * [[Attack]] ou [[Hack]].
   * Fournit un operateur de construction d'une [[AntCommand]].
   */
-sealed abstract class Command {
+sealed abstract class Command extends Instruction {
   /** Operateur infixe qui construit une [[AntCommand]] */
   def <<(ant: Int) = new AntCommand(ant, this)
 }

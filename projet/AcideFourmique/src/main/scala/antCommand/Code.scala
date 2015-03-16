@@ -15,24 +15,68 @@ final class Code(labelled_instrs: List[ (Option[Label], Instruction) ]) {
 /** Represente un label pouvant etre associe a une [[Instruction]]
   * dans un [[Code]].
   * 
-  * Pour constuire un label, on passera par son objet compagnon.
+  * On peut facilement construire un Option[Label] en passant
+  * par l'objet compagnon de cette classe.
   */
-class Label private (label: String) { override def toString: String = label }
-/** Permet de construire un label.
+class Label(label: String) { override def toString: String = label }
+
+/** Permet de construire un Option[Label].
   * 
-  * On construit un label en passant par cet objet et en lui fournissant
-  * un nom de label de type String.
-  * La construction renvoie un Option[Label].
   * ex: val Some(label) = Label("monLabel")
   */
 object Label {
-  /** Permet de construire un label.
-    * Retourne un Option[Label].
-    */
+  /** Retourne un Option[Label]. */
   def apply(l: String) = Some(new Label(l))
 }
 
-/** Les instructions que peuvent executer les fourmis zombies */
-sealed abstract class Instruction /* TODO: Definir une instruction */
+/** Represente une variable
+  * 
+  * Fournit l'operateur := , qui facilite la
+  * creation d'un Store.
+  */
+case class Var(identifier: String) {
 
+  def :=(expr: Expression) = Store(this, expr)
+
+  override def toString: String = identifier
+}
+
+/** Les instructions que peuvent executer les fourmis zombies */
+abstract class Instruction
+
+case class Store(variable: Var, expr: Expression) extends Instruction {
+  override def toString: String = "store!" + variable + "!" + expr
+}
+case class Jump(label: Label) extends Instruction {
+  override def toString: String = "jump!" + label
+}
+case class Jumpifz(variable: Var, label: Label) extends Instruction {
+  override def toString: String = "jumpifz!" + variable + "!" + label
+}
 case class Fork() extends Instruction { override def toString: String = "fork" }
+
+
+/** Definition d'une expression */
+sealed abstract class Expression
+
+case class EInt(n: Int) extends Expression {
+  override def toString: String = n.toString
+}
+case class ValueOf(variable: Var) extends Expression {
+  override def toString: String = "?" + variable
+}
+case class Add() extends Expression { override def toString: String = "add" }
+case class Mul() extends Expression { override def toString: String = "mul" }
+case class Div() extends Expression { override def toString: String = "div" }
+case class Sub() extends Expression { override def toString: String = "sub" }
+case class See() extends Expression { override def toString: String = "see" }
+case class SeeAnt() extends Expression {
+  override def toString: String = "see_ant"
+}
+/** Represente une application (e1 ... eN).
+  * Un objet Apply se construit en lui passant
+  * un nombre variable d'expression */ 
+case class Apply(exprs: Expression*) extends Expression {
+  override def toString: String =
+    "(" + (exprs map (_.toString) reduce ((x,y) => x + " " + y)) + ")"
+}

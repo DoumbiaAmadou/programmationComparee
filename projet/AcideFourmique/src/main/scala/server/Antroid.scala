@@ -152,7 +152,7 @@ object Antroid {
   def play(game_id: String, cmds: List[AntCommand]): Unit = {
     //transforme la liste de AntCommand en String avec des ',' entre les commandes
     val cmdsAsString = cmds map (x => x.toString) reduce ((x,y) => x + "," + y)
-    println("play: " + cmdsAsString)
+    //println("play: " + cmdsAsString)
     val request = createGetRequest(server + "/play")
     request.addParameters( Map("id" -> game_id, "cmds" -> cmdsAsString) )
     val result = request.send()

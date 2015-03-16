@@ -9,26 +9,38 @@ object Main {
     val pace = 30
     val nb_turn = 60
     val nb_ant = 2
+    val nb_player = 1
+    val minimal_nb_player = 1
 
-    Antroid.register("sett", "sett")
     Antroid.authenticate(login, passwd)
-    val game_id =
-      Antroid.create(login + ",sett", "test", pace, nb_turn, nb_ant, 1,1)
+    val game_id = Antroid.create(login, "test",
+      pace, nb_turn, nb_ant, nb_player, minimal_nb_player)
 
     Antroid.join(game_id)
 
-    //code a introduire dans une fourmi zombie
+    /* Code a introduire dans une fourmi zombie.
+     * Le zombie verifie juste s'il y a un rocher en face de lui:
+     * si c'est le cas il tourne a gauche et recommence la verification,
+     * sinon il avance.
+     * La fourmi zombie recommence l'operation jusqu'a sa mort.
+     * 
+     * L'operateur := construit l'instruction Store.
+     * Cet operateur est fourni par la classe Var. */
     val code = new Code(List(
-      (Label("START"), Fork()),
-      (None,           Fork()),
-      (Label("END"),   Fork())
+      // primitive see_ant et entiers non reconnu par le serveur
+      (Label("LOOP"),  Left()),
+      (None,           Var("x") := Apply(See())),
+      (None,           Jumpifz(Var("x"), new Label("LOOP"))),
+      (None,           Forward()),
+      (None,           Jump(new Label("LOOP")))
     ))
 
+    // Un tour de boucle correspond a trois tours de jeu 
     for (round <- 1 to nb_turn by 3) {
       println("--------------- ROUND " + round + " ----------------")
       Antroid.play(game_id, List(Forward() << 0, Forward() << 1))
-      Antroid.play(game_id, List(Attack(10) << 0, Attack(10) << 1))
-      Antroid.play(game_id, List(Hack(code) << 0, Right() << 1))
+      Antroid.play(game_id, List(Attack(10) << 0, Hack(code) << 1))
+      Antroid.play(game_id, List(Hack(code) << 0, Attack(10) << 1))
       for (status <- Antroid.status(game_id))
         println("score: " + status.score)
     }
