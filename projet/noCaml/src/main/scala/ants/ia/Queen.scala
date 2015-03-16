@@ -6,25 +6,36 @@ import comm.parse.AntState
 import ants.AntFactory
 import ants.behaviors.FoodSeeker
 import ants.Controlled
+import comm.Parse
+import comm.parse.Observations
+import ants.behaviors.RandomExplorer
   
 
-class Queen () {
+class Queen (private [this] val parse : Parse[_]) {
   
-   def turn(world : WorldMap) : Unit = { 
+   def turn(world : WorldMap) : Observations = { 
     val ants = this antsInit world
-    val commands = ants.map {
+    
+    val commands = ants.filter {
       _ match {
-        case ant : Ant with Controlled => ant.playTurn(world)
-        case _ => ()
+        case ant : Ant with Controlled => true
+        case _ => false
       }
-    }.filter { _ != () }
+    }.map {
+      _ match {
+        case ant : Ant with Controlled => (ant.numAnt, ant.playTurn(world))
+        case _ => throw new Exception("Queen.turn exception")
+      }
+    }
+    
+    parse.play(commands)
   }
 
   private def antsInit(world : WorldMap) : List[Ant] = {
     def aux(states : List[AntState]) : List[Ant] = {
       states match {
         case Nil => Nil
-        case a::t => AntFactory.make(a, FoodSeeker):: aux(t) //TODO: Autres comportements
+        case a::t => AntFactory.make(a, RandomExplorer):: aux(t) //TODO: Autres comportements
       }
     }
     aux(world.ants)

@@ -81,7 +81,7 @@ class CreateGame( override val user:String,
     /**rejoindre la partie*/
     com_parse.join
     
-    val queen = new Queen()
+    val queen = new Queen(com_parse)
     
     def aux(loop:Int,parse:Parse[CreateGame],map:Option[WorldMap],obs:Option[Observations])={
        val mapp = WorldMapHCreator.make(map,obs)
