@@ -43,7 +43,7 @@ class Parse[T <: Game](val game:T){
   def play(actions:List[(AntNum,Command)]):Observations={
     val cmds:String = actions.foldLeft("")((acc,kv)=>acc+parse_action(kv._1,kv._2)+",")
     val json = Network.play(game.id, cmds)
-    server_error("play",json)
+    //server_error("play",json)
     return JSONParse.observation(json)
   }
   
@@ -101,7 +101,7 @@ class Parse[T <: Game](val game:T){
    * Lance une exception en cas de message d'erreur
    */
   private def server_error(rep_from:String, json_string:String)={
-    //println("Function<"+rep_from+"> message from server:"+json_string)//afficher les infos en provenance du serveur
+    println("Function<"+rep_from+"> message from server:"+json_string)//afficher les infos en provenance du serveur
     val err = JSONParse.msg_server(json_string)
     err match{
       case err:ErrorResponse => throw ServerErrorException(err)
