@@ -25,15 +25,33 @@ module Test : AI = struct
 
     type t = F of (Data.ant -> (Data.command *t))
 
+    let z_program = ""
+
     let step (F f) ant = f ant
 
     let rec start = F init
 
-    and init ant = 
-      match other ant with 
-      | Some(pos,Data.Corpse) -> hack pos ant
-      | Some(pos,Data.Enemy) -> confront pos ant
-      | _ -> move ant
+    and init ant = Data.(match ant with
+      | Ally(s,_) when s.energy < (s.max_energy / 10) ->
+	 critical 10 ant
+      | Ally(s,_) when s.energy < (s.max_energy/2) ->
+	 begin
+	   match other ant with 
+	   | Some(pos,Corpse) -> hack pos ant
+	   | _ -> move ant
+	 end
+      | _ ->
+	 begin
+	   match other ant with
+           | Some(pos,Corpse) -> hack pos ant
+	   | Some(pos,Enemy) -> confront pos ant
+	   | _ -> move ant
+         end)
+
+    and critical n ant =
+      if n==0 
+      then init ant
+      else (Data.Rest,F(critical (n-1)))
 
     and other ant = 
       let f = function
@@ -43,10 +61,25 @@ module Test : AI = struct
       in
       Data.search_first f Data.basic_order ant
 	
-    and move ant = (Data.Move,F init)
+    and move ant = match Data.environment ant Data.Front with
+      | Some(Data.Grass,None) 
+      | Some(Data.Food _,None) -> (Data.Move, F init)
+      | _ -> (Data.TurnRight, F init)
 
-    and hack pos ant = (Data.Move,F init)
-      
-    and confront pos ant = (Data.Move,F init)
+    and targeted action step pos ant = 
+      Data.( 
+	match pos with
+	| On -> init ant (*Not supposed to happen*)
+	| Front -> (action,F init)
+	| FrontLeft -> (Move, F(step Left))
+	| FrontRight -> (Move,F(step Right))
+	| Left -> (TurnLeft,F(step Front))
+	| Right -> (TurnRight,F(step Front))
+	| _ -> (TurnRight, F init)
+      )      
+	
+    and hack pos ant = targeted (Data.Zombify z_program) hack pos ant
+
+    and confront pos ant = targeted (Data.Attack 50) confront pos ant
 
 end
