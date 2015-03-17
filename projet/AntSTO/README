@@ -1,7 +1,21 @@
                                 AntSTO
 
+
                             TEAMMITGLIEDER
 
                               Herr Bour,
                           Herr Duchêne, und
                              Herr Joossen
+
+
+                             KOMPILATION
+
+                        PROGRAMMABHÄNGIGKEITEN
+
+                                ocaml,
+                              ocurl, und
+                                yojson
+
+                              INVOKATION
+
+                                $ make

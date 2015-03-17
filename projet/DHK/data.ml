@@ -5,7 +5,9 @@ type ant =
 
 and state = {
   energy : int;
-  acid : int
+  acid : int;
+  max_energy : int;
+  max_acid : int
 }
 
 and environment = (field * ant option) list

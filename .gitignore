@@ -24,3 +24,6 @@ log
 .cookies
 # Binaries
 jq
+# Sbt
+target/
+project/
