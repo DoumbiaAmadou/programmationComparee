@@ -1,0 +1,19 @@
+h1 { text-align: center}
+
+#user-menu {
+    width: 200 px;
+    margin : 10px;
+}
+
+#user-menu ul {
+    list-style: none;
+    margin : 0;
+    padding : 0;
+}
+
+#user-menu ul button {
+    color : #900;
+    border: 1px solid #900;
+    font-weight : bold;
+    margin: 2px;
+}
