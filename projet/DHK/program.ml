@@ -58,7 +58,7 @@ let rec mk_if c t n =
   (None, Store(c, Id "condition") )
   ::(None, JumpZ(Id "condition", end_label) )
   ::t
-  ::n
+  @n
 
 and mk_loop c l n = 
   let (end_label,n) = label n "endloop" in
