@@ -23,6 +23,11 @@ class Command(object):
   def rawValue(self):
     pass
 
+class Rest(Command):
+
+  def rawValue(self):
+    return "rest"
+
 class Left(Command):
 
   def rawValue(self):
@@ -57,7 +62,6 @@ class Hack(Command):
     for instruction in self.instructions:
       instructions_list += instruction.rawValue()+";"
     return "hack@[%s]" %(instructions_list)
-
 
 # Tests
 
