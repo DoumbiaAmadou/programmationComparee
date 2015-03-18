@@ -1,4 +1,4 @@
-import akka.actor
+import akka.actor._
 
 abstract class Command
 
@@ -26,11 +26,11 @@ case class Create(users: String,
 case class Destroy(id: String) extends Message
 case class Join(id: String) extends Message
 case class Logout() extends Message
-case class Play(id: Int, cmds: List[Pair[Int,Command], status: Status) extends Message
+case class Play(id: Int, cmds: List[Pair[Int,Command]], status: Status) extends Message
 
 /* OUT */
 case class Observation(turn: Int, 
-		       obs: List[Pair[AntState,Map]], 
+		       obs: List[Pair[AntState, WorldMap]], 
 		       status: Status) extends Message
 
 
