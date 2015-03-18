@@ -1,4 +1,3 @@
-open Nethttp_client.Convenience
 open Yojson.Basic.Util
        
 exception HttpPostError
@@ -79,7 +78,7 @@ let auth_user l p =
     match List.rev lcookie with
     | [] -> assert false
     | [x] -> assert false
-    | x :: y :: _ -> y  ^ "=" ^ x  end 
+    | x :: y :: _ -> y  ^ "=" ^ x  
 else failwith "Unsuccesfuly request"
 
 exception BadFormatArgument
