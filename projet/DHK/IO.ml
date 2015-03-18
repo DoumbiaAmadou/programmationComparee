@@ -1,4 +1,3 @@
-open Nethttp_client.Convenience
 open Yojson.Basic.Util
        
 exception HttpPostError
@@ -43,10 +42,10 @@ let init_conn url =
 
   let buf = Buffer.create 10000 in 
   Curl.global_init Curl.CURLINIT_GLOBALALL;
-  let connection = new Curl.handle in
-  connection#set_url url;
-  connection#set_verbose false;
-  connection#set_writefunction (writer_callback buf);
+  let connection = Curl.init () in 
+  Curl.set_url connection url;
+  Curl.set_verbose connection false;
+  Curl.set_writefunction connection (writer_callback buf);
   buf, connection
 
 let register_user l pwd =
@@ -54,26 +53,33 @@ let register_user l pwd =
   let post_params = ("login=" ^ l ^ "&password=" ^ pwd) in
   try
     let buf, conn = init_conn url in
-    conn#set_postfields post_params;
-    conn#set_postfieldsize (String.length post_params);
-    conn#perform;
+    Curl.set_postfields conn post_params;
+    Curl.set_postfieldsize conn(String.length post_params);
+    Curl.perform conn;
     Yojson.Basic.from_string (Buffer.contents buf) 
     |> request_status 
   with _ -> raise HttpPostError
 
 let auth_user l p =
   let url = concat_url url "auth" in
-  let post_params = [("login",l); ("password",p)] in
-  (* Make the http request *)
-  let response = http_post_message url post_params in
-  (* Getting the cookie send by the server *)
-  let cookie = List.assoc "set-cookie" (response#get_resp_header ()) in
-  let json = Yojson.Basic.from_string (response#get_resp_body ()) in
-  (* Getting the status field of the result JSON *)
+  let post_params = ("login=" ^ l ^ "&password=" ^ p) in
+  let buf, conn = init_conn url in
+  Curl.set_postfields conn post_params;
+  Curl.set_postfieldsize conn (String.length post_params);
+  Curl.set_verbose conn true;
+  Curl.set_cookiefile conn "";
+  Curl.perform conn;
+  let json = Yojson.Basic.from_string (Buffer.contents buf) in
   let status = request_status json in 
   if status
-  then String.sub cookie 0 (String.index cookie ';')
-  else failwith "Unsuccesfuly request"
+  then
+    let lcookie = Str.split (Str.regexp "\t") (
+        List.hd (Curl.get_cookielist conn)) in
+    match List.rev lcookie with
+    | [] -> assert false
+    | [x] -> assert false
+    | x :: y :: _ -> y  ^ "=" ^ x  
+else failwith "Unsuccesfuly request"
 
 exception BadFormatArgument
 
@@ -120,8 +126,8 @@ let create_new_game ~users ~teaser ~pace ~nb_turn ~nb_ant_per_player
     let url = make_get_url url get_params in
     let buf, conn = init_conn url in
     (* Setting the cookie to make possible the creation of a game *)
-    conn#set_cookie cookie;
-    conn#perform;
+    Curl.set_cookie conn cookie;
+    Curl.perform conn;
     Printf.printf "buf_create_game = %s\n" (Buffer.contents buf);
     (* Translate the request content in a JSON format*)
     let json = Yojson.Basic.from_string (Buffer.contents buf) in
@@ -139,8 +145,8 @@ let destroy_game cookie id =
   let get_params = ["id", id] in
   let url = make_get_url url get_params in
   let buf, conn = init_conn url in
-  conn#set_cookie cookie;
-  conn#perform;
+  Curl.set_cookie conn cookie;
+  Curl.perform conn;
   Yojson.Basic.from_string (Buffer.contents buf)
   |> request_status 
 
@@ -153,9 +159,9 @@ type game_description = string * string * string
 let show_games cookie =
   let url = concat_url url "games" in
   let buf, conn = init_conn url in
-  conn#set_cookie cookie;
-  conn#set_verbose true;
-  conn#perform;
+  Curl.set_cookie conn cookie;
+  Curl.set_verbose conn true;
+  Curl.perform conn;
   let json = Yojson.Basic.from_string (Buffer.contents buf) in
   let status = request_status json in 
   if status
@@ -171,20 +177,22 @@ let show_games cookie =
 
 
 let join_game cookie id =
+  Printf.printf "join game cookie = %s\n" cookie;
   let url = concat_url url "join?" in
   let get_params = ["id", id] in
   let url = make_get_url url get_params in
   let buf, conn = init_conn url in
-  conn#set_cookie cookie;
-  conn#perform;
+  Curl.set_cookie conn cookie;
+  Curl.perform conn;
+  Printf.printf "buf = %s\n" (Buffer.contents buf);
   Yojson.Basic.from_string (Buffer.contents buf) 
   |> request_status 
 
 let logout cookie =
   let url = concat_url url "logout" in
   let buf, conn = init_conn url in
-  conn#set_cookie cookie;
-  conn#perform;
+  Curl.set_cookie conn cookie;
+  Curl.perform conn;
   Yojson.Basic.from_string (Buffer.contents buf) 
   |> request_status 
 
@@ -193,8 +201,8 @@ let play cookie id cmds =
   let get_params = [("id", id); ("cmds", cmds)] in
   let url = make_get_url url get_params in
   let buf, conn = init_conn url in
-  conn#set_cookie cookie;
-  conn#perform;
+  Curl.set_cookie conn cookie;
+  Curl.perform conn;
   Printf.printf " Play = %s\n" (Buffer.contents buf)
 
 let game_status cookie id =
@@ -202,8 +210,8 @@ let game_status cookie id =
   let get_params = [("id", id)] in
   let url = make_get_url url get_params in
   let buf, conn = init_conn url in
-  conn#set_cookie cookie;
-  conn#perform;
+  Curl.set_cookie conn cookie;
+  Curl.perform conn;
   Printf.printf "Game status = %s\n" (Buffer.contents buf)
 
 

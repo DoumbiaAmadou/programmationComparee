@@ -18,15 +18,21 @@ CAMLOPT = ocamlopt
 OBJS = $(SOURCES:.ml=.cmo)
 OPTOBJS = $(SOURCES:.ml=.cmx)
 MLIS = $(SOURCES:.mli=.cmi)
-PACKAGES= -package curl -package yojson -package netclient -package str
+PACKAGES= -package curl -package yojson -package str
+JS_PACKAGE=-package js_of_ocaml -package js_of_ocaml.syntax -syntax camlp4o
+JS_OF_CAML= js_of_ocaml
 FLAGS = -linkpkg
 
-all: $(EXEC)
+all: $(EXEC).js
 
 opt : $(EXEC).opt
 
-$(EXEC): $(MLIS) $(OBJS) 
-	$(CAMLFIND) $(CAMLC) $(PACKAGES) -o $(EXEC) $(LIBS) $(OBJS) $(FLAGS)
+$(EXEC).js: $(EXEC).byte
+	$(JS_OF_CAML) $(EXEC).byte
+	mv $(EXEC).js ./www/js/
+
+$(EXEC).byte: $(MLIS) $(OBJS) 
+	$(CAMLFIND) $(CAMLC) $(JS_PACKAGES) $(PACKAGES) -o $(EXEC).byte $(LIBS) $(OBJS) $(FLAGS)
 
 $(EXEC).opt: $(MLIS) $(OPTOBJS) 
 	$(CAMLFIND) $(CAMLOPT) $(PACKAGES) -o $(EXEC) $(LIBS:.cma=.cmxa) $(OPTOBJS) $(FLAGS)
@@ -47,5 +53,6 @@ clean:
 	rm -f *.cm[iox] *~ .*~ #*#
 	rm -f $(EXEC)
 	rm -f $(EXEC).opt
+	rm -f *.o
 
 
