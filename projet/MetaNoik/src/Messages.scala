@@ -1,24 +1,24 @@
 import akka.actor
 
-(* server interactions *)
+(* server Interactions *)
 case class Auth(login: String, pass: String)
 case class Create(users: String,
 		  teaser: String,
-		  pace: int,
-		  nb_turn: int,
-		  nb_ant: int,
-		  nb_player: int,
-		  min: int,
-		  energy: int,
-		  acid: int)
+		  pace: Int,
+		  nb_turn: Int,
+		  nb_ant: Int,
+		  nb_player: Int,
+		  min: Int,
+		  energy: Int,
+		  acid: Int)
 case class Destroy(id: String)
 case class Join(id: String)
 case class Logout()
 
 (* ant actions *)
-case class Left(id: int, etat: Etat)
-case class Right(id: int, etat: Etat)
-case class Forward(id: int, etat: Etat)
-case class Rest(id: int, etat: Etat)
-case class Attack(id: int, lvl: int, etat: Etat)
-case class Hack(id: int, code: String, etat: Etat)
+case class Left(id: Int, etat: Etat)
+case class Right(id: Int, etat: Etat)
+case class Forward(id: Int, etat: Etat)
+case class Rest(id: Int, etat: Etat)
+case class Attack(id: Int, lvl: Int, etat: Etat)
+case class Hack(id: Int, code: String, etat: Etat)
