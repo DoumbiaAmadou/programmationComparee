@@ -4,26 +4,29 @@ object ConnectApi {
 	private val baseUrl = "http://yann.regis-gianas.org/antroid/"
 	private val version = "0"
 
-	// Send request by method POST
-	def requestPOST(requestName: String, params: Seq[(String, String)]) : String = {
+	def makeHttpRequest(requestName: String): HttpRequest = {
 		val request: HttpRequest = Http(baseUrl+version+"/"+ requestName +"?")
-      		val response: HttpResponse[String] = request.postForm(params).asString
-      		return response.body
+		return request
+	}  
+	// Send request by method POST
+	def postRequest(requestName: String, params: Seq[(String, String)]) : String = {
+		val request: HttpRequest = Http(baseUrl+version+"/"+ requestName +"?")
+      	val response: HttpResponse[String] = request.postForm(params).asString
+      	return response.body
 	}
 
-	// Send request by method GET
-	def requestGET(requestName: String, params: ((String,String))) : String = {
+	// Send request by method GET (just for the request hasn't param)
+	def getRequest(requestName: String) : String = {
 		val request: HttpRequest = Http(baseUrl+version+"/"+ requestName +"?")
-		println(request)
-      		val response: HttpResponse[String] = request.params(params).asString
-      		return response.body
-	}
+      	val response1: HttpResponse[String] = request.asString
+      	return response1.body
+     }
+
 
 	// Connect a user
 	def auth(login: String, password: String) : String ={
 		var params = Seq("login" -> login, "password" -> password)
-		println(params)
-		return requestPOST("auth",params)
+		return postRequest("auth",params)
 	}
 
 	// Create a new game. -- probleme: can't send request with params int
@@ -39,26 +42,42 @@ object ConnectApi {
 	//	}
 
 	// Destroy a game.
-	//	def destroyGame(idGame: String) : String = {
-	//		var params =(("id", idGame))
-	//		println(params)
-	//		return requestGET("destroy",params)
-	//	}
+	def destroyGame(idGame: String) : String = {
+		val request: HttpRequest = Http(baseUrl+version+"/destroy?")
+
+      	// val response: HttpResponse[String] = makeHttpRequest("destroy").param("id", idGame).asString
+      	val response: HttpResponse[String] = Http(baseUrl+version+"/destroy?").param("id","1").asString
+		return response.body
+	}
+
+	// Join a game.
+	def joinAGame(idGame: String): String = {
+		val request: HttpRequest = Http(baseUrl+version+"/join?")
+
+      	// val response: HttpResponse[String] = makeHttpRequest("destroy").param("id", idGame).asString
+      	val response: HttpResponse[String] = request.param("id",idGame).asString
+		return response.body
+	}
 
 	// List all visible games.
-	//	def listGame(): String = {
-	//		return requestGET("game", null)
-	//	}
+	def listGame(): String = {
+		return getRequest("games")
+	}
 
-
+	// Register a user.
+	def registerUser(login: String, password: String): String = {
+		var params = Seq("login" -> login, "password" -> password)
+		return postRequest("register",params)
+	}
 	
 	// Test connect
 	def main(args: Array[String]) {
       	    println("Hello, scala request!")
 	    println(auth("nga","ngango"))
 		// println(newGame("nga", "ngo", 10,30,1,1,1,100,100))
-		// println(destroyGame("1"))
-		// println(requestGET("auth",))
+		// println(listGame())
+		println(destroyGame("4986356145915714886550832111036009180"))
+		// println(joinAGame("4986356145915714886550832111036009180"))
 
     }
 
