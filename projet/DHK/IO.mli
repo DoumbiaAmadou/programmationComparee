@@ -2,6 +2,7 @@ type cookie
   
 type game_identifier
 
+
 val string_of_cookie : cookie -> string
 
 val string_of_gameid : game_identifier -> string
@@ -44,7 +45,7 @@ val logout : cookie -> bool
 
 (** [play cookie id cdms] send the commands [cmds] to the game having the
     identifier [id]. *)
-val play : cookie -> game_identifier -> string -> unit
+val play : cookie -> game_identifier -> string -> (int * Data.ant) list 
 
 (* Todo : possibilité de créer une structure *)
 val game_status : cookie -> game_identifier -> unit 

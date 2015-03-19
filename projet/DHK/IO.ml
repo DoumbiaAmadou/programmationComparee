@@ -54,7 +54,7 @@ let register_user l pwd =
   try
     let buf, conn = init_conn url in
     Curl.set_postfields conn post_params;
-    Curl.set_postfieldsize conn(String.length post_params);
+    Curl.set_postfieldsize conn (String.length post_params);
     Curl.perform conn;
     Yojson.Basic.from_string (Buffer.contents buf) 
     |> request_status 
@@ -66,8 +66,8 @@ let auth_user l p =
   let buf, conn = init_conn url in
   Curl.set_postfields conn post_params;
   Curl.set_postfieldsize conn (String.length post_params);
-  Curl.set_verbose conn true;
   Curl.set_cookiefile conn "";
+  Curl.set_verbose conn true;
   Curl.perform conn;
   let json = Yojson.Basic.from_string (Buffer.contents buf) in
   let status = request_status json in 
@@ -153,27 +153,33 @@ let destroy_game cookie id =
 (** A game description should be contains his identifier, his creator and his
     his teaser. *)
 
-type game_description = string * string * string                        
+type game_description = string * string * string
+                        
 (* TODO : récupérer les identifiers, teasers et creator (utile pour la
    partie js_of_ocaml  *)
+                        
 let show_games cookie =
   let url = concat_url url "games" in
   let buf, conn = init_conn url in
   Curl.set_cookie conn cookie;
-  Curl.set_verbose conn true;
   Curl.perform conn;
   let json = Yojson.Basic.from_string (Buffer.contents buf) in
   let status = request_status json in 
   if status
-  then 
-    let games = json |> member "response" |> member "games" in
-      [games]
-      |> filter_member "game_description"
-      |> flatten
-      |> List.iter (fun g ->
-          Printf.printf "%s\n" (g |> member "identifier" |> to_string));
-      []
-  else failwith "Error request"
+    then
+  (* then *)
+  (*   let games =  *)
+  (*     json  *)
+  (*     |> member "response" *)
+  (*     |> filter_member "games" *)
+  (*     |> flatten in  *)
+  (*   List.iter (fun g -> *)
+  (*       g  *)
+  (*       |> member "identifier" *)
+  (*       |> to_string *)
+  (*       |> Printf.printf "%s\n") games; *)
+      [] 
+else failwith "Error request"
 
 
 let join_game cookie id =
@@ -194,16 +200,127 @@ let logout cookie =
   Curl.set_cookie conn cookie;
   Curl.perform conn;
   Yojson.Basic.from_string (Buffer.contents buf) 
-  |> request_status 
+  |> request_status
 
-let play cookie id cmds =
+type ant_obs = {
+  x : int;
+  y : int;
+  dx: int;
+  dy: int;
+  brain: string;
+  id: int;
+  energy: int;
+  acid:int;
+  field : cell list;
+  ant_loc : ant_location list;
+}
+
+and cell = {
+  cx : int;
+  cy : int;
+  content : string
+}
+
+and ant_location = {
+  lx : int;
+  ly : int;
+  ldx : int;
+  ldy : int;
+  lbrain : string;
+}
+
+let find_cell (x,y) r = if (x,y) = (r.cx, r.cy) then Some r.content else None
+
+let ant_loc (x,y) r = if (x,y) = (r.lx, r.ly) then Some r.lbrain else None
+    
+let to_ant_obs : Yojson.Basic.json -> ant_obs list = fun json -> []
+  
+let orientation x y dx dy position =
+  let l = [ (0,1);
+            (1,1);
+            (1,0);
+            (1,-1);
+            (0,-1);
+            (-1,-1);
+            (-1,0);
+            (-1,1) ] in
+  
+  let index l v = 
+    let rec index_aux l v i = match l with 
+      | [] -> (-1)
+      | x :: tl -> if x = v then i else index_aux tl v (i+1) in
+    index_aux l v 0 in
+  
+  let get_orientation ind n = List.nth l (ind + n mod 8) in
+  
+  let aux orient =
+    let ind = index l orient in
+    let open Data in
+    function
+    | Front -> orient
+    | Back -> get_orientation ind 4 
+    | Left -> get_orientation ind (-2)
+    | Right -> get_orientation ind (2)
+    | FrontLeft -> get_orientation ind (-1)
+    | FrontRight -> get_orientation ind (1)
+    | BackRight -> get_orientation ind 3
+    | BackLeft -> get_orientation ind (-3)
+    | On -> 0,0 in
+
+  let (dx, dy) = aux (dx,dy) position in
+  dx+x, dy+y
+            
+
+let max_state cookie = (0,0)
+
+let rec search_data l f = match l with
+  | [] -> None
+  | x  :: tail -> match f x with
+    | Some s as s' -> s'
+    | None -> search_data tail f                
+
+let env ant_obs =
+  let open Data in 
+  let positions = [FrontLeft;Front; FrontRight;
+                   Left; On; Right;
+                   BackLeft; Back; BackRight] in
+  
+  let env_item lcell lant position =
+    match search_data lcell (find_cell position),
+          search_data lant (ant_loc position) with
+    | None, _ -> assert false 
+    | Some c, None -> (Data.field_of_string c, None)
+    | Some c, Some lant -> (Data.field_of_string c,
+                            Some (Data.ant_of_string lant)) in
+
+  List.map (fun p ->
+      let pos = orientation ant_obs.x ant_obs.y ant_obs.dx ant_obs.dy p in 
+      env_item ant_obs.field ant_obs.ant_loc pos) positions
+  
+let data_from_json (menergy, macid) json = 
+  let ant_obs_l = to_ant_obs json in
+  List.map (fun r ->
+      let state : Data.state = {
+        Data.energy = r.energy;
+        Data.acid = r.acid;
+        Data.max_energy = menergy;
+        Data.max_acid = macid
+      } in
+      r.id, Data.Ally (state, env r)) ant_obs_l
+
+  
+  let play cookie id cmds = 
   let url = concat_url url "play?" in
   let get_params = [("id", id); ("cmds", cmds)] in
   let url = make_get_url url get_params in
   let buf, conn = init_conn url in
   Curl.set_cookie conn cookie;
+  Curl.set_verbose conn true;
   Curl.perform conn;
-  Printf.printf " Play = %s\n" (Buffer.contents buf)
+  Printf.printf "buf = %s\n" (Buffer.contents buf);
+  let json = Yojson.Basic.from_string (Buffer.contents buf) in
+  let (menergy, macid) = max_state cookie in 
+  data_from_json (menergy, macid) json
 
 let game_status cookie id =
   let url = concat_url url "status?" in
@@ -213,6 +330,7 @@ let game_status cookie id =
   Curl.set_cookie conn cookie;
   Curl.perform conn;
   Printf.printf "Game status = %s\n" (Buffer.contents buf)
+  
 
 
 
