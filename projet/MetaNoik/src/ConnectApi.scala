@@ -73,10 +73,10 @@ object ConnectApi {
 	// Test connect
 	def main(args: Array[String]) {
       	    println("Hello, scala request!")
-	    println(auth("nga","ngango"))
+	    // println(auth("nga","ngango"))
 		// println(newGame("nga", "ngo", 10,30,1,1,1,100,100))
-		// println(listGame())
-		println(destroyGame("4986356145915714886550832111036009180"))
+		println(listGame())
+		// println(destroyGame("4986356145915714886550832111036009180"))
 		// println(joinAGame("4986356145915714886550832111036009180"))
 
     }
