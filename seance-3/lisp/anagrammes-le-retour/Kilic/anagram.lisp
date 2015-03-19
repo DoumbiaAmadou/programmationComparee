@@ -22,7 +22,7 @@
     )
    *word_list*)
 
-(defun anagrams (l words)
+(defun anagramsNaive (l words)
   "print all anagrams in the list [words] for every words w in [l]"
   (loop for w1 in l
 	do (
