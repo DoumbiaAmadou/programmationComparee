@@ -7,11 +7,19 @@ let api_version  = 0
 let base_url     = Printf.sprintf "yann.regis-gianas.org/antroid/%d"
                                   api_version
 
+(** Fonction permettant de recuperer le type d'erreur en fonction du code erreur
+    fourni par un code JSON, donne en parametre. Si aucun code d'erreur n'a ete
+    trouve, renvoie l'exception provoquee par l'appel de Correct(...) *)
 let read_error json =
   let open Yojson.Basic.Util in
   try  Correct (json |> member "response" |> member "error_code" |> to_int |> Fehler.of_int)
   with exn -> Error exn
 
+(** Fonction permettant de faire un appel a l'API
+    - action : correspond a l'action a effectuer
+    - mode   : le type de l'action (types acceptes : Get et Post)
+    - args   : liste des arguments des l'action sous forme (cmd, value)
+*)
 let call_api action mode args =
   let handle = Curl.init () in
   let raw_response =
