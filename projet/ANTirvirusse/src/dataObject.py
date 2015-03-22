@@ -89,7 +89,7 @@ class Case():
 		return "Case type: %s [x: %i, y: %i]" %(self.type, self.x, self.y)
 
 	def is_food (self):
-		if Map.get_type_of_case_at (x,y) == Food.Wheat or Map.get_type_of_case_at (x,y) == Food.Fromage or Map.get_type_of_case_at (x,y) == Food.Sugar: 
+		if Map.get_type_of_case_at (x,y) == Food.Wheat or Map.get_type_of_case_at (x,y) == Food.Cheese or Map.get_type_of_case_at (x,y) == Food.Sugar: 
 		   return True
 		return False
 
@@ -130,7 +130,7 @@ class Map():
 		self.mapDict = {}
 		self.ants = []
 
-	def get_info (self, x, y, gid, cmds):
+	def get_info (self, gid, cmds):
 		game = game_play (gid, cmds)
 
 		for i in range(nb_ant):
