@@ -11,10 +11,19 @@ class Ant():
 		self.brain 	= brain
 		self.x = x
 		self.y = y
+		self.dx = 0
+		self.dy = 0
 		self.next_command = Left()
 
+	def update_state(self, ant_state):
+		self.energy = int(ant_state["energy"])
+		self.acid 	= int(ant_state["acid"])
+		self.brain 	= ant_state["brain"]=="controlled"
+		self.set_position(int(ant_state["x"]), int(ant_state["y"]))
+		self.set_orientation(int(ant_state["dx"]), int(ant_state["dy"]))
+
 	def __str__(self):
-		return "Ant id: %i brain: %r energy: %i acid: %i [x: %i, y: %i]" %(self.ant_id, self.brain, self.energy, self.acid, self.x, self.y)
+		return "Ant id: %i brain: %r energy: %i acid: %i [x: %i, y: %i] [dx: %i, dy: %i]" %(self.ant_id, self.brain, self.energy, self.acid, self.x, self.y, self.dx, self.dy)
 
 	def get_id (self):
 		return ant_id
@@ -49,6 +58,13 @@ class Ant():
 	def set_position (self, x, y):
 		self.x = x
 		self.y = y
+
+	def get_orientation(self):
+		return self.dx, self.dy
+
+	def set_orientation(self, dx, dy):
+		self.dx = dx
+		self.dy = dy
 
 	def get_attached_command(self):
 		return AttachedCommand(self.ant_id, self.next_command)

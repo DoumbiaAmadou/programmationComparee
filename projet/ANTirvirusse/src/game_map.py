@@ -41,10 +41,7 @@ class GameMap():
 			current_ant = self.get_ant_with_id(ant_id)
 
 			if current_ant is not None:
-				current_ant.set_energy(int(ant_state["energy"]))
-				current_ant.set_acid(int(ant_state["acid"]))
-				current_ant.set_brain(ant_state["brain"]=="controlled")
-				current_ant.set_position(int(ant_state["x"]), int(ant_state["y"]))
+				current_ant.update_state(ant_state)
 				if verbose:
 					print(current_ant)
 
@@ -52,4 +49,18 @@ class GameMap():
 			print(self)
 
 	def get_case_at(self, x, y):
-		return map_dict[(x, y)]
+		return self.map_dict.get((x, y), None)
+
+	def get_case_surroundings(self, x, y):
+		surroundings_coordinates = [(x-1, y-1),
+									(x-1, y),
+									(x-1, y+1),
+									(x 	, y-1),
+									(x 	, y+1),
+									(x+1, y-1),
+									(x+1, y),
+									(x+1, y+1)]
+
+		surrounding_cases = filter(lambda maybe_case: maybe_case is not None, map(lambda (x,y): self.get_case_at(x, y), surroundings_coordinates))
+
+		return surrounding_cases
