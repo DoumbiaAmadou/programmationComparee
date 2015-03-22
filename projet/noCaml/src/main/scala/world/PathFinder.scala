@@ -1,12 +1,13 @@
 package world
 
-import comm.SimpleCommand
+import comm._
+import comm.parse._
 
 /*
  * TODO
  * outil utilisé pour trouver son chemin sur la map
  */
-class PathFinder {
+abstract class PathFinder {
   
   /*
    * essaye de trouver le meilleur chemin vers la position / le plus proche Kind element.
