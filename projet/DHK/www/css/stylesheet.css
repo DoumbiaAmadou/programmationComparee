@@ -3,6 +3,7 @@ h1 { text-align: center}
 #user-menu {
     width: 200 px;
     margin : 10px;
+    float : left;
 }
 
 #user-menu ul {
@@ -16,4 +17,10 @@ h1 { text-align: center}
     border: 1px solid #900;
     font-weight : bold;
     margin: 2px;
+}
+
+#content label {
+	display: block;
+	width: 150px;
+	float: left;
 }
