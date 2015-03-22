@@ -41,7 +41,7 @@ class Player(object):
         for game_id in get_created_games:
             self.destroy_game(game_id)
 
-    def create_game(self, pace, nb_turn, nb_ant_per_player, nb_player, minimal_nb_player, initial_energy, initial_acid, users='+', teaser=""):
+    def create_game(self, pace, nb_turn, nb_ant_per_player, nb_player, minimal_nb_player, initial_energy, initial_acid, users='+', teaser="", save=False):
         game_id = nl.game_create(pace, nb_turn, nb_ant_per_player, nb_player, minimal_nb_player, initial_energy, initial_acid, users, teaser)
         if game_id is not None:
             status = nl.game_status(game_id)
@@ -50,13 +50,13 @@ class Player(object):
             nb_ant_per_player = status["nb_ant_per_player"]
             initial_acid = status["initial_acid"]
             pace = status["pace"]
-            game = Game(game_id, nb_ant_per_player, initial_acid, initial_energy, pace)
+            game = Game(game_id, nb_ant_per_player, initial_acid, initial_energy, pace, save)
             self.games.append(game)
             return game
         else:
             return None
 
-    def join_game(self, game_id):
+    def join_game(self, game_id, save=False):
         status = nl.game_status(game_id)
         game_state = status["status"]["status"]
         if game_state != "playing":
@@ -68,7 +68,7 @@ class Player(object):
             initial_energy      = status["initial_energy"]
             pace                = status["pace"]
 
-            game = Game(game_id, nb_ant_per_player, initial_acid, initial_energy, pace)
+            game = Game(game_id, nb_ant_per_player, initial_acid, initial_energy, pace, save)
             self.games.append(game)
 
             return game
@@ -79,3 +79,5 @@ def test():
         game = player.create_game(teaser='Test',users='vlad',pace=50, nb_turn=100, nb_ant_per_player=3, nb_player=2, minimal_nb_player=1, initial_energy=100, initial_acid=50)
         game.show_status()
         game.destroy()
+
+test()

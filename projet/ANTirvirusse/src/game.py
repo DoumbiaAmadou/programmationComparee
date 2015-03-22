@@ -11,10 +11,10 @@ class Game():
     def state_of_game(cls, game_id):
         print nl.game_status(game_id)
 
-    def __init__(self, gid, nb_ants, initial_acid, initial_energy, pace):
+    def __init__(self, gid, nb_ants, initial_acid, initial_energy, pace, save):
         nl.game_join(gid)
-
         self.gid            = gid
+        self.serializer     = GameSerializer(gid) if save else None
         self.pace           = pace
         self.initial_acid   = initial_acid
         self.initial_energy = initial_energy
@@ -34,11 +34,11 @@ class Game():
         nl.game_destroy(self.gid)
 
     def replay_game(self, save_file):
-        nl.game_replay(self.gid, save_file):
+        nl.game_replay(self.gid, save_file)
 
     def make_move(self):
         commands = map(lambda ant: ant.get_attached_command(), self.game_map.get_ants())
-        ants_stats = nl.game_play(self.gid, commands)
+        ants_stats = nl.game_play(self.gid, commands, self.serializer)
         self.game_map.update(ants_stats, verbose=True)
 
     def show_status(self):
