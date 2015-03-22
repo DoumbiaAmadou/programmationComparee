@@ -23,11 +23,11 @@ def showAPI():
 	print response.read()
 
 '''
-Affiche le pseudonyme d'utilisateur sur la sortie standart.
+Retourne le pseudonyme d'utilisateur.
 '''
 def whoami():
 	response = opener.open(makeURL("whoami"))
-	print response.read()
+	return response.read()
 
 '''
 Inscription en utilisant un nom "login" et un mot de passe "password".
@@ -273,5 +273,6 @@ def test():
 		print "===="
 		pp.pprint(game_play(gid, [AttachedCommand(0, Left()), AttachedCommand(1, Left()), AttachedCommand(2, Left())])[0][1])
 		print "===="
+		game_observe(gid, 0)
 		game_destroy(gid)
 		logout()
