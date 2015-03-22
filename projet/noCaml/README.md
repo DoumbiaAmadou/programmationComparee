@@ -1,4 +1,4 @@
-#Nobody Overcomes Caml #
+# Nobody Overcomes Caml #
 
 # Membres du groupe #
  - Charasson Clement
@@ -28,3 +28,7 @@
    Différents main sont proposés tels que CreateGame1player, CreateGame2players et JoinGame1player pour jouer des parties
 
 Ils peuvent être lancé à travers sbt grâce à la commande run
+
+## 2. Rapport ##
+
+   Notre rapport est disponible dans le dossier doc

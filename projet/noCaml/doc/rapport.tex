@@ -1,0 +1,34 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage[francais]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[final]{pdfpages}
+
+\title{\huge \textbf {Antroid \\Rapport}}
+\author{Charasson Clément \\ Claveau Andeol \\ Dias Alain}
+
+\begin{document}
+\maketitle
+
+\chapter{Contraintes}
+
+\section{Présentation des contraintes}
+
+Pour la réalisation de notre projet, nous avons comme contrainte de programmer sans effets de bords ainsi que de faire une partie de notre projet en langage C.\newline
+
+Nous verrons donc dans la suite de ce rapport, les solutions adoptées afin de respecter ces contraintes
+
+\section{Programmation sans effets}
+
+Programmer sans effets de bords implique que nous ne devons pas modifier la mémoire dans notre programme. Puisque nous utilisons le langage Scala, nous avons fait le choix d'utiliser au maximum son côté fonctionnel. De plus, nous n'utilisons que des objets non mutables présent dans la librairie standard de Scala.\newline
+
+Nous n'avons ainsi utilisé que des valeurs dans nos objets afin de les rendre non mutables. Une mise à jour de ces valeurs implique donc d'en créer une nouvelle. Ces mises à jour se produisent durant des appels récursifs.
+
+\section{Programmer une partie en C}
+
+Nous n'avons pas mis en place la réalisation de cette contrainte dans notre projet. En effet, nous étions face à une incompatibilité avec notre précédente contrainte. Cependant, il est tout de même possible de programmer en C sans produire d'effets de bords.\newline
+
+Nous avions prévu de réaliser en C une réponse automatisée dans le cas où notre intelligence artificielle de fourmis ne répondait pas à temps. En revanche, nous avons priorisé la réalisation du cœur de notre client de jeu en respectant la première contrainte. Ce choix nous a ainsi fait passer à côté de cette contrainte principalement par manque de temps.
+
+\end{document}
