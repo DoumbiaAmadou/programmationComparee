@@ -33,6 +33,9 @@ class Game():
     def destroy(self):
         nl.game_destroy(self.gid)
 
+    def replay_game(self, save_file):
+        nl.game_replay(self.gid, save_file):
+
     def make_move(self):
         commands = map(lambda ant: ant.get_attached_command(), self.game_map.get_ants())
         ants_stats = nl.game_play(self.gid, commands)
