@@ -3,6 +3,12 @@ package comm
 import sys.process._
 import aliases.Type._
 
+/** Network contient les différentes fonctions pour communiquer avec le serveur.
+ *  Sont role est de former la string qui sera envoyé au serveur.
+ *  Nous utilisons "curl" pour exécuter les requêtes post et get.
+ *  
+ *  Note : Cette object n'est utilisé en principe que par Parse
+ */
 object Network {
   
   private val version_num = 0
@@ -34,7 +40,7 @@ object Network {
                  intial_energy:Int,
                  initial_acid:Int):String={
     var cmd = curl+" -G "+antroide_url+"/create"
-        cmd = cmd+" -d users="+users.foldLeft("")((acc,s)=> acc+s+" ")//.foreach { x => x+" " }//TODO à vérifier
+        cmd = cmd+" -d users="+users.foldLeft("")((acc,s)=> acc+s+" ")
         cmd = cmd+" --data-urlencode teaser="+teaser
         cmd = cmd+" -d pace="+pace
         cmd = cmd+" -d nb_turn="+nb_turn
