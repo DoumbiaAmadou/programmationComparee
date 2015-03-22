@@ -1,0 +1,7 @@
+cat ufr_host_ip | while read line
+do
+	echo $line
+  ssh -f -o "StrictHostKeyChecking no" charasso@$line /info/master2/charasso/Documents/prog_comp/pcomp15/tmp/pi_linux >> /info/master2/charasso/Documents/prog_comp/pcomp15/tmp/result &
+done
+
+

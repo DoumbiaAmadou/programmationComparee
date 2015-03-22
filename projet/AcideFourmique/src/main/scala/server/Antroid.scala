@@ -161,13 +161,12 @@ object Antroid {
 
   /** Renvoie l'historique d'une partie.
     * 
-    * @TODO: Parsing de la reponse: non fonctionnel
+    * @TODO: Parsing de la reponse
     */
-  def log(game_id: String): Unit = {
+  def log(game_id: String): String = {
     val request = createGetRequest(server + "/log")
     request.addParameters( Map("id" -> game_id) )
-    val result = request.send()
-    interpret(result)
+    request.send()
   }
 
   /* Recupere une chaine de caractere correspondant a du JSON
@@ -182,7 +181,10 @@ object Antroid {
     
     status match {
       case "completed" => Some(response)
-      case _ => println(response.extract[RequestError]); None
+      case _ => printError(response); None
     }
   }
+
+  private def printError(json: JValue): Unit =
+    println(json.extract[RequestError])
 }

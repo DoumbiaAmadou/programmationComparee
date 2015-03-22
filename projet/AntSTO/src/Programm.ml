@@ -1,5 +1,7 @@
 open Gemeinsam
 
+(** Fichier contenant le point d'entree du programme *)
+
 let print_doc = ref false
 
 let args =
