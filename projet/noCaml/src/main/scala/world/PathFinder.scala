@@ -1,30 +1,32 @@
 package world
 
 import comm.SimpleCommand
-import comm.parse.Kind
 
 /*
  * TODO
- * tool used to find the good ways to go from a point to another
+ * outil utilisé pour trouver son chemin sur la map
  */
 class PathFinder {
   
   /*
-   * try to find the closest searched element (position or Kind) traveling unknowns areas.
-   * if element: kind isn't water, avoid it
+   * essaye de trouver le meilleur chemin vers la position / le plus proche Kind element.
+   * peut passer par les zones inconnues
+   * évite l'eau et les rochers (sauf si Kind = eau/rocher)
    */
   def findPathTo(map: WorldMap, x:Int, y:Int, destX:Int, destY: Int) : SimpleCommand
   def findPathTo(map: WorldMap, x:Int, y:Int, element: Kind) : SimpleCommand
   
   /*
-   * try to find the closest searched element (position or Kind) avoiding unknowns areas
-   * if element: kind isn't water, avoid it
+   * essaye de trouver le meilleur chemin vers la position / le plus proche Kind element.
+   * évite les zones inconnues
+   * évite l'eau et les rochers (sauf si Kind = eau/rocher)
    */
   def getClosestPathTo(map: WorldMap, x:Int, y:Int, destX:Int, destY: Int) : SimpleCommand
   def getClosestPathTo(map: WorldMap, x:Int, y:Int, element: Kind) : SimpleCommand
   
   /*
-   * go to the closest unknown area avoiding water
+   * explore la zone inconnue la plus proche
+   * évite l'eau et les rochers (sauf si Kind = eau/rocher)
    */
   def explore(map: WorldMap, x:Int, y:Int) : SimpleCommand
 }
