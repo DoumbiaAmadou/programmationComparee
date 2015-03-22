@@ -1,16 +1,17 @@
-val auth : Dom_html.inputElement Js.t -> string -> string list -> unit
+val auth : Dom_html.inputElement Js.t -> string list -> unit
 
-val create_game : Dom_html.inputElement Js.t -> string -> string list -> unit
+val create_game : Dom_html.inputElement Js.t -> string list -> unit
 
-val show_games : string -> string -> unit
+val show_games : string -> unit
 
-val join_game : Dom_html.inputElement Js.t -> string -> string list -> unit
+val join_game : Dom_html.inputElement Js.t -> string list -> unit
   
-val logout : string -> unit
+val logout : unit -> unit 
   
-val play : Dom_html.inputElement Js.t -> string -> string list -> unit
+val play : Dom_html.inputElement Js.t -> string list -> unit
 
-val register : Dom_html.inputElement Js.t -> string -> string list -> unit
+val register : Dom_html.inputElement Js.t -> string list -> unit
 
+val destroy_game : Dom_html.inputElement Js.t -> string list -> unit
 
 
