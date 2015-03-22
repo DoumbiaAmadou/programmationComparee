@@ -2,9 +2,12 @@ package ants
 
 import ants.behaviors._
 
-/* Permettra de former des groupes de fourmis qui auront un même
+/** Permettra de former des groupes de fourmis qui auront un même
  * objectif en jeu
- * XXX: Système de formation (position) des fourmis ?
+ * 
+ * @note Cette classe n'est pas implémentée correctement mais poura, dans une
+ * evolution future, permettre la réalisation de strategies complexes mettant
+ * en jeu plusieurs fourmis
  */
 class Group(val ants: List[Ant], groupBehavior: Behavior) {
 
