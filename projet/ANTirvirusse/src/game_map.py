@@ -52,4 +52,19 @@ class GameMap():
 			print(self)
 
 	def get_case_at(self, x, y):
-		return map_dict[(x, y)]
+		return self.map_dict.get((x, y), None)
+
+	def get_case_surroundings(self, x, y):
+		surroundings_coordinates = [(x-1, y-1),
+									(x-1, y),
+									(x-1, y+1),
+									(x-1, y+1),
+									(x 	, y-1),
+									(x 	, y+1),
+									(x+1, y-1),
+									(x+1, y),
+									(x+1, y+1)]
+
+		surrounding_cases = filter(lambda maybe_case: maybe_case is not None, map(lambda (x,y): self.get_case_at(x, y), surroundings_coordinates))
+
+		return surrounding_cases
