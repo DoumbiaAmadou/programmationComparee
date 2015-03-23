@@ -180,6 +180,7 @@ case class AntInfos(val ant_infos:AntState, ant_view:List[AntView])
 case class Observations(val status:String, val turn:Int, val ants_infos:List[AntInfos]) extends Response
 
 /**Kind*/
+
 abstract class Kind(val value:String)
 object Grass extends Kind("grass")//verifié
 object Rock extends Kind("rock")//verifié

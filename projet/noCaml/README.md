@@ -12,7 +12,7 @@
 
 ## 0. Pré-requis ##
      installer SBT
-     
+     instller curl
 ## 1. Utilisation du projet ##
 
 ### 1.1. Compilation  ###
@@ -25,7 +25,7 @@
 
 ### 1.2 Jouer ###
 
-   Différents main sont proposés tels que CreateGame1player, CreateGame2players et JoinGame1player pour jouer des parties
+   Différents main pour tester l'implémentation sont proposés tels que CreateGame1player, CreateGame2players et JoinGame1player pour jouer des parties.
 
 Ils peuvent être lancé à travers sbt grâce à la commande run
 
