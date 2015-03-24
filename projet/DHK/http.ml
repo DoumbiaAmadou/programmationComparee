@@ -1,13 +1,20 @@
 open Utils
 
+(** [make_params_form data] return the concatenation between every elements in 
+   [data] using the character '&' as separator. *)
 let make_params_form data =
   List.map (fun (field,value) -> field ^ "=" ^ value) data
   |> String.concat "&"
-
-let string_of_meth meth = match meth with
+    
+(** [string_of_meth m] return the string corresponding to the method [m]. *)
+let string_of_meth m = match m with
   | `GET -> "GET"
   | `POST -> "POST"
-    
+
+(**  [request method url post_data get_data] do a http request using the method
+     [meth] to the target [url]. The parameter [post_data] is using the case 
+     of a POST request and the parameter [get_data] is using the case of a 
+     GET request. *)
 let request ~meth ~url ~post_data ~get_data = 
   let req = XmlHttpRequest.create () in
   let (url,data) = match meth with
