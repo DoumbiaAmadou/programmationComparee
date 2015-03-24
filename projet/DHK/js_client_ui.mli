@@ -3,6 +3,8 @@ val create_form : string -> string list ->
 
 val create_table : string -> Dom_html.tableElement Js.t
 
-val add_entry_to_table : Dom_html.tableElement Js.t ->
-  string -> string -> string -> unit  
+val add_entry_to_table : Dom_html.tableElement Js.t ->  
+  string -> string -> string -> unit
+
+val show_game_status : string -> (string * string) list -> unit 
 

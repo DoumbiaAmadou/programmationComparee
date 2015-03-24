@@ -14,10 +14,13 @@ let request ~meth ~url ~post_data ~get_data =
     | `POST -> url, make_params_form post_data
     | `GET ->  url ^ (make_params_form get_data), "" in
   req##_open (Js.string (string_of_meth meth), Js.string url, Js.bool true);
-  req##setRequestHeader(Js.string "Cookie", doc##cookie);
+  req##setRequestHeader(Js.string "Access-Control-Allow-Credentials", Js.string "true");
+  req##setRequestHeader(Js.string "Access-Control-Allow-Origin", Js.string url);
+  req##setRequestHeader(Js.string "setDisableHeaderCheck", Js.string "true");
+  req##setRequestHeader(Js.string "cookie", doc##cookie);
   req##setRequestHeader(Js.string "withCredentials", Js.string "true");
   req##setRequestHeader(Js.string "Content-Type",
-			Js.string "application/x-www-form-urlencoded");
+        		Js.string "application/x-www-form-urlencoded");
   Printf.printf "url = %s\n" url;
   Printf.printf "data = %s\n" data;
   req##send (Js.some (Js.string data));
