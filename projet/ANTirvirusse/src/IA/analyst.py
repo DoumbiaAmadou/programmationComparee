@@ -3,29 +3,42 @@
 import math
 import heapq
 
-
+#The functions in this module has no side effect. The analyst will take a world and give a convenient set of functions
+#to analyse it
 class Analyst():
-    acid_range = 6
+    #Ants can only attack from melee
+    acid_range = 1
 
     def __init__(self, game):
         self.game = game
 
+    #define if a case is under allied control
     def is_under_control(self, x, y):
-        enemy = self.enemy_ants_at_fire_range(x, y)
-        allies = self.ally_ants_at_fire_range(x, y)
+        enemy = self.enemy_ants_around(x, y,8)
+        allies = self.ally_ants_around(x, y,8)
         if len(enemy) > len(allies):
             return False
         else:
             acid_count = 0
             for ally in allies:
-                acid_count += ally.get_acid
+                acid_count += ally.get_acid()
             if acid_count < len(enemy) * self.game.get_initial_energy():
                 return False
             else:
                 return True
 
+    def resources_under_control(self):
+        res=0
+        for case in self.game.get_map():
+            if case.is_food():
+                if self.is_under_control(case.x,case.y):
+                    res+=1
+        return res
+
+
     def time_to_go(self, x_from, y_from, x_to, y_to):
-        pass
+        bp=self.best_path(x_from,y_from,x_to,y_to)
+        return bp[1][(x_from,y_from)]
 
     def distance(self, x_from, y_from, x_to, y_to):
         dx = x_from - x_to
@@ -54,19 +67,33 @@ class Analyst():
                 res.append(ant)
         return res
 
-    def nearest_resource(self, resource_type, x, y):
+    def nearest_resource(self, x, y):
+        nearest=None
+        nearest_time=0
         for case in self.game.get_map():
             if case.is_food():
-                pass
+                if nearest==None:
+                    nearest=case.x,case.y
+                    nearest_time=self.time_to_go(x,y,case.x,case.y)
+                else:
+                    sp=self.time_to_go(x,y,case.x,case.y)
+                    if sp<nearest_time:
+                        nearest_time=sp
+                        nearest=case.x,case.y
 
-    def nearest_wheat(self, x, y):
-        self.nearest_resource("wheat", x, y)
-
-    def nearest_sugar(self, x, y):
-        self.nearest_resource("cheese", x, y)
-
-    def nearest_cheese(self, x, y):
-        self.nearest_resource("sugar", x, y)
+    def nearest_resource_under_control(self, x, y):
+        nearest=None
+        nearest_time=0
+        for case in self.game.get_map():
+            if case.is_food() and self.is_under_control(case.x,case.y):
+                if nearest==None:
+                    nearest=case.x,case.y
+                    nearest_time=self.time_to_go(x,y,case.x,case.y)
+                else:
+                    sp=self.time_to_go(x,y,case.x,case.y)
+                    if sp<nearest_time:
+                        nearest_time=sp
+                        nearest=case.x,case.y
 
     # a_star_search from redblobgames.com : path finding avec A*, la fonction d'heuristique est ici la distance de
     # manhattan. L'algorithme est modifié pour prendre en compte le temps de tourner.
@@ -92,6 +119,7 @@ class Analyst():
                 if next_case not in cost_so_far or new_cost < cost_so_far[next_case]:
                     cost_so_far[next_case] = new_cost
                     priority = new_cost + self.manhattan(goal, next_case)
+                    #prends en compte le cout d'une rotation de la fourmi
                     if self.direction_change(came_from[current], current, next_case):
                         priority += 1
                     queue.put(next_case, priority)
