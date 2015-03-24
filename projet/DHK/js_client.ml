@@ -3,53 +3,64 @@ open Yojson.Basic.Util
 
 module Html = Dom_html
 
-(* TODO : CODE A FACTORISER *)
-
+(** The static server url *)
 let server_url = "http://yann.regis-gianas.org/antroid/"
 
+(** The API version *)
 let api_version = "0"
 
+(** This prefix should be not change during this project *)
 let prefix_url = server_url ^ api_version               
 
-let input_values lfields =
-  List.map (fun field -> field, input_value field) lfields
+(** [input_values inputs] return a tuple corresponding to the input identifier
+    and his value. *)
+let input_values inputs =
+  List.map (fun input -> input, input_value input) inputs
 
-let api_action meth bsubmit action lfields callback =
+(** [api_action meth bsubmit action params callback] send a HTTP request using
+    the method [meth] and the parameters [params] when the user click on the 
+    submit button [bsubmit]. Also, after to have click to the submit button,
+    the [callback] function is called. *)
+let api_action meth bsubmit action params callback =
   bsubmit##onclick <- Html.handler (fun _ ->
-      let fields = input_values lfields in      
+      let data = input_values params in      
       let req = match meth with
         | `GET ->
           let url = prefix_url ^ "/" ^ action ^ "?" in 
-          Http.http_get ~url:url ~get_params:fields 
+          Http.http_get ~url:url ~get_params:data
         | `POST ->
           let url = prefix_url ^ "/" ^ action in 
-          Http.http_post ~url:url ~post_params:fields in
+          Http.http_post ~url:url ~post_params:data in
       let callback () = callback req in 
       req##onreadystatechange <- Js.wrap_callback callback;
       Js._true)
 
+(** [alert_with_response req] show the content of the request [req] 
+    in a window. *)
 let alert_with_response req =
     match req##readyState with
     | XmlHttpRequest.DONE ->
       let status = req##status in
-      if status = 200 then
-        win##alert (req##responseText)
+      if status = 200
+      then
+        if IO.is_success (Js.to_string (req##responseText))
+        then win##alert (req##responseText)
     | _ -> () 
 
-let create_game bsubmit lfields =
-  api_action `GET bsubmit "create" lfields alert_with_response 
+let create_game bsubmit params =
+  api_action `GET bsubmit "create" params alert_with_response 
     
-let destroy_game bsubmit lfields =
-  api_action `GET bsubmit "destroy " lfields alert_with_response 
+let destroy_game bsubmit params =
+  api_action `GET bsubmit "destroy" params alert_with_response 
     
-let join_game bsubmit lfields =
-  api_action `GET bsubmit "join" lfields alert_with_response 
+let join_game bsubmit params =
+  api_action `GET bsubmit "join" params alert_with_response 
 
-let play bsubmit lfields =
-  api_action `GET bsubmit "play" lfields alert_with_response
+let play bsubmit params =
+  api_action `GET bsubmit "play" params alert_with_response
 
-let register bsubmit lfields =
-  api_action `POST bsubmit "register" lfields alert_with_response
+let register bsubmit params =
+  api_action `POST bsubmit "register" params alert_with_response
 
 let status_callback div_id req =
   match req##readyState with
@@ -57,12 +68,12 @@ let status_callback div_id req =
     let status = req##status in
     if status = 200 then
       let response = Js.to_string req##responseText in
-        let values = IO.game_status response in 
+      let values = IO.game_status response in 
       Js_client_ui.show_game_status div_id values 
   | _ -> () 
 
-let status bsubmit lfields div_id =
-  api_action `GET bsubmit "status" lfields (status_callback div_id)
+let status bsubmit params div_id =
+  api_action `GET bsubmit "status" params (status_callback div_id)
 
 let auth_callback req =
   match req##readyState with
@@ -84,7 +95,7 @@ let auth_callback req =
             Js.string "fobb2dNmOLuNb0ZE+j+/BlvZoCo41d544256e18d389";
     | _ -> () 
 
-let auth bsubmit lfields = api_action `POST bsubmit "auth" lfields auth_callback
+let auth bsubmit params = api_action `POST bsubmit "auth" params auth_callback
 
 let show_games_callback req div_id =
   let callback () =

@@ -9,5 +9,18 @@ Contraintes :
 - On doit pouvoir re executer le programme
 - Le programme doit tourne dans un navigateur web
 
-Compilation du module httpRequest :
-ocamlfind ocamlopt httpRequest.ml -package netclient -linkpkg -o exe
+
+************* Requirements *******************
+
+Pour compiler ce projet, les paquets suivants doivent être présents :
+- ocamlfind
+- ocamlc
+- yojson
+- js_of_ocaml
+- js_of_ocaml.syntax
+
+Tous ses paquents sont installables via opam (see : http://opam.ocamlpro.com/)
+
+- opam install ocamlfind
+- opam install js_of_ocaml
+- opam install yojson 

@@ -17,9 +17,4 @@ let clear_div div_id =
   Dom.list_of_nodeList (div##childNodes)
   |> List.iter (fun child -> Dom.removeChild div child)
 
-let create_input id value =
-  let input = Html.createInput doc ~_type:(Js.string "radio") in
-  input##id <- Js.string id;
-  input##value <- Js.string value;
-  input
 

@@ -1,8 +1,10 @@
 open Yojson.Basic.Util
 
+(** [get_member json m] return the member [m] from [json]. *)
 let get_member json m = json |> member m |> to_string
-  
-let is_success json =
+                        
+let is_success response =
+  let json = Yojson.Basic.from_string response in
   get_member json "status" = "completed"
 
 let game_status response =
@@ -146,29 +148,7 @@ and ant_location = {
 (*       } in *)
 (*       r.id, Data.Ally (state, env r)) ant_obs_l *)
 
-  
-(*   let play cookie id cmds =  *)
-(*   let url = concat_url url "play?" in *)
-(*   let get_params = [("id", id); ("cmds", cmds)] in *)
-(*   let url = make_get_url url get_params in *)
-(*   let buf, conn = init_conn url in *)
-(*   Curl.set_cookie conn cookie; *)
-(*   Curl.set_verbose conn true; *)
-(*   Curl.perform conn; *)
-(*   Printf.printf "buf = %s\n" (Buffer.contents buf); *)
-(*   let json = Yojson.Basic.from_string (Buffer.contents buf) in *)
-(*   let (menergy, macid) = max_state cookie in  *)
-(*   data_from_json (menergy, macid) json *)
-
-(* let game_status cookie id = *)
-(*   let url = concat_url url "status?" in *)
-(*   let get_params = [("id", id)] in *)
-(*   let url = make_get_url url get_params in *)
-(*   let buf, conn = init_conn url in *)
-(*   Curl.set_cookie conn cookie; *)
-(*   Curl.perform conn; *)
-(*   Printf.printf "Game status = %s\n" (Buffer.contents buf) *)
-  
+    
 
 
 

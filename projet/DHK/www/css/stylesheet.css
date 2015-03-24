@@ -20,7 +20,7 @@ h1 { text-align: center}
 }
 
 #content label {
-	display: block;
-	width: 150px;
-	float: left;
+    display: inline-block;
+    width: 150px;
+    float: left;
 }
