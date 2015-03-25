@@ -10,7 +10,7 @@
 #*********************************************************************#
 
 
-SOURCES = utils.mli utils.ml http.mli http.ml IO.mli IO.ml js_client_ui.mli js_client_ui.ml js_client.mli js_client.ml  data.mli data.ml AI.mli AI.ml program.mli program.ml main.ml
+SOURCES = utils.mli utils.ml http.mli http.ml IO.mli IO.ml js_client_ui.mli js_client_ui.ml js_client.mli js_client.ml  data.mli data.ml AI.mli AI.ml program.mli program.ml zombie.ml zombie.mli main.ml
 CAMLFIND = ocamlfind
 CAMLC = ocamlc
 CAMLOPT = ocamlopt
