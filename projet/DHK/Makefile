@@ -10,7 +10,7 @@
 #*********************************************************************#
 
 
-SOURCES = utils.mli utils.ml http.mli http.ml js_client_ui.mli js_client_ui.ml js_client.mli js_client.ml  data.mli data.ml AI.mli AI.ml program.mli program.ml IO.mli IO.ml
+SOURCES = utils.mli utils.ml http.mli http.ml IO.mli IO.ml js_client_ui.mli js_client_ui.ml js_client.mli js_client.ml  data.mli data.ml AI.mli AI.ml program.mli program.ml main.ml
 CAMLFIND = ocamlfind
 CAMLC = ocamlc
 CAMLOPT = ocamlopt
@@ -31,10 +31,10 @@ $(EXEC).js: $(EXEC).byte
 	mv $(EXEC).js  ./www/js/
 
 $(EXEC).byte: $(MLIS) $(OBJS) 
-	$(CAMLFIND) $(CAMLC) $(PACKAGES) -o $(EXEC).byte $(LIBS) $(OBJS) main.ml $(LINKPKG)
+	$(CAMLFIND) $(CAMLC) $(PACKAGES) -o $(EXEC).byte $(LIBS) $(OBJS) $(LINKPKG)
 
 $(EXEC).opt: $(MLIS) $(OPTOBJS) 
-	$(CAMLFIND) $(CAMLOPT) $(PACKAGES) -o $(EXEC) $(LIBS:.cma=.cmxa) $(OPTOBJS) main.ml $(LINKPKG)
+	$(CAMLFIND) $(CAMLOPT) $(PACKAGES) -o $(EXEC) $(LIBS:.cma=.cmxa) $(OPTOBJS)  $(LINKPKG)
 
 .SUFFIXES:
 

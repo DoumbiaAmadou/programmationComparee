@@ -2,18 +2,19 @@ open Utils
 
 module Html = Dom_html
 
-let create_form div_id fields =
+let create_form div_id labels =
   let div = get_element_by_id "content" in
   List.iter (fun field ->
       let label = Html.createLabel doc in
       label##textContent <- Js.some (Js.string field);
-      let button = Html.createInput ~_type:(Js.string "text") doc in
+      let _type = if field = "password" then field else "text" in 
+      let button = Html.createInput ~_type:(Js.string _type) doc in
       button##id <- Js.string field;
       Dom.appendChild div label;
       Dom.appendChild div (Html.createBr doc);
       Dom.appendChild div button;
       Dom.appendChild div (Html.createBr doc)
-    ) fields;
+    ) labels;
   let submit = Html.createInput ~_type:(Js.string "button") doc in
   submit##value <- Js.string "Submit";
   Dom.appendChild div submit;
@@ -37,5 +38,19 @@ let add_entry_to_table table id creator teaser =
   Dom.appendChild tr tdteaser;
   Dom.appendChild table tr
 
-  
+let show_game_status div_id values =
+  let div = get_element_by_id div_id in 
+  let table = create_table "game-status" in
+  List.iter(fun (attr,value) ->
+      let tr = Html.createTr doc in
+      let td_attr = Html.createTd doc in
+      td_attr##textContent <- Js.some (Js.string attr);
+      let td_value = Html.createTd doc in
+      td_value##textContent <- Js.some (Js.string attr);
+      Dom.appendChild tr td_attr;
+      Dom.appendChild tr td_value;
+      Dom.appendChild table tr;
+    ) values;
+  Dom.appendChild div table
+
   
