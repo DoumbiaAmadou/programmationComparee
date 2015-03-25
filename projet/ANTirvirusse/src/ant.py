@@ -13,7 +13,7 @@ class Ant():
 		self.y = y
 		self.dx = 0
 		self.dy = 0
-		self.next_command = Left()
+		self.next_command = Rest()
 
 	def update_state(self, ant_state):
 		self.energy = int(ant_state["energy"])
@@ -22,8 +22,20 @@ class Ant():
 		self.set_position(int(ant_state["x"]), int(ant_state["y"]))
 		self.set_orientation(int(ant_state["dx"]), int(ant_state["dy"]))
 
+	def orientation_symbol (self, x, y):
+		if 		x ==  0	and y ==  1:
+			return "^"
+		elif 	x ==  0	and y == -1:
+			return "v"
+		elif 	x == -1 and y ==  0:
+			return "<"
+		elif 	x ==  1 and y ==  0:
+			return ">"
+		else:
+			print "Unknown orientation"
+
 	def __str__(self):
-		return "Ant id: %i brain: %r energy: %i acid: %i [x: %i, y: %i] [dx: %i, dy: %i]" %(self.ant_id, self.brain, self.energy, self.acid, self.x, self.y, self.dx, self.dy)
+		return "Ant id: %i brain: %r energy: %i acid: %i [x: %i, y: %i] [orientation: %s]" %(self.ant_id, self.brain, self.energy, self.acid, self.x, self.y, self.orientation_symbol(self.dx, self.dy))
 
 	def get_id (self):
 		return ant_id

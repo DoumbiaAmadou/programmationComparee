@@ -1,6 +1,7 @@
  # -*- coding: utf-8 -*-
 
 import network_layer as nl
+import antcommand as ac
 from game import Game
 
 class Player(object):
@@ -76,8 +77,32 @@ class Player(object):
 def test():
     player = Player.login("vlad", "muravei")
     if player is not None:
-        game = player.create_game(teaser='Test',users='vlad',pace=50, nb_turn=100, nb_ant_per_player=3, nb_player=2, minimal_nb_player=1, initial_energy=100, initial_acid=50)
-        game.show_status()
-        game.destroy()
+        game = player.create_game(teaser='Test',users='vlad',pace=50, nb_turn=10000, nb_ant_per_player=3, nb_player=2, minimal_nb_player=1, initial_energy=100, initial_acid=50)
+        while True:
+            for ant in game.game_map.ants:
+                print "Select command for ant %i" %(ant.ant_id)
+                print "0) Forward"
+                print "1) Left"
+                print "2) Right"  
+                print "3) Rest"
+                print "4) Exit game"
+                # try:
+                command = input()
+                if   command == 0:
+                    ant.next_command = ac.Forward() 
+                elif command == 1:
+                    ant.next_command = ac.Left()
+                elif command == 2:
+                    ant.next_command = ac.Right()
+                elif command == 3:
+                    ant.next_command = ac.Rest()
+                else:
+                    game.destroy() 
+                    exit()
+                # except:
+                    # print "Wrong command!"
+                    # continue
+
+            game.make_move()
 
 test()
