@@ -64,3 +64,11 @@ class GameMap():
 		surrounding_cases = filter(lambda maybe_case: maybe_case is not None, map(lambda (x,y): self.get_case_at(x, y), surroundings_coordinates))
 
 		return surrounding_cases
+
+	def get_position_ennemies(self):
+		ennemies = []
+		for case in map_dict:
+			if case == "ennemy":
+				ennemies.append[case]
+		return ennemies
+
