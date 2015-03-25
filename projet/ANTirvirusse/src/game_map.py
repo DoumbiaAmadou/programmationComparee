@@ -7,7 +7,6 @@ class GameMap():
 	def __init__(self, nb_ants, initial_energy, initial_acid):
 		self.map_dict = {}
 		self.ants     = []
-		self.ennemies = []
 
 		for ant_id in range(0, nb_ants):
 		    ant = Ant(ant_id, initial_energy, initial_acid, True)
@@ -67,6 +66,7 @@ class GameMap():
 		return surrounding_cases
 
 	def get_position_ennemies(self):
+		self.ennemies = []
 		for case in map_dict:
 			if case == "ennemy":
 				ennemies.append[case]
