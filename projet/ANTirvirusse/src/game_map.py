@@ -66,7 +66,7 @@ class GameMap():
 		return surrounding_cases
 
 	def get_position_ennemies(self):
-		self.ennemies = []
+		ennemies = []
 		for case in map_dict:
 			if case == "ennemy":
 				ennemies.append[case]
