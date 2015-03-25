@@ -4,8 +4,10 @@ import json
 import urllib
 import urllib2
 import pprint
+
 from cookielib import CookieJar
 from antcommand import *
+from game_serializer import GameSerializer
 
 base_url = "https://yann.regis-gianas.org/antroid/0"
 cj = CookieJar()
@@ -23,11 +25,11 @@ def showAPI():
 	print response.read()
 
 '''
-Affiche le pseudonyme d'utilisateur sur la sortie standart.
+Retourne le pseudonyme d'utilisateur.
 '''
 def whoami():
 	response = opener.open(makeURL("whoami"))
-	print response.read()
+	return response.read()
 
 '''
 Inscription en utilisant un nom "login" et un mot de passe "password".
@@ -233,15 +235,29 @@ Retourne une liste de dictionnaires d'observations des fourmis en cas du tour re
 En cas d'erreur affiche l'erreur sur la sortie standart et retourne None.
 '''
 
-def game_play(game_id, attached_commands):
+def game_play(game_id, attached_commands, game_serializer=None):
 	command_list = ""
 
 	for command in attached_commands[:-1]:
 		command_list += command.rawValue()+","
 	last_command = attached_commands[-1]
 	command_list += last_command.rawValue()
+	if game_serializer is not None:
+		game_serializer.add_turn(command_list)
 
-	query_args = { 'id':game_id, 'cmds': command_list }
+	return game_play_low_level(game_id, command_list)
+
+def game_replay(game_id, save_file):
+	f = open('./%s' %(save_file), 'r')
+	for commands in f.readlines():
+		game_play_low_level(game_id, command)
+
+'''
+Version de game_play() de bas niveau avec une ligne brute des commandes
+'''
+
+def game_play_low_level(game_id, commands_string):
+	query_args = { 'id':game_id, 'cmds': commands_string }
 	data = urllib.urlencode(query_args)
 
 	response = opener.open(makeURL("play")+"?"+data)
@@ -249,9 +265,7 @@ def game_play(game_id, attached_commands):
 	if data["status"] == "completed":
 		return data["response"]["observations"]
 	else:
-		print "***"
 		print data["response"]["error_msg"]
-
 
 # Tests
 
@@ -273,5 +287,6 @@ def test():
 		print "===="
 		pp.pprint(game_play(gid, [AttachedCommand(0, Left()), AttachedCommand(1, Left()), AttachedCommand(2, Left())])[0][1])
 		print "===="
+		game_observe(gid, 0)
 		game_destroy(gid)
 		logout()
