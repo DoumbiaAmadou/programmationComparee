@@ -1,0 +1,88 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage[francais]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+\chapter{Trouver un nom ?}
+
+\chapter{Contraintes}
+
+\section{Contrainte 1 : Avoir un programme s'exécutant dans un navigateur web}
+
+\subsection{Choix de la technologie}
+
+Nous avons décidé d'utiliser du Javascript afin d'implémenter cette première
+contrainte. Le Javascript a l'avantage d'apporter de la réactivité en terme
+d'User Expérience mais l'inconvénient que présente ce langage est l'absence
+de typage. C'est pourquoi un programme écrit en Javascript peut tout à fait
+lever une erreur lors de son utilisation, alors qu'un langage muni d'un
+typage fort aurait pu la détecter. De plus, tout notre projet a été
+implémenté en OCaml, il fallait donc utiliser une technologie qui nous
+permettrait d'utiliser ce langage pour cette première contrainte. \newline
+
+Nous avons donc décidé d'utiliser le compilateur de bytecode Ocaml vers du
+Javascript, \emph{js\_of\_ocaml}. Cette technologie présente l'avantage de
+de contenir toutes les fonctionnalités qu'on trouve en Javascript
+accompagné du compilateur d'OCaml. En utilisant \emph{js\_of\_ocaml},
+on s'assure de garanties statique qui apporte de la persistance à notre
+application et plus particulièrement sur le Javascript généré. Le dernier
+point qu'on pourrait souligner est que son utilisation est tout à fait
+compatible avec OCaml et rend le déploiement de notre application possible.
+
+\end{itemize}
+
+\subsection{Organisation}
+Nous avons découpé l'implémentation de cette première contrainte en plusieurs
+modules afin de leur attribuer un rôle bien précis. Chaque module comporte une
+interface permettant à un client de comprendre son rôle et les fonctionnalités
+proposées par ce module. La liste suivante résume ce découpage :
+
+\begin{enumerate}
+\item Http : permet l'envoi de requêtes HTTP en utilisant les méthodes POST et
+  GET.
+\item IO : lecture du JSON et transformation vers des types OCaml nécessaire
+  pour des parties de notre application.
+\item Js\_client : définition des comportements à adopter pour chaque élément
+  graphique présents dans l'interface graphique (par exemple, que doit-il se
+  passer si l'utilisateur clique sur le bouton \og{} register \fg{}).
+\item Js\_client\_ui : affichage de chaque élément sur l'interface graphique
+  du client.
+\item Main : Ajout de chaque bouton accompagné de leurs callback respectives.
+  Ce module agrége toutes les fonctionnalités des modules précèdents pour
+  permettre à l'utilisateur d'interagir avec l'application.
+\end{enumerate}
+
+\subsection{Problèmes rencontrés}
+
+Afin d'effectuer des requêtes HTTP, nous avons utilisé dans un premier temps
+\emph{ocurl}, qui permet l'utilisation des primitives CURL en OCaml. Lorsque
+nous avons compilé l'ensemble de notre programme avec \emph{js\_of\_ocaml},
+ce dernier nous a indiqué l'absences de certaines primitives. En effet,
+\emph{ocurl} utilise des librairies C qui ne peuvent être traduits en
+Javascript. L'alternative à ce problème fut d'utiliser le module
+XmlHttpRequest proposé par \emph{js\_of\_ocaml}.\newline
+
+Le principal problème que nous avons rencontré est la récupération du cookie.
+Lorsque nous effectuons une authentification, le serveur doit placer le cookie
+dans l'entête de la réponse et il fut impossible de le récupérer. C'est assez
+problématique car l'API du projet impose qu'on soit connecté pour pouvoir
+l'utiliser. Une issue a été ouverte sur \emph{js\_of\_ocaml} afin de savoir
+si une solution existait à ce problème : nous avons été redirigé vers la
+documentation w3c de XmlHttpRequest, qui indique qu'il n'est pas possible de
+récupérer la valeur d'un cookie dans son entête. Même en désactivant
+quelques options de sécurité, il fut impossible de récuperer le cookie. \newline
+
+Dans les sources fournies, nous récupérons les cookies et les placons dans
+l'entête de chaque requête du client. Une solution pour s'assurer que la manière
+avec laquelle nous parsons le JSON est correcte fut d'utiliser l'exécutable
+fourni au début du projet (\emph{antroit.sh} et \emph{play-games.sh}). Nous
+récupérions le JSON pour le placer dans un fichier et de tester si nos
+fonctions étaient le traitement spécifié correctement. C'est le seul moyen que
+nous avions de tester nos programmes.
+
+\section{Contrainte 2 : pouvoir réexécuter le programme}
+
+\end{document}
