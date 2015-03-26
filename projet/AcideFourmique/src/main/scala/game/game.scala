@@ -12,7 +12,7 @@ case class GameStatus(
   creator: String,
   creation_date: String,
   teaser: String,
-  visibility: List[String],
+  visibility: String,
   nb_ant_per_player: Int,
   pace: Int,
   initial_energy: Int,

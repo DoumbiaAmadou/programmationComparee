@@ -10,18 +10,17 @@
 #*********************************************************************#
 
 
-SOURCES = data.mli data.ml IO.mli IO.ml AI.ml program.ml main.ml
-EXEC = antroit
+SOURCES = utils.mli utils.ml http.mli http.ml IO.mli IO.ml js_client_ui.mli js_client_ui.ml js_client.mli js_client.ml  data.mli data.ml AI.mli AI.ml program.mli program.ml zombie.ml zombie.mli main.ml
 CAMLFIND = ocamlfind
 CAMLC = ocamlc
 CAMLOPT = ocamlopt
 OBJS = $(SOURCES:.ml=.cmo)
 OPTOBJS = $(SOURCES:.ml=.cmx)
 MLIS = $(SOURCES:.mli=.cmi)
-PACKAGES= -package curl -package yojson -package str
-JS_PACKAGE=-package js_of_ocaml -package js_of_ocaml.syntax -syntax camlp4o
-JS_OF_CAML= js_of_ocaml  www/js/curl.js --disable genprim
-FLAGS = -linkpkg
+PACKAGES= -package js_of_ocaml -package js_of_ocaml.syntax -package yojson -syntax camlp4o
+JS_OF_CAML= js_of_ocaml 
+LINKPKG = -linkpkg
+EXEC = antroit
 
 all: $(EXEC).js
 
@@ -32,23 +31,23 @@ $(EXEC).js: $(EXEC).byte
 	mv $(EXEC).js  ./www/js/
 
 $(EXEC).byte: $(MLIS) $(OBJS) 
-	$(CAMLFIND) $(CAMLC) $(JS_PACKAGES) $(PACKAGES) -o $(EXEC).byte $(LIBS) $(OBJS) $(FLAGS)
+	$(CAMLFIND) $(CAMLC) $(PACKAGES) -o $(EXEC).byte $(LIBS) $(OBJS) $(LINKPKG)
 
 $(EXEC).opt: $(MLIS) $(OPTOBJS) 
-	$(CAMLFIND) $(CAMLOPT) $(PACKAGES) -o $(EXEC) $(LIBS:.cma=.cmxa) $(OPTOBJS) $(FLAGS)
+	$(CAMLFIND) $(CAMLOPT) $(PACKAGES) -o $(EXEC) $(LIBS:.cma=.cmxa) $(OPTOBJS)  $(LINKPKG)
 
-.SUFFIXES: 
+.SUFFIXES:
+
 .SUFFIXES: .ml .mli .cmo .cmi .cmx 
 
 .ml.cmo:
-	$(CAMLFIND) $(CAMLC) $(PACKAGES) -c $< $(FLAGS)
+	$(CAMLFIND) $(CAMLC) $(PACKAGES) -c $< $(LINKPKG)
 
 .mli.cmi:
-	$(CAMLFIND) $(CAMLC) $(PACKAGES) -c $< $(FLAGS)
+	$(CAMLFIND) $(CAMLC) $(PACKAGES) -c $< $(LINKPKG)
 
 .ml.cmx:
-	$(CAMLFIND) $(CAMLOPT) $(PACKAGES) -c $< $(FLAGS)
-
+	$(CAMLFIND) $(CAMLOPT) $(PACKAGES) -c $< $(LINKPKG)
 
 clean:
 	rm -f *.cm[iox] *~ .*~ #*#

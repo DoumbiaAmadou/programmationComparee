@@ -1,6 +1,6 @@
 ================================ ACIDE FOURMIQUE ==============================
 
-Members:
+Membres:
 - DO Syou-On: syouon.do@gmail.com
 - LAM Victor: lam.victor94@gmail.com
 - ILLOUS Hugo: hugo.illous@gmail.com
@@ -8,3 +8,14 @@ Members:
 Contraintes:
 - Ecrire une partie du projet en C
 - Utiliser les acteurs ou les agents
+
+
+Requis: SBT, gcc, Curl, Scala 2.10.3 minimum
+
+
+Un makefile est fourni pour la compilation des sources et l'exécution du programme principal.
+
+make compile:	compile les sources du projets (C et Scala)
+make run:	exécute le programme principal et le serveur de log en fond
+make clean:	supprime les fichiers générés par la compilation du code C
+make cleanAll:	supprime tous fichiers générés par la compilation

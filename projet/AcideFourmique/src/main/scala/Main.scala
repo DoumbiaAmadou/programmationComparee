@@ -1,5 +1,6 @@
-import server._
+import gameServer._
 import antCommand._
+import gameLog.GameLog
 
 object Main {
 
@@ -13,7 +14,7 @@ object Main {
     val minimal_nb_player = 1
 
     Antroid.authenticate(login, passwd)
-    val game_id = Antroid.create(login, "test",
+    val game_id = Antroid.create("all", "test",
       pace, nb_turn, nb_ant, nb_player, minimal_nb_player)
 
     Antroid.join(game_id)
@@ -24,7 +25,7 @@ object Main {
      * sinon il avance.
      * La fourmi zombie recommence l'operation jusqu'a sa mort.
      * 
-     * L'operateur := construit l'instruction Store.
+     * L'operateur ':=' construit l'instruction Store.
      * Cet operateur est fourni par la classe Var. */
     val code = new Code(List(
       // primitive see_ant et entiers non reconnu par le serveur
@@ -35,23 +36,47 @@ object Main {
       (None,           Jump(new Label("LOOP")))
     ))
 
-    // Un tour de boucle correspond a trois tours de jeu 
+    /* Un tour de boucle correspond a trois tours de jeu.
+     * Joue une commande autant de fois qu'il y a de tour */
     for (round <- 1 to nb_turn by 3) {
       println("--------------- ROUND " + round + " ----------------")
       Antroid.play(game_id, List(Forward() << 0, Forward() << 1))
       Antroid.play(game_id, List(Attack(10) << 0, Hack(code) << 1))
       Antroid.play(game_id, List(Hack(code) << 0, Attack(10) << 1))
-      for (status <- Antroid.status(game_id))
-        println("score: " + status.score)
+      /* la construction avec for permet d'effectuer le corps de la boucle
+       * seulement si gamestat n'est pas None */
+      for (gamestat <- Antroid.status(game_id))
+        println("score: " + gamestat.score)
     }
 
-    for (status <- Antroid.status(game_id)) {
+    `wait until game is over`(game_id)
+
+    // Envoi le log de la partie au serveur de log (programme ecrit en C)
+    GameLog.sendLog(Antroid.log(game_id))
+
+    for (gamestat <- Antroid.status(game_id)) {
       println("=========================================")
-      println("game status: " + status.status("status"))
-      println("score: " + status.score)
+      println("game status: " + gamestat.status("status"))
+      println("score: " + gamestat.score)
     }
 
     Antroid.destroy(game_id)
     Antroid.logout()
+  }
+
+  //attente de la fin d'une partie (attente passive)
+  private def `wait until game is over`(game_id: String) = {
+    def `is the game over?`(status: String): Unit = status match {
+      case "over" => ()
+      case _ => {
+        Thread.sleep(1000)
+        for (gamestat <- Antroid.status(game_id))
+          `is the game over?`(gamestat.status("status"))
+      }
+    }
+    print("Waiting for the end of the game... ")
+    for (gamestat <- Antroid.status(game_id))
+      `is the game over?`(gamestat.status("status"))
+    println("OK")
   }
 }
