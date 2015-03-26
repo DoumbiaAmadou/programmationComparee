@@ -67,10 +67,17 @@ class GameMap():
 
 		return surrounding_cases
 
-	def get_position_ennemies(self):
-		ennemies = []
+	def get_position_enemies(self):
+		enemies = []
 		for case in map_dict:
-			if case == "ennemy":
-				ennemies.append[case]
-		return ennemies
+			if map_dict[case] == "enemy":
+				enemies.append[case]
+		return enemies
+
+	def get_position_resource(self):
+		resources = []
+		for case in map_dict:
+			if map_dict[case] == "resource":
+				resources.append[case]
+		return resources
 
