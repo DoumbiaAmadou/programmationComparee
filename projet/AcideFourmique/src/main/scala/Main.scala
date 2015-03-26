@@ -1,6 +1,6 @@
-import server._
+import gameServer._
 import antCommand._
-import logGame._
+import gameLog.GameLog
 
 object Main {
 
@@ -14,7 +14,7 @@ object Main {
     val minimal_nb_player = 1
 
     Antroid.authenticate(login, passwd)
-    val game_id = Antroid.create(login, "test",
+    val game_id = Antroid.create("all", "test",
       pace, nb_turn, nb_ant, nb_player, minimal_nb_player)
 
     Antroid.join(game_id)
@@ -30,7 +30,7 @@ object Main {
     val code = new Code(List(
       // primitive see_ant et entiers non reconnu par le serveur
       (Label("LOOP"),  Left()),
-      (None,           Var("x") := Apply(SeeAnt())),
+      (None,           Var("x") := Apply(See())),
       (None,           Jumpifz(Var("x"), new Label("LOOP"))),
       (None,           Forward()),
       (None,           Jump(new Label("LOOP")))

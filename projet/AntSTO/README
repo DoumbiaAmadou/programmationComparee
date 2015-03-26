@@ -19,3 +19,8 @@
                               INVOKATION
 
                                 $ make
+
+
+                           EINSCHRÄNKUNGEN
+                 mit einem Minimum von Bibliotheken
+                          Verwendung OpenGL

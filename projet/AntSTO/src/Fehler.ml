@@ -23,35 +23,35 @@ exception UnknownErrorCode of int
 
 (** Fonction qui, a partir du code d'erreur sous forme d'entier, renvoie l'erreur *)
 let of_int = function
-  | 306276868  -> EAlreadyJoined
-  | 1016528498 -> EGameIsNotOver
-  | 318351321  -> EGameIsNotPlaying
-  | 231632226  -> EInvalidAntIdentifier
-  | 995492770  -> EInvalidArgument
-  | 395281878  -> EInvalidCommand
-  | 397948155  -> EInvalidGameIdentifier
-  | 465204434  -> EInvalidLogin
-  | 785135324  -> EMustBeLogged
-  | 779856578  -> EMustJoinFirst
-  | 184050103  -> ENoMoreSlot
-  | 290490648  -> ENoPermission
-  | 598036704  -> EUnknownUser
-  | 1041390133 -> EUserAlreadyExists
+  | 443034632  -> EAlreadyJoined
+  | 808783211  -> EGameIsNotOver
+  | 357629463  -> EGameIsNotPlaying
+  | 973268714  -> EInvalidAntIdentifier
+  | 677388348  -> EInvalidArgument
+  | 4313039    -> EInvalidCommand
+  | 513589683  -> EInvalidGameIdentifier
+  | 114981602  -> EInvalidLogin
+  | 32403037   -> EMustBeLogged
+  | 523177601  -> EMustJoinFirst
+  | 1001223883 -> ENoMoreSlot
+  | 842913797  -> ENoPermission
+  | 502441794  -> EUnknownUser
+  | 334269347  -> EUserAlreadyExists
   | otherwise  -> raise @$ UnknownErrorCode otherwise
 
 (** Fonction qui, a partir de l'erreur, renvoie le code d'erreur sous forme d'entier *)
 let to_int = function
-  | EAlreadyJoined         -> 306276868
-  | EGameIsNotOver         -> 1016528498
-  | EGameIsNotPlaying      -> 318351321
-  | EInvalidAntIdentifier  -> 231632226
-  | EInvalidArgument       -> 995492770
-  | EInvalidCommand        -> 395281878
-  | EInvalidGameIdentifier -> 397948155
-  | EInvalidLogin          -> 465204434
-  | EMustBeLogged          -> 785135324
-  | EMustJoinFirst         -> 779856578
-  | ENoMoreSlot            -> 184050103
-  | ENoPermission          -> 290490648
-  | EUnknownUser           -> 598036704
-  | EUserAlreadyExists     -> 1041390133
+  | EAlreadyJoined         -> 443034632
+  | EGameIsNotOver         -> 808783211
+  | EGameIsNotPlaying      -> 357629463
+  | EInvalidAntIdentifier  -> 973268714
+  | EInvalidArgument       -> 677388348
+  | EInvalidCommand        -> 4313039
+  | EInvalidGameIdentifier -> 513589683
+  | EInvalidLogin          -> 114981602
+  | EMustBeLogged          -> 32403037
+  | EMustJoinFirst         -> 523177601
+  | ENoMoreSlot            -> 1001223883
+  | ENoPermission          -> 842913797
+  | EUnknownUser           -> 502441794
+  | EUserAlreadyExists     -> 334269347

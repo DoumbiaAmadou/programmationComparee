@@ -1,0 +1,19 @@
+auth // similaire api
+create // similaire api
+destroy // similaire api
+join // similaire api
+status // similaire api
+play(action, etat)
+
+action: (identite: int, etat: etat)
+	left
+	right
+	forward
+	rest
+	attack@N
+	hack@[code]
+
+message retour: etat + observations
+
+observations = liste des observations de chaque fourmi
+		(int * (((x, y) * type_sol) array)) list

@@ -1,0 +1,39 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage[francais]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+\chapter{Comparaison avec le projet AntSTO}
+
+\section{Lisibilité}
+
+Contrairement au notre, le code est peu commenté (en partie en allemand...) mais aussi bien plus explicite.
+L'organisation des fichiers est similaire dans les deux projets, les différents rôles des modules ont été identifies de la même manière.
+
+\section{Correction}
+
+Le programme ne semble pas envoyer de requête (bien que ce soit implémenté) au serveur et n'a donc pas le comportement attendu. 
+Le notre envoie effectivement les requêtes mais elle ne fonctionnement pas. Accessoirement la boucle de jeu a aussi été implémentée dans notre programme.
+
+\section{Robustesse}
+
+[ALI A L4AIDE§§§ (en vrai c'est toi qui sait si tu gère correctement les données du serveur)]
+
+\section{Efficacité}
+
+Il est difficile de juger (ni même d'observer) de l'efficacité des programmes, d'une part parce qu'ils ne sont pas corrects et d'autre part parce c'est le serveur qui donne le « rythme ».
+
+En terme de consommation mémoire, dans les deux cas c'est principalement l'interprétation des données reçues qui influe sur la consommation, le reste étant du calcul fait à partir de ces données.
+Ces données étant les mêmes pour les deux programmes, la consommation est, à peu de chose près, identique. 
+
+\section{Généralisation}
+
+Notre code permet la création de comportement des fourmis (et des zombies) indépendamment du reste du programme (il suffit de donner la bonne valeur dans le fichier qui organise la boucle de jeu). On peut également modifier facilement les informations que contiennent les fourmis grâce a la représentation donné.
+L'autre projet n'a pas été assez loin dans l'implémentation de ces aspects du programme pour avoir cette flexibilité.
+
+Par contre leur module de communication est beaucoup plus facilement modifiable pour suivre la potentiel évolution de l'API.
+
+\end{document}
