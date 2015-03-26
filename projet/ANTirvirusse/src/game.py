@@ -1,7 +1,7 @@
  # -*- coding: utf-8 -*-
 
-from game_map import GameMap
-from ant import Ant
+from Data.game_map import GameMap
+from Data.ant import Ant
 from antcommand import AttachedCommand
 from Network import network_layer as nl
 from IA import iaplayer
