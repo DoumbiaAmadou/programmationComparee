@@ -9,4 +9,10 @@ class StrategyWander(strategy.Strategy):
             self.action_for_ant(ant)
 
     def action_for_ant(self,ant):
-        pass
+        ennemies=self.analyst.enemies_near(ant.x,ant.y,8)
+        if len(ennemies)!=0:
+            self.fight(ant,ant.x,ant.y) #recherche automatiquement les ennemis proches et les attache
+        else:
+            resource=self.analyst.nearest_resource()
+            if (self.analyst.distance(ant.x,ant.y,resource.x, resource.y))<8:
+                self.go_to(ant,resource.x,resource.y)
