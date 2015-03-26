@@ -1,7 +1,7 @@
  # -*- coding: utf-8 -*-
 
-from Donnees.game_map import GameMap
-from Donnees.ant import Ant
+from Data.game_map import GameMap
+from Data.ant import Ant
 from antcommand import AttachedCommand
 from Network import network_layer as nl
 
