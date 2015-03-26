@@ -1,5 +1,8 @@
 <?php 
 include('BIblio.php') ; 
+/*
+code  de test de la bibliothèque: jouer une nouvelle partie :
+*/
  ?>
 <html>
 <head>
@@ -62,6 +65,10 @@ echo "la partie commence<br/>";
 
 $i=0;
 sleep($sleeptime/2) ;
+/*
+boucle de jeu
+*/
+
 while($st->response->status->status->status=="playing" && $i<5){
 	
 	$cmd ="0:rest" ;
@@ -80,6 +87,5 @@ while($st->response->status->status->status=="playing" && $i<5){
 
 
 ?>
-
 </body>
 </html>

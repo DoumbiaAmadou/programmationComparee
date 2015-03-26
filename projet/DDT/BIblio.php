@@ -1,12 +1,20 @@
 <?php
 
+/**
+*	BIBLIOTHEQUE DE FONCTIONNALITE DE BASE: 
+*
+*
+*
+*
+*
+*/
 
-$url  = "http://yann.regis-gianas.org/antroid/0/" ; 
-
+/*decode un code json  */
 function decode ($var){
 	return json_decode($var) ; 
 }
 
+/* connexion à serveur: */
 function auth($login , $password){
 	$curl = curl_init() ; 
 	$body = array( 'login' => $login , 'password' => $password); 
@@ -30,6 +38,7 @@ function auth($login , $password){
 
 	$var = json_decode($page , true);
 }
+/* S'inscrire */
 function register($login , $password){
 	$curl = curl_init() ; 
 	curl_setopt($curl, CURLOPT_URL, $url."register");
