@@ -10,17 +10,27 @@
 
 On a choisi OCaml pour les raisons expliquées dans la partie sur les contraintes.
 
-Nous avons représenté l'IA de la fourmi comme un automate dont on peut voir les transitions comme une association de l'état courant de l'IA  et de l'environnement de la fourmi qui produit la commande à exécuté au tour suivant.
+Nous avons représenté l'IA de la fourmi comme un automate dont on peut voir les
+transitions comme une association de l'état courant de l'IA  et de
+l'environnement de la fourmi qui produit la commande à exécuté au tour
+suivant.\newline
  
-Nous avons décidé de faire une IA  propre à chaque fourmi, sans interaction entre les fourmis (cela reste possible mais avec une implémentation d'IA particulière) . 
-En suivant cette logique, chaque fourmi à son environnement relatif ( pas de notion 
-d'environnement global) .
+Nous avons décidé de faire une IA  propre à chaque fourmi, sans interaction
+entre les fourmis (cela reste possible mais avec une implémentation d'IA
+particulière). \newline
 
-Le déroulement du jeu du point de vue de notre programme consiste en une boucle qui actualise l'environnement de chaque fourmi (à partir du serveur), puis avec ces informations, demande à l'IA la commande à exécuter.
+En suivant cette logique, chaque fourmi à son environnement relatif (pas de
+notion d'environnement global). \newline 
 
-En ce qui concerne les zombies, nous avons simplement représenté les instructions pour pouvoir écrire du code assembleur un peu plus lisible. 
+Le déroulement du jeu du point de vue de notre programme consiste en une boucle
+qui actualise l'environnement de chaque fourmi (à partir du serveur), puis avec
+ces informations, demande à l'IA la commande à exécuter. \newline 
 
-Même si ce n'était pas une contrainte imposée, toute la partie IA est en fontionnel pur.
+En ce qui concerne les zombies, nous avons simplement représenté les instructions
+pour pouvoir écrire du code assembleur un peu plus lisible. \newline 
+
+Même si ce n'était pas une contrainte imposée, toute la partie IA est en
+fontionnel pur.
 \chapter{Contraintes}
 
 \section{Contrainte 1 : Avoir un programme s'exécutant dans un navigateur web}
