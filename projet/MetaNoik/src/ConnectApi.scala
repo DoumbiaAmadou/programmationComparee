@@ -1,4 +1,6 @@
 import scalaj.http._
+import spray.json._
+import DefaultJsonProtocol._ 
 
 class ConnectApi() {
   private val baseUrl = "http://yann.regis-gianas.org/antroid/"
@@ -6,18 +8,12 @@ class ConnectApi() {
 
   //Création d'une requete basique
   def makeHttpRequest(requestName: String): HttpRequest = {
-    val request: HttpRequest = Http(baseUrl + version + "/" + requestName + "?")
+    val request: HttpRequest = Http(baseUrl + version + "/" + requestName)
     return request
   }
   // Envoie une requete avec la méthode POST
   def postRequest(requestName: String, params: Seq[(String, String)]): String = {
     val response: HttpResponse[String] = makeHttpRequest(requestName).postForm(params).asString
-    return response.body
-  }
-
-  //Envoie une requete avec la methode GET (sans parametres)
-  def getRequest(requestName: String): String = {
-    val response: HttpResponse[String] = makeHttpRequest(requestName).asString
     return response.body
   }
 
@@ -38,8 +34,8 @@ class ConnectApi() {
     minimal_nb_player: Int, initial_energy: Int, initial_acid: Int): String = {
     val response: HttpResponse[String] = makeHttpRequest("create?users="
       + users + "&teaser=" + teaser + "&pace=" + pace + "&nb_turn=" + nb_turn + "&nb_ant_per_player="
-      + "&nb_player=" + nb_player + "&minimal_nb_player=" + minimal_nb_player + "&initial_energy="
-      + initial_energy + "&initial_acid=" + initial_acid).asString
+      +nb_ant_per_player + "&nb_player=" + nb_player + "&minimal_nb_player=" + minimal_nb_player 
+      + "&initial_energy=" + initial_energy + "&initial_acid=" + initial_acid).asString
     return response.body
   }
 
@@ -55,9 +51,16 @@ class ConnectApi() {
     return response.body
   }
 
+  // status d'un game
+  def status(idGame: String): String = {
+    val response: HttpResponse[String] = makeHttpRequest("status?id=" + idGame).asString
+    return response.body
+  }
+
   // Liste des jeux visibles
   def listGame(): String = {
-    return getRequest("games")
+    val response: HttpResponse[String] = makeHttpRequest("games").asString
+    return response.body
   }
 }
 // Test connect
@@ -65,11 +68,12 @@ object test {
   def main(args: Array[String]) {
     val connection: ConnectApi = new ConnectApi()
     println("Hello, scala request!")
-    //println(registerUser("test1", "test1"))
-    println(connection.auth("test1", "test1"))
-    println(connection.destroyGame("17262510196880258110079859391070411975"))
+    // println(connection.registerUser("test1", "test1"))
+    // println(connection.auth("test1", "test1"))
+    // println(connection.destroyGame("17262510196880258110079859391070411975"))
     println(connection.newGame("all", "test", "10", 2, 3, 3, 2, 100, 100))
-    //println(listGame())
-    println(connection.joinAGame("4986356145915714886550832111036009180"))
+    // println(connection.listGame())
+    // println(connection.joinAGame("4986356145915714886550832111036009180"))
+    // println(connection.status("4986356145915714886550832111036009180"))
   }
 }
