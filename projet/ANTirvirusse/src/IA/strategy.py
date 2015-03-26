@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 
-from .. import game as g
 from abc import ABCMeta, abstractmethod
 from . import analyst
 
