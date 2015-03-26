@@ -16,14 +16,16 @@ object ConnectApi {
 
 	// Send request by method GET (just for the request hasn't param)
 	def getRequest(requestName: String) : String = {
-      	val response1: HttpResponse[String] = makeHttpRequest(requestName).asString
-      	return response1.body
+      	val response: HttpResponse[String] = makeHttpRequest(requestName).asString
+      	return response.body
      }
+
+
 
 
 	// Connect a user authentication
 	def auth(login: String, password: String) : String ={
-		var params = Seq("login" -> login, "password" -> password)
+		val params = Seq("login" -> login, "password" -> password)
 		return postRequest("auth",params)
 	}
 
@@ -40,8 +42,8 @@ object ConnectApi {
 		// }
 
 	// Destroy a game.
-	def destroyGame(idGame: String) : String = {
-      	val response: HttpResponse[String] = makeHttpRequest("destroy").param("id", idGame).asString
+	def destroyGame() : String = {
+      	val response: HttpResponse[String] = makeHttpRequest("destroy").params("id"->"1").asString
 		return response.body
 	}
 
@@ -65,12 +67,12 @@ object ConnectApi {
 	// Test connect
 	def main(args: Array[String]) {
       	println("Hello, scala request!")
-	    // println(auth("nga","ngango"))
+	   	// println(auth("nga","nga"))
 		// println(newGame("nga", "ngo", 10,30,1,1,1,100,100))
-		println(listGame())
-		// println(destroyGame("4986356145915714886550832111036009180"))
-		// println(joinAGame("4986356145915714886550832111036009180"))
-
+		//println(listGame())
+		println(destroyGame())
+		//println(joinAGame("4986356145915714886550832111036009180"))
+		//println(registerUser("nga","nga"))
     }
 
 }
