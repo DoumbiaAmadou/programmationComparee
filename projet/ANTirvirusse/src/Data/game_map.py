@@ -73,6 +73,7 @@ class GameMap():
 
         return surrounding_cases
 
+# save position of ennemies
     def get_position_enemies(self):
         enemies = []
         for case in map_dict:
@@ -80,6 +81,7 @@ class GameMap():
                 enemies.append(case)
         return enemies
 
+# save position of food
     def get_position_resource(self):
         resources = []
         for case in map_dict:
