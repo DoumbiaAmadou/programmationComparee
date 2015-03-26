@@ -1,4 +1,4 @@
-package server
+package gameServer
 
 import CurlService._
 import antCommand._
@@ -9,6 +9,7 @@ import net.liftweb.json._
 
 object Antroid {
 
+  // valeur utile pour le parsing json
   private implicit val formats = DefaultFormats
 
   private val api_version = 0

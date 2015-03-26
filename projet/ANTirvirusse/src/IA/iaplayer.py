@@ -18,6 +18,6 @@ class IAPlayer(g.Player):
             return False
         else:
             self.strategy = self.decisionMaker.choose_strategy(self.world)
-            self.short_path = self.strategy.choose_actions()
+            self.strategy.choose_actions()
             return True
 

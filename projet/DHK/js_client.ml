@@ -80,20 +80,19 @@ let auth_callback req =
   | XmlHttpRequest.DONE -> 
     let status = req##status in
     if status = 200 then
-      win##alert (req##responseText);
-    Printf.printf "headers = %s\n"
-      (Js.to_string req##getAllResponseHeaders ()); 
-    let cookie_prop = Js.string "Set-Cookie" in      
-    let cookie =
-      match Js.Opt.to_option req##getResponseHeader (cookie_prop) with
-      | None -> ""
-            | Some s -> Js.to_string s in
-          (* TODO : Pour l'instant, la récupération du cookie ne fonctionne 
+      begin
+        win##alert (req##responseText);
+        let cookie_prop = Js.string "Set-Cookie" in      
+        let cookie =
+          match Js.Opt.to_option req##getResponseHeader (cookie_prop) with
+          | None -> ""
+          | Some s -> Js.to_string s in
+        (* TODO : Pour l'instant, la récupération du cookie ne fonctionne 
                pas *)
-          Printf.printf "cookie = %s\n" cookie;
-          doc##cookie <-
-            Js.string "fobb2dNmOLuNb0ZE+j+/BlvZoCo41d544256e18d389";
-    | _ -> () 
+        Printf.printf "cookie = %s\n" cookie;
+        doc##cookie <- Js.string cookie
+      end
+  | _ -> () 
 
 let auth bsubmit params = api_action `POST bsubmit "auth" params auth_callback
 

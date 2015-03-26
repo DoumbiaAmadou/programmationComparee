@@ -27,12 +27,21 @@ class Analyst():
             else:
                 return True
 
+    def enemies_near(self,x,y,dist): #Liste des ennemis à proximité de la cas x,y (à moins d'une distance euclidienne dist)
+        res = []
+        ennemies=self.game.get_map().get_position_ennemies()
+        for enemy in ennemies:
+            if self.distance(x,y,enemy.x, enemy.y) < dist :
+                res.append(enemy)
+        return res
+
+
     def resources_under_control(self):
-        res=0
+        res=[]
         for case in self.game.get_map():
             if case.is_food():
                 if self.is_under_control(case.x,case.y):
-                    res+=1
+                    res.append(case)
         return res
 
 
@@ -114,16 +123,16 @@ class Analyst():
             if current == goal:
                 found = True
 
-            for next_case in self.game.get_map().neighbors(current):
-                new_cost = cost_so_far[current] + self.game.get_map().cost(current, next_case)
+            for next_case in self.game.get_map().get_case_surroundings(current[0],current[1]):
+                new_cost = cost_so_far[current] + 1
                 if next_case not in cost_so_far or new_cost < cost_so_far[next_case]:
-                    cost_so_far[next_case] = new_cost
+                    cost_so_far[next_case] = new_cost #cout jusqu'à présent
                     priority = new_cost + self.manhattan(goal, next_case)
                     #prends en compte le cout d'une rotation de la fourmi
                     if self.direction_change(came_from[current], current, next_case):
                         priority += 1
                     queue.put(next_case, priority)
-                    came_from[next_case] = current
+                    came_from[next_case] = current #on accède à next_case via la case courrante
 
         return came_from, cost_so_far
 
