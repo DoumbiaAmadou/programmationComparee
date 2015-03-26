@@ -14,30 +14,39 @@ object Ant {
 class Ant extends Actor {
 
 	def receive = {
+	  //The ant have received the message to attack
 	  case Ant.AttackAction => {
 	    println("Attack")
-	    //Attack(10);
 	    sender() ! Ant.Done
+	    context.stop(self)
 	  }
+	  
+	  //The ant have received the message to move forward	  
 	  case Ant.Move   => {
-		println("Move")
-		//Forward()
-		sender() ! Ant.Done
+	    println("Move")
+	    sender() ! Ant.Done
+	    context.stop(self)
 	  }
+	  
+	  //The ant have received the message to rotate
 	  case Ant.Rotate => {
 	    println("Rotate")
-	    //val rotate = List(Right(), Left())
-	    //rotate(Random.nextInt(rotate.length))
 	    sender() ! Ant.Done
+	    context.stop(self)
 	  }
+	  
+	  //The ant have received the message to stand still
 	  case Ant.Stand  => {
 	    println("Stand")
-	    //Rest()
 	    sender() ! Ant.Done
+	    context.stop(self)
 	  }
+	  
+	  //The ant have received the message to hack a dead ant
 	  case Ant.Hack => {
 	    println("Hack")
 	    sender() ! Ant.Done
+	    context.stop(self)
 	  }
 	}
   
