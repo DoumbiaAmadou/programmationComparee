@@ -1,5 +1,3 @@
-class Map(obs: List[Pair[AntState,Map]], status: Status)
-
 import akka.actor._
 
 abstract class Command
@@ -45,4 +43,3 @@ case class Compute(obs: List[Pair[AntState,WorldMap]], status: Status) extends M
 
 case class Ants(obs: List[Pair[AntState,WorldMap]], status: Status) extends Message
 case class Map(obs: List[Pair[AntState,WorldMap]], status: Status) extends Message
->>>>>>> 70c5b674430909284a9c7fcd5419ea56ae6c5251
