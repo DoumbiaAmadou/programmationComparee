@@ -9,7 +9,10 @@ compile: $(exe)
 
 run: $(exe)
 	./$(exe) &
-	sbt run
+	sbt "run-main Main"
+
+run-actor:
+	sbt "run-main ant.Main"
 
 $(exe): LogPrinter.o
 	$(CC) -o $(exe) $<

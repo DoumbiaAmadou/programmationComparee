@@ -17,5 +17,6 @@ Un makefile est fourni pour la compilation des sources et l'exécution du progra
 
 make compile:	compile les sources du projets (C et Scala)
 make run:	exécute le programme principal et le serveur de log en fond
+make run-actor: exécute le programme utilisant les acteurs
 make clean:	supprime les fichiers générés par la compilation du code C
 make cleanAll:	supprime tous fichiers générés par la compilation
