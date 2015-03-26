@@ -5,7 +5,9 @@ type ant =
 
 and state = {
   energy : int;
-  acid : int
+  acid : int;
+  max_energy : int;
+  max_acid : int
 }
 
 and environment = (field * ant option) list
@@ -40,6 +42,14 @@ type position =
   | BackRight
   | On
 
+let field_of_string = function
+  | "grass" -> Grass
+  | _ -> assert false
+
+let ant_of_string = function
+  | "" -> Corpse
+  | _ -> assert false
+    
 let energy = function
   | Ally(s,_) -> Some s.energy
   | _ -> None

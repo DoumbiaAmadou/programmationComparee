@@ -1,129 +1,155 @@
-open Nethttp_client.Convenience
+open Yojson.Basic.Util
 
-exception HttpPostError
-exception HttpGetError
+(** [get_member json m] return the member [m] from [json]. *)
+let get_member json m = json |> member m |> to_string
+                        
+let is_success response =
+  let json = Yojson.Basic.from_string response in
+  get_member json "status" = "completed"
+
+let game_status response =
+  let json = Yojson.Basic.from_string response in
+  let game = json |> member "response" |> member "status" in
+  let players =
+    game
+    |> member "players"
+    |> to_list
+    |> filter_string
+    |> String.concat " " in 
+  let game_member = get_member game in
+  [("creator", game_member "creator");
+   ("creation_date", game_member "creation_date");
+   ("teaser", game_member "teaser");
+   ("visibility", game_member "visibility");
+   ("nb_ant_per_player", game_member "nb_ant_per_player");
+   ("pace", game_member "pace");   
+   ("initial_energy", game_member "initial_energy");
+   ("initial_acid", game_member "initial_acid");
+   ("players", players);
+   ("turn", game_member "turn")]
   
-(* Prefix of the server URL *)
-let prefix_url = "http://yann.regis-gianas.org/antroid/"
 
-(* The current version of the API *)
-let version = "0"
-
-(* The first part url of the server *)
-let url = prefix_url ^ version
-
-(* [concat_url p s] return the concatenation between [p] and [s]. *)
-let concat_url p s = Printf.sprintf "%s/%s" p s
-
-(* [register_user l p] try to add a new user with the login [l] and the 
-   password [p]. Raise an HttpPostError exception if the request fails. *)
-let register_user l p =
-  let url = concat_url url "register" in 
-  let post_params = [("login",l); ("password",p)] in
-  try 
-    let json_string = http_post url post_params in
-    let json = Yojson.Basic.from_string json_string in
-    let open Yojson.Basic.Util in
-    let status = json |> member "status" |> to_string in
-    match status with
-    | "error" -> false
-    | "completed" -> true
-    | _ -> assert false 
-  with _ -> raise HttpPostError
-
-(* [auth_user l p] make the authentication of a user having the login [l] and 
-   the password [p]. Raise an HttpPostError exception if the request fails.*)
-let auth_user l p =
-  let url = concat_url url "auth" in
-  let post_params = [("login",l); ("password",p)] in
-  try 
-    let json_string = http_post url post_params in
-    let json = Yojson.Basic.from_string json_string in
-    let open Yojson.Basic.Util in
-    let status = json |> member "status" |> to_string in
-    match status with 
-    | "error" -> false
-    | "completed" -> true
-    | _ -> assert false 
-  with _ -> raise HttpPostError
-
-(* [is_between min max v] check if the value [v] is between [min] and [max]. *)
-let is_between min max v = v >= min && min <= max
-
-(* [check_users_id users] test if [users] is well formed. *)
-let check_users_id users =
-  let regexp = Str.regexp "^\\([0-9A-Za-z]+\\)\\(,[0-9A-Za-z]+\\)*$" in
-  users = "all" || Str.string_match regexp users 0
-
-(* [encode str] replace all space character in [space] by the character "+" *)
-let encode str = Str.global_replace (Str.regexp " ") "+" str
-
-exception BadFormatArgument
-  
-(* [create_new_game users teaser pace nb_turn nb_ant_per_player nb_player
-   minimal_nb_player initial_energy initial_acid] try to create a new game.
-   Raise an HttpGetError exception if the request fails. *)
-let create_new_game ~users ~teaser ~pace ~nb_turn ~nb_ant_per_player
-    ~nb_player ~minimal_nb_player ~initial_energy ~initial_acid =
-  let predicates =
-    [ check_users_id users;
-      is_between 1 100 pace;
-      is_between 1 10000 nb_turn;
-      is_between 1 42 nb_ant_per_player;
-      is_between 1 42 nb_player;
-      is_between 1 nb_player minimal_nb_player;
-      is_between 1 1000 initial_energy;
-      is_between 1 1000 initial_acid
-    ] in
-  let b = List.fold_left (fun acc p -> acc && p) true predicates in
-  if b then 
-    let url = concat_url url "create" in
-    let url = url ^ "?users=" ^ users ^
-              "&teaser=" ^ encode(teaser) ^
-              "&pace=" ^ (string_of_int pace) ^
-              "&nb_turn=" ^ (string_of_int nb_turn) ^
-              "&nb_ant_per_player=" ^ (string_of_int nb_ant_per_player) ^
-              "&nb_player=" ^ (string_of_int nb_player) ^
-              "&minimal_nb_player=" ^ (string_of_int minimal_nb_player) ^
-              "&initial_energy=" ^ (string_of_int initial_energy) ^
-            "&initial_acid=" ^ (string_of_int initial_acid) in
-    try
-      Printf.printf "%s\n" url;
-      let s = http_get url in
-      Printf.printf "%s\n" s
-    with _ -> raise HttpGetError
-  else raise BadFormatArgument
+let all_games_informations response =
+  let json = Yojson.Basic.from_string response in
+  let games = json |> member "response" |> member "games" in
+  games
+  |> to_list
+  |> List.map (fun obj ->
+      let game_desc = obj |> member "game_description" in
+      let id = get_member game_desc "identifier" in 
+      let creator = get_member game_desc "creator"  in 
+      let teaser = get_member  game_desc "teaser" in
+      (id,creator,teaser))
     
 
-(* [do_game_action i action] will send a request, doing the action [action], 
-   to the game having the id [i]. Raise an HttpGetError if the request fails. *)
-let do_game_action i action =
-  let url = concat_url url action in
-  let url = url ^ "?id=" ^ i  in
-  try
-    let s = http_get url in
-    Printf.printf "%s\n" s
-  with _ -> raise HttpGetError
+type ant_obs = {
+  x : int;
+  y : int;
+  dx: int;
+  dy: int;
+  brain: string;
+  id: int;
+  energy: int;
+  acid:int;
+  field : cell list;
+  ant_loc : ant_location list;
+}
 
-(* [destory_game i] try to destroy the game having the id [i].*)
-let destroy_game i = do_game_action i "destroy"
+and cell = {
+  cx : int;
+  cy : int;
+  content : string
+}
 
-(* [join_game i] try to join the game having the id [i]. *)
-let join_game i = do_game_action i "join"
+and ant_location = {
+  lx : int;
+  ly : int;
+  ldx : int;
+  ldy : int;
+  lbrain : string;
+}
 
-(* [log_game i] try to get the log of the game having the id [i]. *)
-let log_game i = do_game_action i "log"
+(* let find_cell (x,y) r = if (x,y) = (r.cx, r.cy) then Some r.content else None *)
 
-(* [get_game_status i] try to get the status of the game having the id [i]. *)
-let get_game_status i = do_game_action i "status"
+(* let ant_loc (x,y) r = if (x,y) = (r.lx, r.ly) then Some r.lbrain else None *)
+    
+(* let to_ant_obs : Yojson.Basic.json -> ant_obs list = fun json -> [] *)
+  
+(* let orientation x y dx dy position = *)
+(*   let l = [ (0,1); *)
+(*             (1,1); *)
+(*             (1,0); *)
+(*             (1,-1); *)
+(*             (0,-1); *)
+(*             (-1,-1); *)
+(*             (-1,0); *)
+(*             (-1,1) ] in *)
+  
+(*   let index l v =  *)
+(*     let rec index_aux l v i = match l with  *)
+(*       | [] -> (-1) *)
+(*       | x :: tl -> if x = v then i else index_aux tl v (i+1) in *)
+(*     index_aux l v 0 in *)
+  
+(*   let get_orientation ind n = List.nth l (ind + n mod 8) in *)
+  
+(*   let aux orient = *)
+(*     let ind = index l orient in *)
+(*     let open Data in *)
+(*     function *)
+(*     | Front -> orient *)
+(*     | Back -> get_orientation ind 4  *)
+(*     | Left -> get_orientation ind (-2) *)
+(*     | Right -> get_orientation ind (2) *)
+(*     | FrontLeft -> get_orientation ind (-1) *)
+(*     | FrontRight -> get_orientation ind (1) *)
+(*     | BackRight -> get_orientation ind 3 *)
+(*     | BackLeft -> get_orientation ind (-3) *)
+(*     | On -> 0,0 in *)
 
-(* [get_current_games] get the list of all visibles games.*)
-let get_current_games () =
-  let url = concat_url url "games" in
-  try
-    let s = http_get url in
-    Printf.printf "%s\n" s
-  with _ -> raise HttpGetError
+(*   let (dx, dy) = aux (dx,dy) position in *)
+(*   dx+x, dy+y *)
+            
+
+(* let max_state cookie = (0,0) *)
+
+(* let rec search_data l f = match l with *)
+(*   | [] -> None *)
+(*   | x  :: tail -> match f x with *)
+(*     | Some s as s' -> s' *)
+(*     | None -> search_data tail f                 *)
+
+(* let env ant_obs = *)
+(*   let open Data in  *)
+(*   let positions = [FrontLeft;Front; FrontRight; *)
+(*                    Left; On; Right; *)
+(*                    BackLeft; Back; BackRight] in *)
+  
+(*   let env_item lcell lant position = *)
+(*     match search_data lcell (find_cell position), *)
+(*           search_data lant (ant_loc position) with *)
+(*     | None, _ -> assert false  *)
+(*     | Some c, None -> (Data.field_of_string c, None) *)
+(*     | Some c, Some lant -> (Data.field_of_string c, *)
+(*                             Some (Data.ant_of_string lant)) in *)
+
+(*   List.map (fun p -> *)
+(*       let pos = orientation ant_obs.x ant_obs.y ant_obs.dx ant_obs.dy p in  *)
+(*       env_item ant_obs.field ant_obs.ant_loc pos) positions *)
+  
+(* let data_from_json (menergy, macid) json =  *)
+(*   let ant_obs_l = to_ant_obs json in *)
+(*   List.map (fun r -> *)
+(*       let state : Data.state = { *)
+(*         Data.energy = r.energy; *)
+(*         Data.acid = r.acid; *)
+(*         Data.max_energy = menergy; *)
+(*         Data.max_acid = macid *)
+(*       } in *)
+(*       r.id, Data.Ally (state, env r)) ant_obs_l *)
+
+    
+
 
 
 

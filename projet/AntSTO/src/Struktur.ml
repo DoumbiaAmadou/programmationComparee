@@ -1,3 +1,5 @@
+(** Fichier cotenant les differentes operations proposee par l'API *)
+
 type ant_command = int * command
 
 and command =
