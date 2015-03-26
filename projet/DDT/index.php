@@ -69,17 +69,18 @@ boucle de jeu
 */
 
 $num = 0 ;
-
+$cmd ="0:forward"; 
 while($st->response->status->status->status=="playing" && $i<5){
-	$cmd ="0:forward"; 
+	
 	$resultat = play($id, $cmd);
 	//echo ($resultat->response->turn);	
-	echo "tour ".$resultat->response->turn."<br/>";
+	//echo "tour ".$resultat->response->turn."<br/>";
 	//echo "type ".gettype($resultat['response']['observation'])."<br/>";
-	//analyse($resultat) ;
-	$cmd = set_time_limit(500);
+	if(isset ($resultat->response->turn)) ; 
+	$cmd =analyse($resultat) ;
+	 set_time_limit(500);
 	sleep($sleeptime/2) ;
-	print_r($resultat); 
+	//print_r($resultat); 
 	$i++;
 	$st = status($id);
 }
@@ -94,21 +95,37 @@ function  analyse($resultat){
 	$num = 0 ;
 	//$resultat->
 	$id = rand(0,sizeof($move)) ;
+	echo"<br> echo le resulatat <br>";
+	print_r($resultat->response);
 	$dx =$resultat->response->observations[0][0]->dx; 
 	$dy =$resultat->response->observations[0][0]->dy; 
 	$choix =false; 
-	for($i=1 ; $i<sizeof($resultat->response->observations[0]) ; $i++){
+	for($i=1 ; $i<sizeof($resultat->response->observations[0][1]) ; $i++){
+	//	echo"<br><br>"; 
+	//	print_r($resultat->response->observations[0][0]);
 		/***
 		* if there aren't any water frond of me
 		*/
-		if ($i<$resultat->response->observations[0][$i]->kind=="grass"  
-			&& $resultat->response->observations[0][$i]->x==$resultat->response->observations[0][0]->x-dx 
-			&& $resultat->response->observations[0][$i]->x==$resultat->response->observations[0][0]->x-dx )
+	
+		echo"<br><br>"; 
+		echo "$i \n";
+		 print_r($resultat->response->observations[0][1][$i]);
+		echo"<br><br>"; 
+		if ( 
+		$resultat->response->observations[0][1][$i]->content->kind=="grass"  
+			&& $resultat->response->observations[0][1][$i]->x==$resultat->response->observations[0][0]->x- $dx 
+			&& $resultat->response->observations[0][1][$i]->y==$resultat->response->observations[0][0]->y- $dy )
 		$choix =true ;  
+		
 	}
-	echo  "$num:".$move[3]; 	
-	if($choix==true)  return "$num:".$move[3]; 	
-	else  return "$num:".$move[2]; 
+	
+	
+	if($choix==true)
+		$cmd =   $num.":".$move[3]; 
+	else  
+		$cmd =   $num.":".$move[rand(1,2)]; 
+		echo"<br> cmd = $cmd<br>"; 
+	return $cmd; 
 }
 function doHackcode($Tactique){
 	if($Tactique=="attack"){
