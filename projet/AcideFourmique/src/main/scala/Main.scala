@@ -14,7 +14,7 @@ object Main {
     val minimal_nb_player = 1
 
     Antroid.authenticate(login, passwd)
-    val game_id = Antroid.create(login, "test",
+    val game_id = Antroid.create("all", "test",
       pace, nb_turn, nb_ant, nb_player, minimal_nb_player)
 
     Antroid.join(game_id)
