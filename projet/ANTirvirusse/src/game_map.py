@@ -1,6 +1,7 @@
  # -*- coding: utf-8 -*-
 from case import Case
 from ant import Ant
+import pprint
 
 class GameMap():
 
@@ -33,6 +34,7 @@ class GameMap():
 	def update(self, ants_stats, verbose=False):
 		for stat in ants_stats:
 			cases = map(lambda case_dict: Case(case_dict["content"]["kind"], int(case_dict["x"]), int(case_dict["y"])), stat[1])
+			pprint.pprint(stat[1])
 			for case in cases:
 				self.map_dict[(case.x, case.y)] = case
 
@@ -45,8 +47,8 @@ class GameMap():
 				if verbose:
 					print(current_ant)
 
-		if verbose:
-			print(self)
+		# if verbose:
+			# print(self)
 
 	def get_case_at(self, x, y):
 		return self.map_dict.get((x, y), None)
