@@ -12,7 +12,7 @@ class StrategyDecisionMaker():
     #Chose the most adapted strategy for a given world.
     #It currently has only two possible strategies : wander, to discover the map, and hold, ton hold the ressources
     def choose_strategy(self, world):
-        if self.analyst.resources_under_control()> len(world.get_ants())/3.0:
+        if len(self.analyst.resources_under_control())> len(world.get_ants())/3.0:
             res = strategy_hold.StrategyHold(world)
         else :
             res=strategy_wander.StrategyWander(world)
