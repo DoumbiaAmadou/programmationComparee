@@ -3,7 +3,7 @@
 from game_map import GameMap
 from ant import Ant
 from antcommand import AttachedCommand
-import network_layer as nl
+from Network import network_layer as nl
 
 class Game():
 

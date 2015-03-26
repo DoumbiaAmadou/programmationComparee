@@ -1,6 +1,6 @@
  # -*- coding: utf-8 -*-
 
-import network_layer as nl
+from Network import network_layer as nl
 import antcommand as ac
 from game import Game
 
