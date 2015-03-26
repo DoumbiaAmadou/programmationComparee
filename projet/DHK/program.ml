@@ -69,6 +69,7 @@ and mk_loop c l n =
   @(None,Jump loop_label)
   ::n
 
+
 and create_label =
   let i = ref 0 in
   fun s -> incr i; Label(s ^ (string_of_int !i))
@@ -77,7 +78,7 @@ and label linstr s = match linstr with
   | [] -> assert false
   | (Some l as lab,instr)::t -> (l,(lab,instr)::t)
   | (None,instr)::t -> 
-     let l = Label s in
+     let l = create_label s in
      (l,(Some l,instr)::t)
 
 and mk_block = function

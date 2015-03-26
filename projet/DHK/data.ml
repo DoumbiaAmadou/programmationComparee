@@ -5,7 +5,9 @@ type ant =
 
 and state = {
   energy : int;
-  acid : int
+  acid : int;
+  max_energy : int;
+  max_acid : int
 }
 
 and environment = (field * ant option) list
@@ -40,6 +42,14 @@ type position =
   | BackRight
   | On
 
+let field_of_string = function
+  | "grass" -> Grass
+  | _ -> assert false
+
+let ant_of_string = function
+  | "" -> Corpse
+  | _ -> assert false
+    
 let energy = function
   | Ally(s,_) -> Some s.energy
   | _ -> None
@@ -81,3 +91,14 @@ let environment ant position =
   | Ally(_,env) -> Some (get_cell env position)
   | _ -> None
 
+let basic_order = [Front;Left;Right;FrontLeft;FrontRight;Back;BackLeft;BackRight]
+
+let search_first f order ant = 
+  let rec aux = function
+    | [] -> None
+    | pos::pl -> begin
+      match f (environment ant pos) with
+      | None -> aux pl
+      | Some res -> Some(pos,res)
+    end
+  in aux order
