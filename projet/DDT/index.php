@@ -62,30 +62,64 @@ while($st->response->status->status->status=="initialization")
 	sleep($sleeptime) ; 
 }
 echo "la partie commence<br/>";
-
 $i=0;
 sleep($sleeptime/2) ;
 /*
 boucle de jeu
 */
 
-while($st->response->status->status->status=="playing" && $i<5){
-	
-	$cmd ="0:rest" ;
+$num = 0 ;
 
+while($st->response->status->status->status=="playing" && $i<5){
+	$cmd ="0:forward"; 
 	$resultat = play($id, $cmd);
-	//echo ($resultat->response->turn);
-	
+	//echo ($resultat->response->turn);	
 	echo "tour ".$resultat->response->turn."<br/>";
 	//echo "type ".gettype($resultat['response']['observation'])."<br/>";
 	//analyse($resultat) ;
-	set_time_limit(500);
+	$cmd = set_time_limit(500);
 	sleep($sleeptime/2) ;
+	print_r($resultat); 
 	$i++;
 	$st = status($id);
 }
 
-
+function  analyse($resultat){
+	/*
+	analyse and take a decision
+	*/	
+	$move =array("rest","left" ,  "right" ,"forward" ) ; 
+	$fight = array("attack@", "hack@", "attack@N" );
+	$inst = array("JUMP") ;  
+	$num = 0 ;
+	//$resultat->
+	$id = rand(0,sizeof($move)) ;
+	$dx =$resultat->response->observations[0][0]->dx; 
+	$dy =$resultat->response->observations[0][0]->dy; 
+	$choix =false; 
+	for($i=1 ; $i<sizeof($resultat->response->observations[0]) ; $i++){
+		/***
+		* if there aren't any water frond of me
+		*/
+		if ($i<$resultat->response->observations[0][$i]->kind=="grass"  
+			&& $resultat->response->observations[0][$i]->x==$resultat->response->observations[0][0]->x-dx 
+			&& $resultat->response->observations[0][$i]->x==$resultat->response->observations[0][0]->x-dx )
+		$choix =true ;  
+	}
+	echo  "$num:".$move[3]; 	
+	if($choix==true)  return "$num:".$move[3]; 	
+	else  return "$num:".$move[2]; 
+}
+function doHackcode($Tactique){
+	if($Tactique=="attack"){
+		$primitive = array("ant_see" , "" , "",""); 
+	}else 
+	{
+		$primitive = array("ant_see" , "" , "",""); 
+	}
+	rand(0 , sizeof($primitive)) ; 
+	
+}
 ?>
 </body>
 </html>
