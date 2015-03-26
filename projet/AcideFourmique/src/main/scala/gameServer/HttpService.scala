@@ -1,4 +1,4 @@
-package server
+package gameServer
 
 /** Facade permettant de communiquer avec le serveur.
   * Pour implementer une nouvelle methode de communication, il suffit

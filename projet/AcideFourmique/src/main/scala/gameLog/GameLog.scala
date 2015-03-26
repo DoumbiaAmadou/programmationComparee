@@ -1,4 +1,4 @@
-package logGame
+package gameLog
 
 import java.io.OutputStream;
 import java.net.Socket;
@@ -19,7 +19,7 @@ object GameLog {
       os.write(log.getBytes());
     } catch {
       case ioe : IOException =>
-	println("Connection problem");
+	println("Connection problem: log server is not running");
     }
   }
 
