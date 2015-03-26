@@ -1,4 +1,4 @@
-package server
+package gameServer
 
 import CurlService._
 import antCommand._

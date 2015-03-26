@@ -1,6 +1,6 @@
-import server._
+import gameServer._
 import antCommand._
-import logGame._
+import gameLog.GameLog
 
 object Main {
 
@@ -30,7 +30,7 @@ object Main {
     val code = new Code(List(
       // primitive see_ant et entiers non reconnu par le serveur
       (Label("LOOP"),  Left()),
-      (None,           Var("x") := Apply(SeeAnt())),
+      (None,           Var("x") := Apply(See())),
       (None,           Jumpifz(Var("x"), new Label("LOOP"))),
       (None,           Forward()),
       (None,           Jump(new Label("LOOP")))
