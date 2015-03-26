@@ -1,9 +1,10 @@
  # -*- coding: utf-8 -*-
 
-from game_map import GameMap
-from ant import Ant
+from Data.game_map import GameMap
+from Data.ant import Ant
 from antcommand import AttachedCommand
 from Network import network_layer as nl
+from IA import iaplayer
 
 class Game():
 
@@ -18,7 +19,8 @@ class Game():
         self.pace           = pace
         self.initial_acid   = initial_acid
         self.initial_energy = initial_energy
-        self.game_map       = GameMap(nb_ants, initial_energy, initial_acid)
+        ia=iaplayer.IAPlayer(self)
+        self.game_map       = GameMap(nb_ants, initial_energy, initial_acid, ia)
         self.make_move()
 
     def get_initial_acid(self):
