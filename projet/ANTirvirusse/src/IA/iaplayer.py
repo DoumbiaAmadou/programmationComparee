@@ -5,10 +5,9 @@ from . import strategy_decision_maker
 
 #An IAPlayer is assigned to a new game. When the network layer updates the model with the observations for this turn,
 #Play turn is called
-class IAPlayer(g.Player):
+class IAPlayer():
 
-    def __init__(self, login, password, world):
-        super(IAPlayer, self).__init__(login, password)
+    def __init__(self, world):
         self.strategy = None
         self.decisionMaker = strategy_decision_maker.StrategyDecisionMaker()
         self.world = world
