@@ -71,13 +71,13 @@ class GameMap():
 		enemies = []
 		for case in map_dict:
 			if map_dict[case] == "enemy":
-				enemies.append[case]
+				enemies.append(case)
 		return enemies
 
 	def get_position_resource(self):
 		resources = []
 		for case in map_dict:
 			if map_dict[case] == "resource":
-				resources.append[case]
+				resources.append(case)
 		return resources
 
