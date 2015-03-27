@@ -35,7 +35,7 @@ let get_command ant_id see_value see_ant_value : string =
   | No         ->
      begin
        match see_value with
-       | Rock  -> "" (* Gerade Gehen Sie nicht *)
+       | Rock  -> string_of_ant_command ant_id Rest (* Gerade Gehen Sie nicht *)
        | Water -> string_of_ant_command ant_id Forward
        | Grass -> string_of_ant_command ant_id Forward (* ??? *)
        | Food  -> string_of_ant_command ant_id Forward
@@ -43,7 +43,7 @@ let get_command ant_id see_value see_ant_value : string =
      end
   | Controlled -> string_of_ant_command ant_id string_of_command(Attack 1)
   (* ZU TUN : passen Sie den Wert *)
-  | Zombie     -> "" (* Gerade Gehen Sie nicht *)
-  | Dead       -> string_of_ant_command and_id Hack(["fork"])
+  | Zombie     -> string_of_ant_command ant_id Rest (* Gerade Gehen Sie nicht *)
+  | Dead       -> string_of_ant_command ant_id Hack(["fork"])
   (* ZU TUN : passen Sie den Wert *)
   | _          -> "" (* Nicht von der Spezifikation definiert *)
