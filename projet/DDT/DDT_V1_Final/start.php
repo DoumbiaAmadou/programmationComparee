@@ -13,8 +13,6 @@ In the "join" case, if the second line is empty, so the function search an acces
 
 function startGame(){
 
-	auth("testSS" , "s123456s");
-
 	$file = dirname(__FILE__).'/conf.txt';
 	$game_id = null;
 	$join_tentative = null;
@@ -23,11 +21,17 @@ function startGame(){
 
 		$instr = file($file);
 		
-		if (substr($instr[0],0,6)=="create"){
+		$login_password = $instr[0];
+		$login_password = str_replace("\"","",$login_password);
+		$login_password = explode(",",$login_password);
+		$auth_response = auth($login_password[0] ,
+								substr($login_password[1],0,strlen($login_password[1])-2));
+
+		if (substr($instr[1],0,6)=="create"){
 		
 			echo "Create game<br/>";
 		
-			$params = $instr[1];
+			$params = $instr[2];
 			$params = str_replace("\"","",$params);
 			$params = explode(",",$params);
 
@@ -51,12 +55,12 @@ function startGame(){
 			$join_tentative =joinGame($game_id);
 		}
 
-		else if (substr($instr[0],0,4)=="join"){
+		else if (substr($instr[1],0,4)=="join"){
 		
 			echo "Join game<br/>";
 			
 			if(sizeof($instr)>1)
-				$game_id = $instr[1];
+				$game_id = $instr[2];
 			
 			else{
 				$games_list =games();
