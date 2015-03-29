@@ -1,9 +1,17 @@
+(**
+ * Module représentant les fonctions de l'API.
+ *
+ * Les fonctions ci-après renvoient un [Gemeinsam.either] encodant
+ * l'objet JSON renvoyé ou une erreur.
+ *)
 open Gemeinsam
 open Kommunikation
 
+(** @return La description de l'API. *)
 let api () =
   call_api "api" `Get []
 
+(** @return Une valeur indiquant le succès de l'opération. *)
 let auth user password =
   call_api "auth" `Post ["user", user; "password", password]
 

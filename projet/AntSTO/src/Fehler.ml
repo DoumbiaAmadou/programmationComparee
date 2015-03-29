@@ -1,8 +1,10 @@
+(** Module de gestion des erreurs. *)
 open Gemeinsam
 
-(** Fichier contenant les codes d'erreurs possibles *)
-
-(** Type representant les differentes erreurs possibles retournees par l'API *)
+(**
+ * Type représentant les différentes erreurs possibles retournées par
+ * l'API.
+ *)
 type t =
   | EAlreadyJoined
   | EGameIsNotOver
@@ -21,7 +23,12 @@ type t =
 
 exception UnknownErrorCode of int
 
-(** Fonction qui, a partir du code d'erreur sous forme d'entier, renvoie l'erreur *)
+(**
+ * [of_int x] renvoie la représentation abstraite d'un code d'erreur.
+ *
+ * Si l'entier passé ne correspond à aucune erreur connue, l'exception
+ * [UnknownErrorCode x] est levée.
+ *)
 let of_int = function
   | 443034632  -> EAlreadyJoined
   | 808783211  -> EGameIsNotOver
@@ -39,7 +46,7 @@ let of_int = function
   | 334269347  -> EUserAlreadyExists
   | otherwise  -> raise @$ UnknownErrorCode otherwise
 
-(** Fonction qui, a partir de l'erreur, renvoie le code d'erreur sous forme d'entier *)
+(** [to_int x] renvoie la valeur brute d'un code d'erreur. *)
 let to_int = function
   | EAlreadyJoined         -> 443034632
   | EGameIsNotOver         -> 808783211

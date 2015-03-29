@@ -1,5 +1,10 @@
-(** Fichier cotenant les differentes operations proposee par l'API *)
+(** Module de représentation des commandes pour les fourmis. *)
 
+(**
+ * Une commande de fourmi.
+ *
+ * Ainsi, [(x, c)] représente la commande [c] donnée à la fourmi [x].
+ *)
 type ant_command = int * command
 
 and command =
@@ -14,7 +19,8 @@ and instruction =
   | Command of command
   | Store   of string * expression
   | Jump    of string
-  | JumpIfZ of string * string  (* (variable, label) *)
+  | JumpIfZ of string * string
+  (** [(variable, label)] *)
   | Fork
 
 and expression =
@@ -22,7 +28,6 @@ and expression =
   | Var  of string
   | Prim of prim
   | Eval of expression list
-
 
 and prim =
   | Add

@@ -1,7 +1,5 @@
+(** Module de communication avec l'API serveur. *)
 open Gemeinsam
-
-exception FieldNotFound of string
-exception IllFormedJson
 
 let api_version  = 0
 let base_url     = Printf.sprintf "yann.regis-gianas.org/antroid/%d"
