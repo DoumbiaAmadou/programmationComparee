@@ -1,0 +1,11 @@
+Prérequis :
+
+Installer tgls et tsdl :
+  $ opam install tgls tsdl
+
+Installer Stb_image (https://github.com/def-lkb/stb_image):
+  $ git clone git@github.com:def-lkb/stb_image.git
+  $ cd stb_image
+  $ make install
+
+Puis make et ./main.byte … rien d'excitant.

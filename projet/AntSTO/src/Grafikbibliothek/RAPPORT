@@ -1,0 +1,231 @@
+Ph'nglui mglw'nafh Cthulhu R'lyeh wgah-nagl ftaghn
+--------------------------------------------------
+
+- Le projet utilisera OpenGL[1]
+- Les dépendances sur d'autres bibliothèques doivent être minimales
+
+# Un survol d'OpenGL moderne
+
+## Une histoire d'automates
+
+OpenGL, pour Open Graphics Library, est une bibliothèque graphique ouverte
+apparue en 1992.  Elle dérive d'IrisGL, une bibliothèque propriétaire similaire
+développée par SGI.
+
+Leur objectif était de présenter une interface portable pour manipuler
+les cartes graphiques de l'époque.
+
+L'interface OpenGL expose un automate, dont l'état détermine des propriétés de
+dessins (épaisseurs des traits, couleur et éclairage, texture). Une fois l'état
+jugé satisfaisant, le développeur soumet des primitives géométriques, qui
+seront transformées en image concrète (« un bitmap »).
+
+Ce modèle était proche des cartes graphiques il y a 20 ans, mais celles-ci ont
+considéralement évoluées depuis.  Le traitement s'appuyant sur l'état d'un
+automate est appelé « pipeline fixe » : les capacités de dessin sont
+uniquement déterminées par l'automate.
+La bibliothèque a bien reçu quelques extensions, mais ce modèle est apparu trop
+limité, les cartes graphiques de leur côté étant devenue programmable.
+
+## Le désastre
+
+OpenGL avait pour objectif d'unifier la programmation des cartes graphiques, et
+donc de proposer un modèle indépendant d'une architecture particulière.
+
+La première extension introduisant cette pipeline programmable a été le 
+"ARB assembly language"[2].  Un programme dans ce langage d'assemblage devait
+être fourni pour chaque partie programmable.
+
+Une première erreur a peut-être été de continuer à mimer le modèle d'automate,
+même si celui-ci commençait à se distancer du matériel.
+
+L'origine d'une telle décision est évidemment le compatibilité, d'autant que
+l'utilisation de la pipeline fixe était toujours possible : le pilote était
+responsable de fournir des programmes simulant les anciennes pipelines, où
+l'automate était déterminé.
+
+10 ans plus tard, le langage d'assemblage a été remplacé par « GLSL », un
+langage C-like.  Afin de simplifier la programmation, plutôt que de fournir des
+outils de haut-niveau pour travailler sur les programmes assembleurs, il a été
+décidé que chaque pilote devrait inclure une implémentation de GLSL.
+
+Chaque pilote propose donc une implémentation d'un langage vaguement spécifié,
+la situation était tenable quand seuls AMD et Nvidia étaient sur le marché
+(bien que l'implémentation d'AMD soit significativement moins robuste), mais
+l'arrivée des intégrateurs mobiles révèlent l'étendue du désastre.
+Voir [3] pour les développeurs de pilotes, [4] pour les utilisateurs 
+(chercher "renaming").
+
+### À l'usage
+
+Utiliser OpenGL aujourd'hui fait passer x86 pour un langage de haut-niveau.
+Modifier un "registre" nécessite au minimum de d'abord positionner l'automate
+dans le bon état, puis de soumettre la valeur désirée.
+
+Toutes les manipulations se font sur un état global (contexte OpenGL), avec de
+nombreuses conséquences négatives :
+- une telle interface est par construction très délicate à utiliser dans un
+  contexte multi-thread;
+- chaque action influençant l'état global, la portée exacte d'une modification
+  est implicite et difficile à déterminer (voire interprétée différemment selon
+  les pilotes [ref needed, 5 donne un tout petit aperçu]);
+- les nombreux appels amènent un surcoût non négligeable :
+  - pour garantir des performances décentes, les pilotes doivent faire un
+    travail d'optimisation conséquent, réinterprétant et simplifiant les
+    séquences de commandes;
+  - chaque commande étant influencée par l'état global, il est très difficile
+    de faire une validation dans une bibliothèque de haut-niveau; il faut soit
+    répliquer la gestion de l'état, soit être conservatif et muter l'état plus
+    que nécessaire (par ailleurs, dans l'API OpenGL a jugé bon d'utiliser des
+    entiers pour représenter tous les concepts).
+
+Enfin, la surface de l'API est énorme mais pour l'essentiel obsolète.
+
+## Modèle d'évaluation
+
+Derrière l'obfuscation se cache un principe de calcul assez sain.
+Les shaders sont des fonctions:
+
+  f : U x A -> A'
+
+- U est l'ensemble des uniformes,
+- A et A' sont des ensembles d'attributs.
+
+À l'exception de quelques informations déterminées pour chaque étape, le
+contenu des ensembles U et A est laissé libre (généralement R^n).
+
+Pour exécuter le shader, on fournit u \in U et a_{0..n} \in A.
+Le shader est évalué en parallèle pour chaque a_i:
+ a'_i = f(u,a_i)
+
+Le flux des a'_i reçoit un traitement propre à l'étape courante, avant d'être
+retransmis à l'étape suivante.
+
+Les deux étapes implémentées dans la bibliothèque sont les « vertex shaders »
+et les « fragment shaders ».
+
+### Vertex shaders
+
+Ils sont exécutés pour chaque point en entrée (la notion de "point" est laissée
+libre, les attributs peuvent contenir des informations arbitraires). 
+Ils permettent de déplacer les points dans l'espace et de calculer des
+informations dérivées. 
+
+En revanche la géométrie (triangle, ligne, …) est déjà déterminée à
+l'extérieure, le vertex shader ne peut l'influencer.
+
+Un des attributs de sortie identifié est particulier puisqu'il représente la
+position dans l'espace de l'écran du point : les points en dehors de la zone de
+rendu sont éliminés, les primitives géométriques à cheval sont découpées. 
+  
+### Fragment shaders
+
+Les attributs récupérés en sortie du « vertex shader » sont interpolés
+linéairement entre les points des primitives géométriques. Les attributs en
+sorties sont placés dans buffer bidimensionnel, indexés par les coordonnées
+(x,y) de chaque fragment.
+
+Si plusieurs primitives se superposent, une règle configurable détermine le
+fragment qui est conservé : le plus proche de la caméra, le dernier dessiné,
+une interpolation entre les deux, …
+
+## Bonnes pratiques
+
+Les usages corrects et efficace de cet architecture font parti du folklore
+d'OpenGL et ont changés au fil des versions.
+L'API étant très riche, il n'est pas rare qu'une même action soit réalisable de
+10 manières différentes, les plus récentes favorisant la performance.  Le
+chemin le plus performant reste très obscure.
+
+L'intuition reste de minimiser les changements d'états (chargement d'un
+programme et de sa configuration) et de maximiser la taille des flux
+d'attributs.
+
+## Tirer la chasse d'eau
+
+Le modèle ci-dessous étant moins que satisfaisant, un mouvement récent propose
+un remplacement complet, cassant avec l'héritage.
+
+Ces incarnations : Mantle (AMD), DirectX12 (Microsoft), Metal (Apple), et
+finalement Vulkan (Khronos). C'est ce dernier qui remplacera OpenGL.
+
+Conception :
+- exposer directement ce modèle de programmation par flux,
+- les programmes sont écrits dans un langage intermédiaire (bytecode SPIR),
+  des outils de validation, debug, optimisations pouvant être fournis par
+  différents vendeurs,
+- aucune logique riche dans les pilotes, on ne cache pas le modèle d'exécution
+  du matériel
+- un minimum d'état global, en particulier le modèle est très thread-safe
+
+C'est donc le moment approprié pour assister à la fin d'OpenGL.
+
+# Ressources existantes
+
+Comment concevoir une interface agréable (tout est relatif) au-dessus d'OpenGL ?
+
+Une première source d'inspiration a été :
+http://home.comcast.net/~tom_forsyth/blog.wiki.html#[[Scene%20Graphs%20-%20just%20say%20no]]
+Tom Forsyth est un développeur de Valve (Half-Life, Dota, …), ce poste est un
+"rant" contre l'architecture de certains (beaucoup) moteurs 3d qui imposent un
+"scene graph". 
+
+Plutôt que de simplement proposer une abstraction au dessus d'OpenGL, ces
+moteurs imposent une structure arborescente, et cette vue a de fortes
+conséquences sur l'architecture des programmes.  Malheureusement l'arbre
+correspond rarement à des concepts pertinents, la structure est artificielle et
+insuffisante.
+
+L'alternative… Il semble y en avoir étonnament peu. Découvert malheureusement
+un peu tard, Daniel Buenzli propose une bibliothèque de bas-niveau et juste ce
+qu'il faut élégante au-dessus d'OpenGL :
+  http://erratique.ch/software/lit
+
+Le modèle décrit ci-dessus y est exposé beaucoup plus directement qu'en passant
+par OpenGL, aucune architecture particulière est imposée.
+
+Enfin le livre http://antongerdelan.net/opengl/ offre une présentation moderne
+et directe d'OpenGL.  En bonus, l'auteur annonce la couleur :
+"Avoid software engineering techniques and design patterns…".
+
+# Solution proposée
+
+Le premier travail a été la bibliothèque "Math_funcs", qui propose le minimum
+nécessaire en algèbre linéaire pour travailler avec des modèles 3d.
+
+Ensuite, deux bindings aux bibliothèques stb_truetype et stb_image de 
+http://nothings.org/ .
+
+[Stb_truetype](https://github.com/def-lkb/stb_truetype), un rasterizer de
+fontes truetype sans dépendances.
+[Stb_image](https://github.com/def-lkb/stb_image), un loader Jpeg, Png, Gif,
+etc sans dépendances non plus.
+
+Les deux bibliothèques peuvent s'utiliser facilement dans d'autres projets
+OCaml.
+
+Hot_n_cold, une interface typée au modèle d'uniformes et d'attributs : le
+programme est toujours écrit en langage GLSL, mais son interface est décrite au
+moyen de GADTs.
+Durant le rendu, un interprète traverse le GADT pour lier chaque valeur OpenGL
+à une valeur OCaml. L'interface entre OCaml et GLSL est rendu transparente.
+
+## Extensions possibles
+
+À l'heure actuelle, le binding suppose que les types OCaml correspondent aux
+types GLSL.  Il est possible d'interroger l'interface OpenGL pour récupérer une
+description des types GLSL, il serait intéressant de vérifier la compatibilité.
+(Une erreur de type est ignorée silentieusement, et les données indéfinies)
+
+Plus généralement, il serait intéressant de proposer un EDSL encodant GLSL.
+Enfin pour un usage réaliste, il faudrait étendre la pipeline à plus d'étapes
+que vertex et fragment (geometry, tesselation, etc).
+
+# Liens
+
+[1]: http://www.imdb.com/title/tt0055972/
+     http://en.wikipedia.org/wiki/OpenGL
+[2]: http://en.wikipedia.org/wiki/ARB_assembly_language
+[3]: http://www.gamedev.net/topic/666419-what-are-your-opinions-on-dx12vulkanmantle/#entry5215019
+[4]: https://github.com/flibitijibibo/FNA/issues/287
+[5]: https://devtalk.nvidia.com/default/topic/528941/android-development/alpha-blending-not-working-on-t20-and-t30-under-ice-cream-sandwich/
