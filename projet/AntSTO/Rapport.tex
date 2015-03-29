@@ -1,0 +1,21 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}
+
+\begin{document}
+\section*{Généralités}
+Le projet est écrit en OCaml et utilise les bibliothèques suivantes :
+
+\begin{itemize}
+\item oCurl pour avoir un \textit{binding} sur la \texttt{libcurl} ;
+\item YoJson pour la lecture et l'écriture d'objets JSON ;
+\end{itemize}
+
+\section*{Architecture}
+Le projet s'articule autour de modules OCaml qui exposent chacun une
+interface de telle sorte que chaque module est indépendant.
+\end{document}
