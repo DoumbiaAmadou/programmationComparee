@@ -1,0 +1,31 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}
+\usepackage{verbatim}
+
+\begin{document}
+
+\section*{Le projet}
+Aucune information n'est fournie quant à comment compiler le programme et quelles
+ sont les dépendances requises.
+
+\section*{Lisibilité du code}
+Bien que le fichier principal, \verb+ConnectApi.scala+ soit commenté (le seul
+ avec \verb+Messages.scala+), la documentation reste légère. Aucune information
+ n'est fournie dans les fichiers afin d'indiquer quel est le rôle du fichier. Par
+ ailleurs, les commentaires, bien que respectant la même langue dans un même
+ fichier, elle n'est pas identique pour l'ensemble des fichiers.
+
+L'indentation n'est pas la même dans tous les fichiers et rend, par exemple pour
+ le fichier \verb+MapUpdate.scala+, le code indigeste à la lecture.
+
+\section*{Correction}
+Nous pensons que la méthode \verb+antCmd+ (présente dans le fichier
+ \verb+ConnectApi.scala+) ne remplie pas exactement le rôle que ses auteurs
+ voulaient lui donner. En effet : \textit{quid} de l'argument \verb+action+ ?
+
+\end{document}
